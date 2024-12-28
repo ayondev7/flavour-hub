@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const commentController = require('../controllers/commentController');
+const commentController = require('../controllers/CommentController');
 
 const router = express.Router();
 const upload = multer();
