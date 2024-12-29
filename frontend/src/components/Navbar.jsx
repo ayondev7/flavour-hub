@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HiOutlineMenu } from "react-icons/hi";
-import { isTokenValid, getUserIdFromToken } from "../assets/tokenUtils";
+import {getUserIdFromToken } from "../assets/tokenUtils";
 import Sidebar from "../components/Sidebar";
 import Searchbar from "../components/Searchbar";
 
 const Navbar = () => {
+  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const userId = getUserIdFromToken();
@@ -16,7 +17,7 @@ const Navbar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   useEffect(() => {
-    if (isTokenValid()) {
+    if (userId) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
@@ -24,15 +25,13 @@ const Navbar = () => {
   }, [userId]);
 
   useEffect(() => {
-    if (isTokenValid()) {
       fetchUserData(userId);
-    }
   }, [userId, navigate]);
 
   const fetchUserData = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/user/getUser/${userId}`
+        `${baseURL}/api/user/getUser/${userId}`
       );
       setUserData(response.data);
     } catch (error) {

@@ -9,7 +9,7 @@ import MarqueeComponent from "../components/MarqueeComponent";
 import Marquee from "react-fast-marquee";
 import mealType from "../assets/data";
 import BookmarkDialog from "../components/BookmarkDialogue";
-import { isTokenValid, getUserIdFromToken } from "../assets/tokenUtils";
+import {getUserIdFromToken } from "../assets/tokenUtils";
 import { ToastContainer } from "react-toastify";
 
 const AllRecipes = () => {
@@ -59,19 +59,11 @@ const AllRecipes = () => {
   };
 
   useEffect(() => {
-    if (isTokenValid()) {
       fetchRecipes();
-    } else {
-      navigate("/login");
-    }
   }, [cuisineTypeState]);
 
   useEffect(() => {
-    if (isTokenValid()) {
       fetchCollections();
-    } else {
-      navigate("/login");
-    }
   }, [userId]);
 
   const indexOfLastRecipe = currentPage * recipesPerPage;

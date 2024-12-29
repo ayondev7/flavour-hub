@@ -12,6 +12,7 @@ import BookmarkDialog from "../components/BookmarkDialogue";
 import { ToastContainer } from "react-toastify";
 
 const UserHome = () => {
+  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
   const userId = getUserIdFromToken();
   const [recipes, setRecipes] = useState([]);
   const [chefs, setChefs] = useState([]);
@@ -23,7 +24,7 @@ const UserHome = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5000/api/recipe/getAllRecipes", {
+      .get(`${baseURL}/api/recipe/getAllRecipes`, {
         headers: {
           userId: userId, // Include userId in the headers
         },
@@ -41,7 +42,7 @@ const UserHome = () => {
   const fetchCollections = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/collections/get-collections/${userId}`
+        `${baseURL}/api/collections/get-collections/${userId}`
       );
       setCollections(response.data);
     } catch (error) {
@@ -63,7 +64,7 @@ const UserHome = () => {
   const fetchChefs = () => {
     setLoading(true); // Ensure loading is displayed while fetching
     axios
-      .get(`http://localhost:5000/api/user/get-all-users/${userId}`)
+      .get(`${baseURL}/api/user/get-all-users/${userId}`)
       .then((response) => {
         setChefs(response.data.slice(0, 8)); // Assuming you only want the first 8 users
         setLoading(false);

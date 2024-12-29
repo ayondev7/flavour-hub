@@ -13,7 +13,6 @@ const Rating = ({ recipeId }) => {
 
   const postRating = async (e) => {
     e.preventDefault();
-    if (isTokenValid()) {
       let userId = getUserIdFromToken();
       setIsSubmitting(true); // Set loading state to true
       try {
@@ -34,9 +33,6 @@ const Rating = ({ recipeId }) => {
       } finally {
         setIsSubmitting(false); // Reset loading state
       }
-    } else {
-      navigate('/login');
-    }
   };
 
   return (

@@ -8,13 +8,13 @@ import ReviewCard from "../components/ReviewCard.jsx";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
-
+  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch recipes from the server
     axios
-      .get("http://localhost:5000/api/recipe/getAllRecipes")
+      .get(`${baseURL}/api/recipe/getAllRecipes`)
       .then((response) => {
         setRecipes(response.data);
         setLoading(false); // Set loading to false after data is fetched

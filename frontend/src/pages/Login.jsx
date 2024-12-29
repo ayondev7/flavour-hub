@@ -8,6 +8,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Track password visibility
@@ -20,9 +21,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-        const response = await axios.post("http://localhost:5000/api/user/loginUser", { email, password });
-
-        if (response.data.success) {
+        const response = await axios.post(`${baseURL}/api/user/loginUser`, { email, password });
+        console.log(response.data);
+        if (response.data.token) {
+          console.log(response.data.token);
             sessionStorage.setItem("token", response.data.token);
             await checkAuth(); // Update authentication state
             navigate("/userHome");
@@ -50,8 +52,6 @@ const Login = () => {
         setIsLoading(false);
     }
 };
-
-
 
   return (
     <div className="px-0 lg:px-16 flex items-center h-screen bg-white overflow-hidden">

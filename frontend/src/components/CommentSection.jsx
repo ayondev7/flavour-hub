@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoIosWarning } from "react-icons/io";
-import { getUserIdFromToken, isTokenValid } from "../assets/tokenUtils";
+import { getUserIdFromToken } from "../assets/tokenUtils";
 import { IoSend } from "react-icons/io5";
 
 const CommentSection = ({ recipeId }) => {
@@ -48,21 +48,15 @@ const CommentSection = ({ recipeId }) => {
   }, []);
 
   useEffect(() => {
-    if (isTokenValid()) {
-      // Fetch comments only if the user ID and blog ID are available
-      if (userId && recipeId) {
-        fetchComments();
-      }
-    } else {
-      console.error("No token found");
+    // Fetch comments only if the user ID and blog ID are available
+    if (userId && recipeId) {
+      fetchComments();
     }
   }, [userId, recipeId]); // Add userId and blogId as dependencies
 
   const postComment = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
-
-    if (isTokenValid()) {
       try {
         const response = await axios.post(
           "http://localhost:5000/api/comment/postComment",
@@ -81,16 +75,11 @@ const CommentSection = ({ recipeId }) => {
         toast.error("Error posting comment");
         setIsProcessing(false);
       }
-    } else {
-      navigate("/login");
-    }
   };
 
   const postReply = async (e) => {
     e.preventDefault();
     setIsProcessing(true); // Start processing
-
-    if (isTokenValid()) {
       try {
         const response = await axios.post(
           "http://localhost:5000/api/comment/postComment",
@@ -111,11 +100,6 @@ const CommentSection = ({ recipeId }) => {
       } finally {
         setIsProcessing(false); // Ensure to set isProcessing to false after operation completes
       }
-    } else {
-      console.error("No token found");
-      setIsProcessing(false); // Set isProcessing to false if token is not valid
-      navigate("/login");
-    }
   };
 
   // Calculate the count of comments with null parent_comment_id
@@ -168,16 +152,15 @@ const CommentSection = ({ recipeId }) => {
 
   const handleDelete = async () => {
     setIsProcessing(true);
-    if (isTokenValid()) {
       try {
         const response = await axios.delete(
-            "http://localhost:5000/api/comment/deleteComment",
-            {
-              data: {
-                commentId: commentId
-              }
-            }
-          );
+          "http://localhost:5000/api/comment/deleteComment",
+          {
+            data: {
+              commentId: commentId,
+            },
+          }
+        );
         document.getElementById("deleteCommentModal").close();
         toast.success("Comment deleted successfully");
         setTimeout(() => {
@@ -190,15 +173,10 @@ const CommentSection = ({ recipeId }) => {
         console.error(error); // Log the error for debugging
         // You can consider handling specific errors here and displaying a more user-friendly message
       }
-    } else {
-      navigate("/login");
-      setIsProcessing(false);
-    }
   };
 
   const handleEdit = async () => {
     setIsProcessing(true);
-    if (isTokenValid()) {
       try {
         const response = await axios.put(
           "http://localhost:5000/api/comment/updateComment",
@@ -223,10 +201,6 @@ const CommentSection = ({ recipeId }) => {
       } finally {
         setIsProcessing(false);
       }
-    } else {
-      navigate("/login");
-      setIsProcessing(false);
-    }
   };
 
   return (
@@ -299,7 +273,9 @@ const CommentSection = ({ recipeId }) => {
                       <p className="text-gray-500 text-[10px] font-semibold mb-3">
                         {formatDate(comment.createdAt)}
                       </p>
-                      <p className="text-black pr-4 text-sm">{comment.content}</p>
+                      <p className="text-black pr-4 text-sm">
+                        {comment.content}
+                      </p>
                       <div className="flex gap-x-16 my-4">
                         {/* Render Edit and Delete buttons only if userId matches comment's user_id */}
                         {userId == comment.userId && (
@@ -362,7 +338,9 @@ const CommentSection = ({ recipeId }) => {
                             <p className="text-gray-500 text-[10px] font-semibold mb-3">
                               {formatDate(reply.createdAt)}
                             </p>
-                            <p className="text-black pr-4 text-sm">{reply.content}</p>
+                            <p className="text-black pr-4 text-sm">
+                              {reply.content}
+                            </p>
                             <div className="flex gap-x-16 my-4">
                               {/* Render Edit and Delete buttons only if userId matches comment's user_id */}
                               {userId == reply.userId && (
@@ -453,7 +431,8 @@ const CommentSection = ({ recipeId }) => {
             <IoIosWarning className="mr-2 text-hotPink text-xl" /> Warning!
           </p>
           <h3 className="font-medium text-base text-center text-black mb-6">
-            Are you sure you want to delete this comment? This change is irreversible.
+            Are you sure you want to delete this comment? This change is
+            irreversible.
           </h3>
           <div className="flex justify-end space-x-4">
             <button
