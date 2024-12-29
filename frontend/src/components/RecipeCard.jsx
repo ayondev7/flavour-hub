@@ -1,83 +1,64 @@
-import React, { useEffect, useState } from "react";
-import { BsFire } from "react-icons/bs"; // Ensure you have react-icons installed
+import React from "react";
+import { BsFire } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-const RecipeCard = ({ recipe, chefUser }) => {
+const RecipeCard = ({ recipe }) => {
   const navigate = useNavigate();
-  const [ratings, setRatings] = useState();
 
-  useEffect(() => {
-    // Fetch recipes from the server
-    axios
-      .get("http://localhost:5000/api/recipe/getRating")
-      .then((response) => {
-        setRatings(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching recipes:", error);
-      });
-  }, []);
   const handleCardClick = (recipeId) => {
     navigate(`/recipesPage/${recipeId}`);
   };
 
   return (
     <div
-      className="card card-compact w-96 h-[350px] bg-white shadow-xl hover:cursor-pointer"
+      className="rounded-xl h-[200px] lg:h-[350px] bg-white shadow-xl hover:cursor-pointer"
       onClick={() => handleCardClick(recipe._id)}
       key={recipe.id}
     >
-      <figure className="h-[60%]">
-        {recipe.image && (
-          <img className="h-full w-full object-cover" src={`data:image/jpeg;base64,${recipe.image}`} alt="" />
+      <figure className="h-[100px] lg:h-[200px]">
+        {recipe?.image && (
+          <img
+            className="h-full w-full object-cover rounded-tr-xl rounded-tl-xl"
+            src={`data:image/jpeg;base64,${recipe?.image}`}
+            alt=""
+          />
         )}
       </figure>
-      <div className="rating mt-3 ml-3">
-        <div className="rating">
-          {[1, 2, 3, 4, 5].map((value, index) => {
-            const isChecked =
-              Array.isArray(ratings) &&
-              ratings.some(
-                (rating) =>
-                  rating.recipeId == recipe._id &&
-                  parseInt(rating.averageRating) >= value
-              );
-            return (
-              <input
-                key={value}
-                type="radio"
-                name={`rating-${index}`} // Use a unique name for each rating
-                className="mask mask-star-2 bg-green-500 size-4"
-                checked={isChecked}
-                readOnly // Make the radio inputs read-only
-              />
-            );
-          })}
-        </div>
+      <div className="rating mt-2 ml-3">
+        {[1, 2, 3, 4, 5].map((value) => (
+          <input
+            key={value}
+            type="radio"
+            name={`rating-${recipe._id}`}
+            className={`mask mask-star-2 size-2 lg:size-4 ${
+              recipe?.averageRating >= value ? "bg-green-500" : "bg-gray-300"
+            }`}
+            readOnly
+          />
+        ))}
       </div>
-      <div className="p-3">
-        <h2 className="text-md lg:text-xl text-black mb-4 font-semibold">
-          {recipe.title}
+      <div className="lg:p-3 px-3 py-1">
+        <h2 className="text-sm line-clamp-1 lg:text-lg text-black mb-4 font-semibold">
+          {recipe?.title}
         </h2>
         <div className="flex justify-between">
           <div className="flex items-center">
             <div className="avatar">
-              <div className="w-10 rounded-full">
+              <div className="lg:w-8 w-4 rounded-full">
                 <img
                   className="object-cover"
-                  src={`data:image/jpeg;base64,${chefUser.image}`}
+                  src={`data:image/jpeg;base64,${recipe?.chefImage}`}
                   alt="Avatar"
                 />
               </div>
             </div>
-            <span className="ml-2 text-black text-sm lg:text-md font-bold">
-              {chefUser.name}
+            <span className="lg:ml-2 ml-1 text-black text-xs lg:text-md font-bold line-clamp-1">
+              {recipe?.chefName}
             </span>
           </div>
-          <div className="flex items-center text-sm font-bold border-2 p-2 rounded-lg">
+          <div className="flex items-center text-[8px] lg:text-xs font-bold border lg:p-2 p-1 rounded-lg">
             <BsFire className="text-red-500" />
-            <span className="ml-1">{recipe.nutritionalValues.calories}</span>
+            <span className="ml-1">{recipe?.nutritionalValues?.calories}</span>
           </div>
         </div>
       </div>

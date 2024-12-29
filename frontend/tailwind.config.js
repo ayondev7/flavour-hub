@@ -21,6 +21,7 @@ module.exports = {
         mediumPink:'#ffc6c9 ',
         brightPink: '#ff007f',
         darkPink:'#fd5d69',
+        primaryPink: '#dc2777'
       },
       keyframes: {
         customPulse: {
@@ -33,7 +34,16 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('daisyui'),
-  ],
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: [
+      {
+        myTheme: {
+          primary: '#dc2777',
+          'primary-focus': '#bb2066',
+          'primary-content': '#ffffff',
+        },
+      },
+    ],
+  },
 }

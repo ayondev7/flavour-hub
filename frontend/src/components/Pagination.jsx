@@ -27,26 +27,36 @@ const Pagination = ({ totalRecipes, recipesPerPage, currentPage, paginate }) => 
             <div className="inline-flex items-center bg-hotPink text-white rounded-full mb-16 mt-5">
                 <button
                     onClick={() => paginate(currentPage - 1)}
-                    className={`join-item border-none btn btn-outline text-white ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`join-item border-none btn btn-outline text-white 
+                                text-sm lg:text-base 
+                                ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={currentPage === 1}
                 >
                     Previous page
                 </button>
                 {renderPageNumbers().map((number, index) => (
                     typeof number === 'string' ? (
-                        <button key={index} className="join-item border-none btn btn-disabled bg-hotPink text-white">{number}</button>
+                        <button 
+                            key={index} 
+                            className="join-item border-none btn btn-disabled bg-hotPink text-white text-sm lg:text-base">
+                            {number}
+                        </button>
                     ) : (
                         <button 
                             key={number} 
                             onClick={() => paginate(number)} 
-                            className={`join-item border-none btn ${currentPage === number ? 'bg-pink-400' : 'bg-hotPink'} text-white rounded-full`}>
+                            className={`join-item border-none btn 
+                                        ${currentPage === number ? 'bg-pink-400' : 'bg-hotPink'} 
+                                        text-white text-sm lg:text-base rounded-full`}>
                             {number}
                         </button>
                     )
                 ))}
                 <button
                     onClick={() => paginate(currentPage + 1)}
-                    className={`join-item border-none btn btn-outline text-white ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`join-item border-none btn btn-outline text-white 
+                                text-sm lg:text-base 
+                                ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={currentPage === totalPages}
                 >
                     Next Page

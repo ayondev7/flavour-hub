@@ -410,17 +410,17 @@ const EditRecipe = () => {
   }
 
   return (
-    <div className="pt-12">
+    <div>
       <ToastContainer />
-      <div className="flex justify-between border-y-2 px-16 py-4">
-        <h1 className="text-3xl text-black font-semibold">Edit Recipe</h1>
+      <div className="flex justify-between border-y px-4 lg:px-16 py-4">
+        <h1 className="text-base lg:text-xl text-black font-semibold">Edit Recipe</h1>
       </div>
 
-      <div className="py-4 px-16 flex flex-col items-center justify-center gap-y-6 pb-[100px]">
+      <div className="py-4 px-4 lg:px-16 flex flex-col items-center justify-center gap-y-6 pb-[100px]">
         {/* Title */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="recipeTitle"
           >
             Recipe Title :
@@ -431,7 +431,7 @@ const EditRecipe = () => {
                 <input
                   type="text"
                   placeholder="Enter Recipe Title"
-                  className="input input-bordered text-black w-[80%] border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0"
+                  className="file-input file-input-bordered px-3 py-3 focus:border-none file-input-primary border border-gray-400 bg-white w-[80%]"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
@@ -440,24 +440,24 @@ const EditRecipe = () => {
                   className="mx-4"
                   onClick={() => handleSave("title", "save")}
                 >
-                  <HiOutlineCheck className="text-3xl text-green-400" />
+                  <HiOutlineCheck className="text-xl text-green-400" />
                 </button>
                 <button onClick={() => handleSave("title", "cancel")}>
-                  <HiOutlineX className="text-3xl text-hotPink" />
+                  <HiOutlineX className="text-xl text-hotPink" />
                 </button>
               </div>
             </>
           ) : (
             <>
               <div className="flex w-full">
-                <p className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                <p className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                   {formData.title}
                 </p>
                 <button
                   className="ml-4"
                   onClick={() => toggleEditMode("title")}
                 >
-                  <HiOutlinePencilAlt className="text-3xl text-hotPink" />
+                  <HiOutlinePencilAlt className="text-xl text-hotPink" />
                 </button>
               </div>
             </>
@@ -465,22 +465,22 @@ const EditRecipe = () => {
         </div>
 
         {/* Image */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
-          <label className="text-xl text-black font-semibold" htmlFor="image">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
+          <label className="text-base text-black font-medium" htmlFor="image">
             Recipe Image :
           </label>
-          <div className="mb-3 border-[3px] border-hotPink rounded-md">
+          <div className="mb-3 rounded-lg">
             {selectedImage ? (
               <img
                 src={selectedImage}
                 alt={formData.title}
-                className="h-[300px] w-[400px] object-cover"
+                className="h-[200px] w-[300px] object-cover rounded-lg"
               />
             ) : formData.image ? (
               <img
                 src={`data:image/jpeg;base64,${formData.image}`}
                 alt={formData.title}
-                className="h-[300px] w-[400px] object-cover"
+                className="h-[200px] w-[300px] object-cover rounded-lg"
               />
             ) : null}
           </div>
@@ -489,22 +489,22 @@ const EditRecipe = () => {
               type="file"
               name="image"
               ref={imageInputRef} // Attach ref to input element
-              className="file-input file-input-bordered file-input-hotPink border-hotPink w-[80%] bg-white focus:border-hotPink focus:ring-0"
+              className="file-input file-input-bordered file-input-primary border-hotPink w-[90%] lg:w-[80%] bg-white focus:border-hotPink focus:ring-0"
               onChange={handleImageChange}
             />
             {showSaveButton && (
               <button className="ml-4" onClick={handleImageSave}>
-                <HiOutlineCheck className="text-3xl text-green-400" />
+                <HiOutlineCheck className="text-xl text-green-400" />
               </button>
             )}
           </div>
         </div>
 
         {/* Description */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
-            htmlFor="recipeTitle"
+            className="text-base text-black font-medium"
+            htmlFor="description"
           >
             Description :
           </label>
@@ -513,7 +513,7 @@ const EditRecipe = () => {
               <div className="flex w-full">
                 <input
                   type="text"
-                  className="input input-bordered text-black w-[80%] border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0"
+                  className="input input-bordered text-black w-full lg:w-[80%] border border-gray-400 bg-white focus:border-hotPink focus:ring-0"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -522,24 +522,24 @@ const EditRecipe = () => {
                   className="mx-4"
                   onClick={() => handleSave("description", "save")}
                 >
-                  <HiOutlineCheck className="text-3xl text-green-400" />
+                  <HiOutlineCheck className="text-xl text-green-400" />
                 </button>
                 <button onClick={() => handleSave("description", "cancel")}>
-                  <HiOutlineX className="text-3xl text-hotPink" />
+                  <HiOutlineX className="text-xl text-hotPink" />
                 </button>
               </div>
             </>
           ) : (
             <>
               <div className="flex w-full">
-                <p className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                <p className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                   {formData.description}
                 </p>
                 <button
                   onClick={() => toggleEditMode("description")}
                   className="ml-4"
                 >
-                  <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                  <HiOutlinePencilAlt className="text-xl text-hotPink " />
                 </button>
               </div>
             </>
@@ -547,21 +547,21 @@ const EditRecipe = () => {
         </div>
 
         {/* Ingredients */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="ingredients"
           >
             Ingredients :
           </label>
           {formData.ingredients.map((ingredient, index) => (
-            <div key={index} className="flex gap-y-4 w-full items-stretch">
+            <div key={index} className="flex w-full">
               {ingredientIndex === index ? (
                 <>
                   <input
                     type="text"
                     placeholder="Enter your ingredient with their respective quantity"
-                    className="input input-bordered text-black w-[80%] border-2 border-gray-300 bg-white focus:border-hotPink focus:ring-0"
+                    className="input input-bordered mb-6 text-black w-[80%] border border-gray-400 bg-white focus:border-hotPink focus:ring-0"
                     value={ingredient.value}
                     onChange={(e) => handleIngredientChange(index, e)}
                   />
@@ -569,34 +569,36 @@ const EditRecipe = () => {
                     onClick={() => handleIngredientSave(ingredient._id)}
                     className=" ml-4"
                   >
-                    <HiOutlineCheck className="text-3xl text-green-400" />
+                    <HiOutlineCheck className="text-xl text-green-400" />
                   </button>
                   <button
                     onClick={() => cancelEditIngredient()}
                     className="ml-4"
                   >
-                    <HiOutlineX className="text-3xl text-hotPink" />
+                    <HiOutlineX className="text-xl text-hotPink" />
                   </button>
                 </>
               ) : (
                 <>
-                  <p className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                 <div className="w-full flex items-center pb-3">
+                 <p className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                     {ingredient.value}
                   </p>
                   <button
                     onClick={() => handleIngredientEdit(index)}
                     className="ml-4"
                   >
-                    <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                    <HiOutlinePencilAlt className="text-xl text-hotPink " />
                   </button>
                   <button
-                    className="p-2 ml-4"
+                    className="p-2 ml-1"
                     onClick={() => deleteIngredient(ingredient._id)}
                     disabled={formData.ingredients.length < 2}
                     type="button"
                   >
-                    <HiOutlineTrash className="text-3xl text-hotPink " />
+                    <HiOutlineTrash className="text-xl text-hotPink " />
                   </button>
+                 </div>
                 </>
               )}
             </div>
@@ -604,20 +606,20 @@ const EditRecipe = () => {
         </div>
 
         {/* Instructions */}
-        <div className="flex flex-col items-start gap-y-6 w-[70%] my-4">
+        <div className="flex flex-col items-start w-full lg:w-[70%] my-4">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium mb-2"
             htmlFor="instructions"
           >
             Instructions :
           </label>
           {formData.instructions.map((instruction, index) => (
-            <div key={index} className="flex items-stretch w-full">
+            <div key={index} className="flex w-full">
               {instructionIndex === index ? (
                 <>
                   <input
                     type="text"
-                    className="input input-bordered text-black w-[80%] border-2 border-gray-300 bg-white focus:border-hotPink focus:ring-0"
+                    className="input input-bordered mb-6 text-black w-[80%] border border-gray-300 bg-white focus:border-hotPink focus:ring-0"
                     value={instruction.value}
                     onChange={(e) => handleInstructionChange(index, e)}
                   />
@@ -625,34 +627,36 @@ const EditRecipe = () => {
                     onClick={() => handleInstructionSave(instruction._id)}
                     className="ml-4"
                   >
-                    <HiOutlineCheck className="text-3xl text-green-400" />
+                    <HiOutlineCheck className="text-xl text-green-400" />
                   </button>
                   <button
                     onClick={() => cancelEditInstruction()}
                     className="ml-4"
                   >
-                    <HiOutlineX className="text-3xl text-hotPink" />
+                    <HiOutlineX className="text-xl text-hotPink" />
                   </button>
                 </>
               ) : (
                 <>
-                  <p className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                <div className="w-full flex pb-6">
+                <p className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                     {instruction.value}
                   </p>
                   <button
                     onClick={() => handleInstructionEdit(index)}
                     className="ml-4"
                   >
-                    <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                    <HiOutlinePencilAlt className="text-xl text-hotPink " />
                   </button>
                   <button
-                    className="p-2 ml-4"
+                    className="p-2 ml-1"
                     onClick={() => deleteInstruction(instruction._id)}
                     disabled={formData.instructions.length < 2}
                     type="button"
                   >
-                    <HiOutlineTrash className="text-3xl text-hotPink" />
+                    <HiOutlineTrash className="text-xl text-hotPink" />
                   </button>
+                </div>
                 </>
               )}
             </div>
@@ -660,19 +664,19 @@ const EditRecipe = () => {
         </div>
 
         {/* Servings */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="recipeTitle"
           >
             Servings :
           </label>
           {editMode.servings ? (
             <>
-              <div className="flex w-full justify-between">
+              <div className="flex w-full">
                 <input
                   type="text"
-                  className="input input-bordered text-black w-[80%] border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0"
+                  className="input input-bordered text-black w-[80%] border border-gray-400 bg-white focus:border-hotPink focus:ring-0"
                   name="servings"
                   value={formData.servings}
                   onChange={handleChange}
@@ -681,27 +685,27 @@ const EditRecipe = () => {
                   onClick={() => handleSave("servings", "save")}
                   className="ml-4"
                 >
-                  <HiOutlineCheck className="text-3xl text-green-400" />
+                  <HiOutlineCheck className="text-xl text-green-400" />
                 </button>
                 <button
                   onClick={() => handleSave("servings", "cancel")}
                   className="ml-4"
                 >
-                  <HiOutlineX className="text-3xl text-hotPink" />
+                  <HiOutlineX className="text-xl text-hotPink" />
                 </button>
               </div>
             </>
           ) : (
             <>
               <div className="flex w-full">
-                <p className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                <p className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                   {formData.servings}
                 </p>
                 <button
                   onClick={() => toggleEditMode("servings")}
                   className="ml-4"
                 >
-                  <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                  <HiOutlinePencilAlt className="text-xl text-hotPink " />
                 </button>
               </div>
             </>
@@ -709,22 +713,22 @@ const EditRecipe = () => {
         </div>
 
         {/* Prep Time */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="prepTime"
           >
             Preparation Time :
           </label>
           <div className="w-full flex">
-            <div className="flex w-[80%] justify-between">
+            <div className="flex w-full lg:w-[80%] justify-between">
               {prepTimeEditMode ? (
                 <>
                   <input
                     type="number"
                     placeholder="Hours"
                     name="prepTimeHours"
-                    className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
+                    className="w-[48%] border border-gray-400 rounded-lg flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
                     value={formData.prepTime.hours}
                     onChange={(e) =>
                       handlePrepTimeChange("hours", e.target.value)
@@ -734,7 +738,7 @@ const EditRecipe = () => {
                     type="number"
                     placeholder="Minutes"
                     name="prepTimeMinutes"
-                    className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
+                    className="w-[48%] border border-gray-400 rounded-lg flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
                     value={formData.prepTime.minutes}
                     onChange={(e) =>
                       handlePrepTimeChange("minutes", e.target.value)
@@ -743,10 +747,10 @@ const EditRecipe = () => {
                 </>
               ) : (
                 <div className="flex justify-between w-full text-black">
-                  <span className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
+                  <span className="w-[48%] border border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
                     {formData.prepTime.hours} Hours
                   </span>
-                  <span className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
+                  <span className="w-[48%] border border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
                     {formData.prepTime.minutes} Minutes
                   </span>
                 </div>
@@ -757,16 +761,16 @@ const EditRecipe = () => {
               {prepTimeEditMode ? (
                 <div className="flex gap-x-4 h-full items-stretch">
                   <button className="ml-4" onClick={handlePrepTimeSave}>
-                    <HiOutlineCheck className="text-3xl text-green-400" />
+                    <HiOutlineCheck className="text-xl text-green-400" />
                   </button>
                   <button className="" onClick={handlePrepTimeCancel}>
-                    <HiOutlineX className="text-3xl text-hotPink" />
+                    <HiOutlineX className="text-xl text-hotPink" />
                   </button>
                 </div>
               ) : (
                 <div className="flex gap-x-4 h-full items-stretch">
                   <button className="ml-4" onClick={handlePrepTimeEdit}>
-                    <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                    <HiOutlinePencilAlt className="text-xl text-hotPink " />
                   </button>
                 </div>
               )}
@@ -775,22 +779,22 @@ const EditRecipe = () => {
         </div>
 
         {/* Cook Time */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="prepTime"
           >
             Cooking Time :
           </label>
           <div className="w-full flex">
-            <div className="flex w-[80%] justify-between">
+            <div className="flex w-full lg:w-[80%] justify-between">
               {cookTimeEditMode ? (
                 <>
                   <input
                     type="number"
                     placeholder="Hours"
                     name="cookTimeHours"
-                    className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
+                    className="w-[48%] border border-gray-400 rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
                     value={formData.cookTime.hours}
                     onChange={(e) =>
                       handleCookTimeChange("hours", e.target.value)
@@ -800,7 +804,7 @@ const EditRecipe = () => {
                     type="number"
                     placeholder="Minutes"
                     name="cookTimeMinutes"
-                    className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
+                    className="w-[48%] border border-gray-400 rounded-lg flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0"
                     value={formData.cookTime.minutes}
                     onChange={(e) =>
                       handleCookTimeChange("minutes", e.target.value)
@@ -809,10 +813,10 @@ const EditRecipe = () => {
                 </>
               ) : (
                 <div className="flex justify-between w-full text-black">
-                  <span className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
+                  <span className="w-[48%] border border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
                     {formData.cookTime.hours} Hours
                   </span>
-                  <span className="w-[48%] border-2 border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
+                  <span className="w-[48%] border border-hotPink rounded-md flex items-center px-3 text-black py-3 bg-white focus:border-hotPink focus:ring-0">
                     {formData.cookTime.minutes} Minutes
                   </span>
                 </div>
@@ -826,18 +830,18 @@ const EditRecipe = () => {
                     className="mx-4"
                     onClick={handleCookTimeSave}
                   >
-                    <HiOutlineCheck className="text-3xl text-green-400" />
+                    <HiOutlineCheck className="text-xl text-green-400" />
                   </button>
                   <button
                     onClick={handleCookTimeCancel}
                   >
-                    <HiOutlineX className="text-3xl text-hotPink" />
+                    <HiOutlineX className="text-xl text-hotPink" />
                   </button>
                 </div>
               ) : (
                 <div className="flex items-stretch h-full">
                 <button className="ml-4" onClick={handleCookTimeEdit}>
-                  <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                  <HiOutlinePencilAlt className="text-xl text-hotPink " />
                 </button>
                 </div>
               )}
@@ -846,9 +850,9 @@ const EditRecipe = () => {
         </div>
 
         {/* Nutritional Values */}
-        <div className="flex flex-col items-start gap-y-4 mb-4 w-[70%]">
+        <div className="flex flex-col items-start gap-y-4 mb-4 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="nutritionalValues"
           >
             Nutritional Values :
@@ -863,7 +867,7 @@ const EditRecipe = () => {
                       placeholder={
                         field.charAt(0).toUpperCase() + field.slice(1)
                       }
-                      className="input input-bordered text-black border-2 w-[80%] border-hotPink bg-white focus:border-hotPink focus:ring-0"
+                      className="input input-bordered text-black border w-[80%] border-gray-400 bg-white focus:border-hotPink focus:ring-0"
                       value={formData.nutritionalValues[field]}
                       onChange={(e) =>
                         handleNutritionalChange(field, e.target.value)
@@ -873,25 +877,25 @@ const EditRecipe = () => {
                       onClick={() => handleNutritionalSave(field)}
                       className="mx-4"
                     >
-                      <HiOutlineCheck className="text-3xl text-green-400" />
+                      <HiOutlineCheck className="text-xl text-green-400" />
                     </button>
                     <button
                       onClick={() => handleNutritionalCancel(field)}
                       className=""
                     >
-                      <HiOutlineX className="text-3xl text-hotPink" />
+                      <HiOutlineX className="text-xl text-hotPink" />
                     </button>
                   </>
                 ) : (
                   <>
-                    <span className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                    <span className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                       {formData.nutritionalValues[field]}
                     </span>
                     <button
                       onClick={() => handleNutritionalEdit(field)}
                       className="ml-4"
                     >
-                      <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                      <HiOutlinePencilAlt className="text-xl text-hotPink " />
                     </button>
                   </>
                 )}
@@ -901,19 +905,19 @@ const EditRecipe = () => {
         </div>
 
         {/* Dietary Information */}
-        <div className="flex flex-col items-start gap-y-2 w-[70%]">
+        <div className="flex flex-col items-start gap-y-2 w-full lg:w-[70%]">
           <label
-            className="text-xl text-black font-semibold"
+            className="text-base text-black font-medium"
             htmlFor="recipeTitle"
           >
             Dietary Information :
           </label>
           {editMode.dietaryInformation ? (
             <>
-              <div className="flex w-full justify-between">
+              <div className="flex w-full">
                 <input
                   type="text"
-                  className="input input-bordered text-black w-[80%] border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0"
+                  className="input input-bordered text-black w-[80%] border border-gray-400 bg-white focus:border-hotPink focus:ring-0"
                   name="dietaryInformation"
                   value={formData.dietaryInformation}
                   onChange={handleChange}
@@ -922,27 +926,27 @@ const EditRecipe = () => {
                   onClick={() => handleSave("dietaryInformation", "save")}
                   className="ml-4"
                 >
-                  <HiOutlineCheck className="text-3xl text-green-400" />
+                  <HiOutlineCheck className="text-xl text-green-400" />
                 </button>
                 <button
                   onClick={() => handleSave("dietaryInformation", "cancel")}
                   className="ml-4"
                 >
-                  <HiOutlineX className="text-3xl text-hotPink" />
+                  <HiOutlineX className="text-xl text-hotPink" />
                 </button>
               </div>
             </>
           ) : (
             <>
               <div className="flex w-full">
-                <p className="text-black w-[80%] px-3 py-3 rounded-md border-2 border-hotPink bg-white focus:border-hotPink focus:ring-0">
+                <p className="text-black w-full lg:w-[80%] px-3 py-3 rounded-lg border border-hotPink bg-white focus:border-hotPink focus:ring-0">
                   {formData.dietaryInformation}
                 </p>
                 <button
                   onClick={() => toggleEditMode("dietaryInformation")}
                   className="ml-4"
                 >
-                  <HiOutlinePencilAlt className="text-3xl text-hotPink " />
+                  <HiOutlinePencilAlt className="text-xl text-hotPink " />
                 </button>
               </div>
             </>

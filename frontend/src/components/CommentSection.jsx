@@ -233,7 +233,7 @@ const CommentSection = ({ recipeId }) => {
     <div>
       <form onSubmit={postComment}>
         <textarea
-          className="textarea w-full bg-white h-[150px] border-2 text-lg text-black placeholder:text-customGray border-hotPink focus:border-hotPink"
+          className="textarea w-full bg-white h-[150px] border-2 text-base text-black placeholder:text-customGray border-hotPink focus:outline-none focus:border-hotPink"
           placeholder="Leave your comment here..."
           value={comment}
           required
@@ -241,7 +241,7 @@ const CommentSection = ({ recipeId }) => {
         ></textarea>
         <div className="flex justify-end mt-4">
           <button
-            className="bg-hotPink p-2 rounded-lg text-white font-semibold text-xl flex items-center justify-center gap-x-3 px-5"
+            className="bg-hotPink p-2 rounded-lg text-white font-semibold text-base flex items-center justify-center gap-x-3 px-5"
             disabled={isProcessing}
           >
             {isProcessing ? (
@@ -259,7 +259,7 @@ const CommentSection = ({ recipeId }) => {
         </div>
       </form>
       <div className="comments-section mt-4 mb-16">
-        <p className="text-black font-semibold text-xl mb-6">
+        <p className="text-black font-semibold text-base mb-6">
           All Comments ({comments.length})
         </p>
         {/* Inside your map function for comments */}
@@ -283,7 +283,7 @@ const CommentSection = ({ recipeId }) => {
                     {/* Avatar */}
                     <div className="mr-3">
                       <div className="avatar">
-                        <div className="w-12 rounded-full">
+                        <div className="w-10 rounded-full">
                           <img
                             src={`data:image/jpeg;base64,${commentUser.image}`}
                             alt="User Avatar"
@@ -296,37 +296,37 @@ const CommentSection = ({ recipeId }) => {
                       <p className="text-black font-semibold text-sm">
                         {commentUser.name}
                       </p>
-                      <p className="text-slate-400 text-[10px] mt-1 font-semibold mb-3">
+                      <p className="text-gray-500 text-[10px] font-semibold mb-3">
                         {formatDate(comment.createdAt)}
                       </p>
-                      <p className="text-black pr-4">{comment.content}</p>
+                      <p className="text-black pr-4 text-sm">{comment.content}</p>
                       <div className="flex gap-x-16 my-4">
                         {/* Render Edit and Delete buttons only if userId matches comment's user_id */}
                         {userId == comment.userId && (
                           <>
                             <button
-                              className="flex items-center text-slate-500 font-semibold"
+                              className="flex items-center text-slate-500 text-sm font-medium"
                               onClick={() => openEditModal(comment)}
                             >
-                              <MdEdit className="text-lg mr-1 mt-1" /> Edit
+                              <MdEdit className="text-sm mr-1 mt-1" /> Edit
                             </button>
 
                             <button
-                              className="flex items-center text-slate-500 font-semibold"
+                              className="flex items-center text-slate-500 text-sm font-medium"
                               onClick={() => openDeleteModal(comment._id)}
                             >
-                              <FaRegTrashCan className="text-lg mr-1" /> Delete
+                              <FaRegTrashCan className="text-sm mr-1" /> Delete
                             </button>
                           </>
                         )}
                         <button
-                          className="flex items-center text-slate-500 font-semibold"
+                          className="flex items-center text-slate-500 text-sm font-medium"
                           onClick={() => {
                             setParentCommentId(comment._id);
                             document.getElementById("my_modal_2").showModal();
                           }}
                         >
-                          <FiMessageSquare className="text-lg mr-1 mt-1" />{" "}
+                          <FiMessageSquare className="text-sm mr-1 mt-1" />{" "}
                           Reply
                         </button>
                       </div>
@@ -346,7 +346,7 @@ const CommentSection = ({ recipeId }) => {
                           {/* Avatar */}
                           <div className="mr-3">
                             <div className="avatar">
-                              <div className="w-8 rounded-full">
+                              <div className="w-10 rounded-full">
                                 <img
                                   src={`data:image/jpeg;base64,${replyUser.image}`}
                                   alt="User Avatar"
@@ -359,33 +359,33 @@ const CommentSection = ({ recipeId }) => {
                             <p className="text-black font-semibold text-sm">
                               {replyUser.name}
                             </p>
-                            <p className="text-slate-400 text-[10px] mt-1 font-semibold mb-3">
+                            <p className="text-gray-500 text-[10px] font-semibold mb-3">
                               {formatDate(reply.createdAt)}
                             </p>
-                            <p className="text-black pr-4">{reply.content}</p>
+                            <p className="text-black pr-4 text-sm">{reply.content}</p>
                             <div className="flex gap-x-16 my-4">
                               {/* Render Edit and Delete buttons only if userId matches comment's user_id */}
                               {userId == reply.userId && (
                                 <>
                                   <button
-                                    className="flex items-center text-slate-500 font-semibold"
+                                    className="flex items-center text-slate-500 text-sm font-medium"
                                     onClick={() => openEditModal(reply)}
                                   >
-                                    <MdEdit className="text-lg mr-1 mt-1" />{" "}
+                                    <MdEdit className="text-sm mr-1 mt-1" />{" "}
                                     Edit
                                   </button>
 
                                   <button
-                                    className="flex items-center text-slate-500 font-semibold"
+                                    className="flex items-center text-slate-500 text-sm font-medium"
                                     onClick={() => openDeleteModal(reply._id)}
                                   >
-                                    <FaRegTrashCan className="text-lg mr-1" />{" "}
+                                    <FaRegTrashCan className="text-sm mr-1" />{" "}
                                     Delete
                                   </button>
                                 </>
                               )}
                               <button
-                                className="flex items-center text-slate-500 font-semibold"
+                                className="flex items-center text-slate-500 text-sm font-medium"
                                 onClick={() => {
                                   setParentCommentId(reply._id);
                                   document
@@ -393,7 +393,7 @@ const CommentSection = ({ recipeId }) => {
                                     .showModal();
                                 }}
                               >
-                                <FiMessageSquare className="text-lg mr-1 mt-1" />{" "}
+                                <FiMessageSquare className="text-sm mr-1 mt-1" />{" "}
                                 Reply
                               </button>
                             </div>
@@ -412,7 +412,7 @@ const CommentSection = ({ recipeId }) => {
           <div className="modal-box w-11/12 max-w-5xl bg-white">
             <form onSubmit={postReply}>
               <textarea
-                className="textarea w-full bg-white h-[150px] border-2 text-lg text-black placeholder:text-customGray border-hotPink focus:border-hotPink"
+                className="textarea w-full bg-white h-[150px] border-2 text-base focus:outline-none  text-black placeholder:text-customGray border-hotPink focus:border-hotPink"
                 placeholder="Leave your reply to this comment here..."
                 value={reply}
                 required
@@ -420,7 +420,7 @@ const CommentSection = ({ recipeId }) => {
               ></textarea>
               <div className="flex justify-end mt-4">
                 <button
-                  className="bg-hotPink p-2 rounded-lg text-white font-semibold text-xl flex items-center justify-center gap-x-3 px-5"
+                  className="bg-hotPink p-2 rounded-lg text-white font-semibold text-base flex items-center justify-center gap-x-3 px-5"
                   disabled={isProcessing}
                 >
                   {isProcessing ? (
@@ -448,20 +448,17 @@ const CommentSection = ({ recipeId }) => {
           className="modal-box bg-white"
           style={{ width: "700px", maxWidth: "none" }}
         >
-          <p className="text-black font-semibold text-3xl flex items-center justify-center mb-4">
+          <p className="text-black font-semibold text-xl flex items-center justify-center mb-4">
             {" "}
-            <IoIosWarning className="mr-2 text-red-600 text-3xl" /> Warning!
+            <IoIosWarning className="mr-2 text-hotPink text-xl" /> Warning!
           </p>
-          <h3 className="font-semibold text-2xl text-black">
-            Are you sure you want to delete this comment?
+          <h3 className="font-medium text-base text-center text-black mb-6">
+            Are you sure you want to delete this comment? This change is irreversible.
           </h3>
-          <p className="py-4 text-xl text-customGray font-semibold">
-            This change is irreversible.
-          </p>
           <div className="flex justify-end space-x-4">
             <button
               onClick={handleDelete}
-              className="bg-red-600 w-[150px] text-white hover:bg-red-600 border-none font-semibold text-lg rounded-lg p-3"
+              className="bg-hotPink w-[120px] text-white border-none font-semibold text-base rounded-lg p-3"
               disabled={isProcessing}
             >
               {isProcessing ? (
@@ -475,7 +472,7 @@ const CommentSection = ({ recipeId }) => {
               onClick={() =>
                 document.getElementById("deleteCommentModal").close()
               }
-              className="bg-neutral-600 text-white hover:bg-neutral-600 border-none font-semibold text-lg p-3 rounded-lg"
+              className="bg-neutral-600 text-white w-[120px] hover:bg-neutral-600 border-none font-medium text-base p-3 rounded-lg"
             >
               Cancel
             </button>
@@ -488,7 +485,7 @@ const CommentSection = ({ recipeId }) => {
           style={{ width: "700px", maxWidth: "none" }}
         >
           <textarea
-            className="textarea w-full bg-white h-[150px] border-1 text-lg mb-5 text-black placeholder:text-slate-500 border-2 border-hotPink focus:border-hotPink"
+            className="textarea w-full bg-white h-[150px] focus:outline-none border-1 text-base mb-5 text-black placeholder:text-slate-500 border-2 border-hotPink focus:border-hotPink"
             value={fetchedComment}
             required
             onChange={(e) => setFetchedComment(e.target.value)}
@@ -496,7 +493,7 @@ const CommentSection = ({ recipeId }) => {
           <div className="flex justify-end space-x-4">
             <button
               onClick={handleEdit}
-              className="bg-hotPink w-[150px] text-white hover:bg-hotPink border-none font-semibold text-lg rounded-lg p-3"
+              className="bg-hotPink w-[120px] text-white hover:bg-hotPink border-none font-medium text-base rounded-lg p-3"
               disabled={isProcessing}
             >
               {isProcessing ? (
@@ -510,7 +507,7 @@ const CommentSection = ({ recipeId }) => {
               onClick={() =>
                 document.getElementById("editCommentModal").close()
               }
-              className="bg-neutral-600 text-white hover:bg-neutral-600 border-none font-semibold text-lg p-3 rounded-lg"
+              className="bg-neutral-600 text-white w-[120px] hover:bg-neutral-600 border-none font-medium text-base p-3 rounded-lg"
             >
               Cancel
             </button>

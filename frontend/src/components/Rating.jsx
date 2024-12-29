@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-// import ratingImg from "./rating.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import '../stylesheet/slider.css';
-import {getUserIdFromToken,isTokenValid} from '../assets/tokenUtils'
-import {useNavigate} from 'react-router-dom'
+import { getUserIdFromToken, isTokenValid } from '../assets/tokenUtils';
+import { useNavigate } from 'react-router-dom';
 
-const Rating = ({recipeId}) => {
-  const [rating, setRating] = useState(0); 
+const Rating = ({ recipeId }) => {
+  const [rating, setRating] = useState(1); // default to 40
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state for loading
   const navigate = useNavigate();
 
   const postRating = async (e) => {
     e.preventDefault();
     if (isTokenValid()) {
-     let userId = getUserIdFromToken();
+      let userId = getUserIdFromToken();
+      setIsSubmitting(true); // Set loading state to true
       try {
         const response = await axios.post(
           "http://localhost:5000/api/recipe/postRating",
@@ -25,24 +26,26 @@ const Rating = ({recipeId}) => {
           }
         );
         toast.success("Thank You for your feedback.");
-        setRating(1);
+        setRating(1); // Reset the rating slider
+        e.target.reset(); // Clear the form
       } catch (error) {
         console.error("Error posting rating", error);
         toast.error("Error submitting rating");
+      } finally {
+        setIsSubmitting(false); // Reset loading state
       }
-    }else{
-        navigate('/login');
+    } else {
+      navigate('/login');
     }
   };
 
   return (
     <div className="flex justify-center items-center">
-    <ToastContainer/>
-      <div className="shadow-xl rounded-lg w-[450px] mb-16 p-4 bg-lightPink">
+      <ToastContainer />
+      <div className="rounded-lg w-[400px] mb-16 p-4 bg-lightPink">
         <p className="text-center text-2xl text-black font-semibold">
           Rate this recipe
         </p>
-        {/* <img src={ratingImg} alt="Rating" className="w-full h-auto" /> */}
         <p className="mt-4 text-md text-black text-center">
           We highly value your feedback. Kindly take a moment to share your
           experience with the others.
@@ -54,7 +57,7 @@ const Rating = ({recipeId}) => {
             max={5}
             value={rating}
             required
-            className="range bg-white mt-6 mb-2"
+            className="range range-primary mt-6 mb-2 bg-white"
             onChange={(e) => setRating(e.target.value)}
             style={{
               WebkitAppearance: "none",
@@ -71,7 +74,15 @@ const Rating = ({recipeId}) => {
             <span>Good</span>
             <span>Best</span>
           </div>
-          <div className="flex justify-center mb-3 mt-6"><button className="bg-hotPink p-2 w-[100px] rounded-lg text-white font-semibold">Submit</button></div>
+          <div className="flex justify-center mb-3 mt-6">
+            <button
+              type="submit"
+              className="bg-hotPink px-4 py-2 rounded-lg text-white font-semibold"
+              disabled={isSubmitting} // Disable button while submitting
+            >
+              {isSubmitting ? "Submitting..." : "Submit"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

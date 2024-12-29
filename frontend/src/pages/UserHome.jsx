@@ -1,112 +1,125 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
 import images from "../assets/images";
-import RecipeShowcaseSection from "../components/RecipeShowcaseSection";
 import axios from "axios";
 import RecipeCategoryCarousel from "../components/RecipeCategoryCarousel";
+import RecipeCardSkeleton from "../Skeleton/RecipeCardSkeleton";
+import ChefCard from "../components/ChefCard";
+import { getUserIdFromToken } from "../assets/tokenUtils";
+import ChefCardSkeleton from "../Skeleton/ChefCardSkeleton";
+import Card from "../components/Card";
+import BookmarkDialog from "../components/BookmarkDialogue";
+import { ToastContainer } from "react-toastify";
 
 const UserHome = () => {
-  const [userId, setUserId] = useState(null);
-  const navigate = useNavigate();
-  const [trendingRecipes, setTrendingRecipes] = useState([]);
-  const [exploreRecipes, setExploreRecipes] = useState([]);
+  const userId = getUserIdFromToken();
   const [recipes, setRecipes] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [chefs, setChefs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isBookmarkDialogOpen, setIsBookmarkDialogOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [collections, setCollections] = useState(null);
 
   useEffect(() => {
-    // Retrieve token from session storage
-    const token = sessionStorage.getItem("token");
-
-    // Check if the token exists and is valid
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-
-        // Check if the token is expired
-        const currentTime = Date.now() / 1000; // convert to seconds
-        if (decodedToken.exp < currentTime) {
-          throw new Error("Token expired");
-        }
-
-        setUserId(decodedToken.id);
-      } catch (error) {
-        console.error("Invalid token:", error);
-        navigate("/login");
-      }
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    // Fetch recipes from the server
+    setLoading(true);
     axios
-      .get("http://localhost:5000/api/recipe/getAllRecipes")
+      .get("http://localhost:5000/api/recipe/getAllRecipes", {
+        headers: {
+          userId: userId, // Include userId in the headers
+        },
+      })
       .then((response) => {
         setRecipes(response.data);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false); // Only stop loading once recipes are set
       })
       .catch((error) => {
         console.error("Error fetching recipes:", error);
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false); // Stop loading even if there's an error
       });
   }, []);
 
+  const fetchCollections = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/collections/get-collections/${userId}`
+      );
+      setCollections(response.data);
+    } catch (error) {
+      console.error("Error fetching collections:", error);
+    } finally {
+    }
+  };
+
   useEffect(() => {
-    // Fetch users from the server
+    fetchCollections();
+  }, [userId]);
+
+  const handleBookmarkClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    setIsBookmarkDialogOpen(true);
+  };
+
+  // Fetch chefs function
+  const fetchChefs = () => {
+    setLoading(true); // Ensure loading is displayed while fetching
     axios
-      .get("http://localhost:5000/api/user/getAllUsers")
+      .get(`http://localhost:5000/api/user/get-all-users/${userId}`)
       .then((response) => {
-        setUsers(response.data);
+        setChefs(response.data.slice(0, 8)); // Assuming you only want the first 8 users
+        setLoading(false);
+        console.log(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching chefs:", error);
+        setLoading(false);
       });
-  }, []);
+  };
 
   useEffect(() => {
-    if (recipes.length > 0 && users.length > 0) {
-      // Assuming each recipe has a chefId property to match with users
-      const updatedRecipes = recipes.map((recipe) => ({
-        ...recipe,
-        chefUser: users.find((user) => user._id === recipe.chefId),
-      }));
+    fetchChefs(); // Fetch chefs when the component mounts
+  }, []);
 
-      // Select the first 6 recipes as trending
-      const trendingRecipes = updatedRecipes.slice(0, 6);
+  const onFollowChange = (chefId) => {
+    setChefs((prevChefs) =>
+      prevChefs.map((chef) =>
+        chef._id === chefId ? { ...chef, following: !chef.following } : chef
+      )
+    );
+  };
 
-      // Select the next 6 recipes as explore
-      const exploreRecipes = updatedRecipes.slice(6, 12);
-
-      setTrendingRecipes(trendingRecipes);
-      setExploreRecipes(exploreRecipes);
-    }
-  }, [recipes, users]);
+  const onBookmarkRemove = (recipeId) => {
+    setRecipes((prevRecipes) =>
+      prevRecipes.map((recipe) =>
+        recipe._id === recipeId ? { ...recipe, bookmarked: !recipe.bookmarked } : recipe
+      )
+    );
+  };
 
   return (
     <div className="relative overflow-hidden">
+      <ToastContainer />
       <div className="bg-white overflow-hidden relative h-screen">
-        <div className="hero-content flex-row-reverse justify-between relative z-10 lg:px-16 px-8">
+        <div className="hero-content lg:flex-row-reverse lg:justify-between flex-col relative z-10 lg:px-16 px-4">
           <div className="lg:w-[50%] lg:pl-[100px] w-full h-full">
             <img
               src={images.donut}
-              className="lg:max-w-xl w-full h-full lg:h-auto absolute top-[70%] left-0 lg:static"
+              className="lg:max-w-xl w-full h-[400px] lg:h-auto absolute top-[70%] left-0 lg:static"
             />
           </div>
           <div className="w-full lg:w-[50%]">
-            <h1 className="text-3xl lg:text-5xl font-bold text-black">
+            <h1 className="text-2xl lg:text-5xl font-bold text-black">
               Welcome Back, Chef!
             </h1>
-            <p className="py-6 text-black font-semibold hidden lg:block">
+            <p className="lg:py-6 py-2 text-sm lg:text-base text-black font-semibold block">
               Dive into a world of mouth-watering recipes, each crafted with
               passion and creativity. Explore new flavors, refine your skills,
               and let your taste buds embark on an unforgettable journey.
             </p>
-            <button className="border-none p-3 rounded-lg bg-brightPink text-white">
-              Explore Recipes
-            </button>
+            <Link to={"/allRecipes/null"}>
+              <button className="border-none lg:px-3 lg:py-3 px-3 py-2 mt-3 lg:mt-0 rounded-lg text-sm lg:text-base font-medium lg:w-[200px] bg-brightPink text-white">
+                Explore Recipes
+              </button>
+            </Link>
           </div>
         </div>
         <svg
@@ -120,32 +133,59 @@ const UserHome = () => {
             d="M0,96L48,112C96,128,192,160,288,170.7C384,181,480,171,576,154.7C672,139,768,117,864,133.3C960,149,1056,203,1152,197.3C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
         </svg>
-        <div className="w-[100%] bg-green-200 h-16"></div>
+        <div className="w-[100%] bg-green-200 h-16 hidden lg:block"></div>
       </div>
-      {loading ? (
+
+      {isBookmarkDialogOpen && (
+        <BookmarkDialog
+          isVisible={isBookmarkDialogOpen}
+          recipe={selectedRecipe}
+          userId={userId}
+          onClose={() => setIsBookmarkDialogOpen(false)}
+          collections={collections}
+          onCollectionCreated={fetchCollections}
+          onConfirm={(selectedCollection) => {
+            setIsBookmarkDialogOpen(false); // Close the dialog
+            setRecipes((prevRecipes) =>
+              prevRecipes.map((r) =>
+                r._id === selectedRecipe._id ? { ...r, bookmarked: true } : r
+              )
+            );
+          }}
+        />
+      )}
+
+      {loading || recipes.length <= 0 ? (
         // Render skeleton loader
-        <div className="flex flex-wrap justify-between gap-y-16 px-16 py-10">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-4 w-96 h-[350px] bg-white shadow-xl p-3 rounded-xl"
-            >
-              <div className="skeleton h-[60%] w-full bg-customGrayMedium animate-customPulse"></div>
-              <div className="skeleton h-4 w-28 mt-3 bg-customGrayMedium animate-customPulse"></div>
-              <div className="skeleton h-4 w-full mt-3 bg-customGrayMedium animate-customPulse"></div>
-              <div className="skeleton h-4 w-full mt-3 bg-customGrayMedium animate-customPulse"></div>
-            </div>
+        <div className="grid grid-cols-2 gap-x-4 lg:gap-x-0 lg:grid-cols-4 gap-y-16 px-4 lg:px-16 py-10">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <RecipeCardSkeleton key={index} />
           ))}
         </div>
-      ) : (
-        <div className="px-4 lg:px-16">
-          <RecipeShowcaseSection
-            title="Trending Recipes"
-            recipes={trendingRecipes}
-          />
-        </div>
-      )}
-      ;
+      ) : recipes.length > 0 ? (
+        <>
+          <div className="flex justify-between px-4 lg:px-16 py-4">
+            <h2 className="text-black text-lg lg:text-2xl font-semibold">
+              Trending Recipes
+            </h2>
+            <div className="text-sm lg:text-base text-hotPink font-bold">
+              <Link to="/recipesPage">View More</Link>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-16 pb-24">
+            {recipes.map((recipe) => (
+              <Card
+                key={recipe.id}
+                recipe={recipe}
+                onBookmarkClick={handleBookmarkClick}
+                userId={userId}
+                onBookmarkRemove={onBookmarkRemove}
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
+
       <div className="relative px-4 lg:px-16 mb-20 hidden lg:block">
         <RecipeCategoryCarousel />
         <div className="lg:absolute lg:top-0 lg:right-0 w-full lg:w-1/2 lg:px-16 text-center pt-16">
@@ -153,7 +193,7 @@ const UserHome = () => {
             Discover Delicious Diversity : Recipes For Every{" "}
             <span className="text-hotPink">Lifestyle</span>
           </p>
-          <p className="text-left lg:text-center text-lg text-black">
+          <p className="text-left lg:text-center text-sm lg:text-lg text-black">
             Explore our diverse collection of recipes designed to match your
             unique dietary needs. Whether you're vegan, gluten-free, vegetarian,
             or dairy-free, we have delicious options for everyone. Our recipes
@@ -180,30 +220,25 @@ const UserHome = () => {
         </div>
         <RecipeCategoryCarousel />
       </div>
-      {loading ? (
-        // Render skeleton loader
-        <div className="flex flex-wrap justify-between gap-y-16 px-16 py-10">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-4 w-96 h-[350px] bg-white shadow-xl p-3 rounded-xl"
-            >
-              <div className="skeleton h-[60%] w-full bg-customGrayMedium animate-customPulse"></div>
-              <div className="skeleton h-4 w-28 mt-3 bg-customGrayMedium animate-customPulse"></div>
-              <div className="skeleton h-4 w-full mt-3 bg-customGrayMedium animate-customPulse"></div>
-              <div className="skeleton h-4 w-full mt-3 bg-customGrayMedium animate-customPulse"></div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="px-4 lg:px-16">
-          <RecipeShowcaseSection
-            title="Explore More Recipes"
-            recipes={exploreRecipes}
-          />
-        </div>
-      )}
-      ;
+      <h2 className="section-title mb-4 px-16 text-black text-lg lg:text-2xl font-semibold">
+        Follow the best chefs around the globe
+      </h2>
+      <div className="px-4 lg:px-16 grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-4 lg:gap-x-8 mt-8 mb-36">
+        {loading
+          ? Array(8)
+              .fill()
+              .map((_, index) => <ChefCardSkeleton />)
+          : chefs
+              .filter((chef) => chef._id !== userId) // Exclude the chef matching the userId
+              .map((chef) => (
+                <ChefCard
+                  key={chef._id}
+                  chefData={chef}
+                  userId={userId}
+                  onFollowChange={onFollowChange}
+                />
+              ))}
+      </div>
     </div>
   );
 };

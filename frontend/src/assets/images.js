@@ -13,6 +13,7 @@ import indianRecipe from '../images/indian_recipe.jpg'
 import mexicanRecipe from '../images/mexican_recipe.jpg'
 import koreanRecipe from '../images/korean_recipe.jpg'
 import italianRecipe from '../images/italian_recipe.jpg'
+import americanRecipe from '../images/american_recipe.jpg';
 
     const images = {
 
@@ -30,7 +31,8 @@ import italianRecipe from '../images/italian_recipe.jpg'
         indianRecipe,
         koreanRecipe,
         mexicanRecipe,
-        italianRecipe
+        italianRecipe,
+        americanRecipe
     
     };
 

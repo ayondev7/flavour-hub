@@ -11,24 +11,32 @@ export function isTokenValid() {
     // Split the token into its parts: header, payload, and signature
     const tokenParts = token.split(".");
     if (tokenParts.length !== 3) {
-        // Invalid JWT format
+        // Invalid JWT format, remove token
+        sessionStorage.removeItem("token");
         return false;
     }
 
-    // Decode the payload (the middle part)
-    const payload = JSON.parse(atob(tokenParts[1]));
+    try {
+        // Decode the payload (the middle part)
+        const payload = JSON.parse(atob(tokenParts[1]));
 
-    // Check if the token is expired
-    const tokenExp = payload.exp;
-    const currentTimestamp = Math.floor(Date.now() / 1000); // in seconds
+        // Check if the token is expired
+        const tokenExp = payload.exp;
+        const currentTimestamp = Math.floor(Date.now() / 1000); // in seconds
 
-    if (!tokenExp || currentTimestamp > tokenExp) {
-        // Token is expired
+        if (!tokenExp || currentTimestamp > tokenExp) {
+            // Token is expired, remove it
+            sessionStorage.removeItem("token");
+            return false;
+        }
+
+        // Token is valid
+        return true;
+    } catch (error) {
+        // Error decoding token, remove it
+        sessionStorage.removeItem("token");
         return false;
     }
-
-    // Token is valid
-    return true;
 }
 
 export function getUserIdFromToken() {
