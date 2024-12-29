@@ -8,6 +8,10 @@ const cors = require('cors');
 const recipeRoutes = require('./routes/recipeRoutes')
 const userRoutes = require('./routes/userRoutes');
 const commentRoutes = require('./routes/commentRoutes');
+const authRoutes = require('./routes/authRoutes');
+const collectionRoutes = require('./routes/collectionRoutes');
+const bookmarkRoutes = require('./routes/bookmarkRoutes');
+const followRoutes = require('./routes/followRoutes');
 require('dotenv').config(); // Load environment variables
 
 const app = express();
@@ -30,13 +34,35 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI);
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('Connected to MongoDB successfully!');
+  } catch (err) {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1); // Exit the process if the connection fails
+  }
+};
+
+// Call the function to establish the connection
+connectToDatabase();
+
 
 app.use('/api/recipe',recipeRoutes);
 
 app.use('/api/user',userRoutes);
 
 app.use('/api/comment',commentRoutes);
+
+app.use('/api/collections',collectionRoutes);
+
+app.use('/api/bookmark',bookmarkRoutes);
+
+app.use('/api/followers',followRoutes);
+
+app.use('/api/auth', authRoutes);
+
+
 
   // Watch for changes in notifications
 const changeStream = Notification.watch();

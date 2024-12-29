@@ -26,8 +26,6 @@ router.delete('/deleteRecipe/:id', deleteRecipe);
 
 router.post('/postRating', upload.none(), postRating);
 
-router.get('/getRating', getAverageRatingPerRecipe);
-
 router.put('/updateIngredient/:recipeId', recipeController.updateIngredient);
 
 router.delete('/deleteIngredient/:recipeId/:ingredientId', recipeController.deleteIngredient);

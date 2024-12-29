@@ -30,6 +30,7 @@ const RecipeSchema = new Schema({
         minutes: { type: Number }
     },
     cuisineType: { type: String, required: true },
+    mealType: { type: String, required: true },
     nutritionalValues: {
         calories: { type: String },
         protein: { type: String },

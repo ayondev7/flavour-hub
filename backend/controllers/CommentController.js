@@ -60,8 +60,6 @@ exports.getComments = async (req, res) => {
 exports.updateComment = async (req, res) => {
   const { commentId, content } = req.body;
 
-  console.log(req.body);
-
   try {
     const comment = await Comment.findByIdAndUpdate(
       commentId,
@@ -72,8 +70,6 @@ exports.updateComment = async (req, res) => {
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
-
-    console.log("Updated comment:", comment);
 
     res.status(200).json({ message: "Comment updated successfully.", comment });
   } catch (error) {
