@@ -36,9 +36,8 @@ const CommentSection = ({ recipeId }) => {
   };
 
   useEffect(() => {
-    // Fetch users from the server
     axios
-      .get("http://localhost:5000/api/user/getAllUsers")
+      .get(`http://localhost:5000/api/user/get-all-users/${userId}`)
       .then((response) => {
         setUsers(response.data);
       })
@@ -259,7 +258,7 @@ const CommentSection = ({ recipeId }) => {
                       <div className="avatar">
                         <div className="w-10 rounded-full">
                           <img
-                            src={`data:image/jpeg;base64,${commentUser.image}`}
+                            src={`data:image/jpeg;base64,${commentUser?.image}`}
                             alt="User Avatar"
                           />
                         </div>
@@ -268,13 +267,13 @@ const CommentSection = ({ recipeId }) => {
                     {/* Comment details */}
                     <div className="flex flex-col">
                       <p className="text-black font-semibold text-sm">
-                        {commentUser.name}
+                        {commentUser?.name}
                       </p>
                       <p className="text-gray-500 text-[10px] font-semibold mb-3">
-                        {formatDate(comment.createdAt)}
+                        {formatDate(comment?.createdAt)}
                       </p>
                       <p className="text-black pr-4 text-sm">
-                        {comment.content}
+                        {comment?.content}
                       </p>
                       <div className="flex gap-x-16 my-4">
                         {/* Render Edit and Delete buttons only if userId matches comment's user_id */}
@@ -324,7 +323,7 @@ const CommentSection = ({ recipeId }) => {
                             <div className="avatar">
                               <div className="w-10 rounded-full">
                                 <img
-                                  src={`data:image/jpeg;base64,${replyUser.image}`}
+                                  src={`data:image/jpeg;base64,${replyUser?.image}`}
                                   alt="User Avatar"
                                 />
                               </div>
@@ -333,13 +332,13 @@ const CommentSection = ({ recipeId }) => {
                           {/* Reply details */}
                           <div className="flex flex-col mb-5">
                             <p className="text-black font-semibold text-sm">
-                              {replyUser.name}
+                              {replyUser?.name}
                             </p>
                             <p className="text-gray-500 text-[10px] font-semibold mb-3">
-                              {formatDate(reply.createdAt)}
+                              {formatDate(reply?.createdAt)}
                             </p>
                             <p className="text-black pr-4 text-sm">
-                              {reply.content}
+                              {reply?.content}
                             </p>
                             <div className="flex gap-x-16 my-4">
                               {/* Render Edit and Delete buttons only if userId matches comment's user_id */}

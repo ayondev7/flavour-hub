@@ -21,7 +21,7 @@ const CollectionCard = ({ data }) => {
   };
 
   return (
-    <div className="grid grid-cols-4 gap-x-10 gap-y-10">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 lg:gap-x-10 gap-y-10">
       {data.map((collection, index) => {
         const gradientClass = gradients[index % gradients.length];
         return (
@@ -41,10 +41,10 @@ const CollectionCard = ({ data }) => {
               <HiOutlineTrash className="lg:text-lg text-sm text-white" />
             </button>
             <div className="flex-grow">
-              <h3 className="font-bold text-xl">{collection?.title}</h3>
+              <h3 className="font-bold text-lg lg:text-xl">{collection?.title}</h3>
               <p className="mt-2 text-sm">{collection?.bookmarkCount} items</p>
             </div>
-            <div className="mt-4 text-sm">
+            <div className="mt-4 text-[10px] lg:text-sm">
               <p>Last updated: {collection?.updatedAt}</p>
             </div>
           </div>

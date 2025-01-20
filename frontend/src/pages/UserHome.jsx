@@ -20,6 +20,7 @@ const UserHome = () => {
   const [isBookmarkDialogOpen, setIsBookmarkDialogOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [collections, setCollections] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -94,6 +95,10 @@ const UserHome = () => {
         recipe._id === recipeId ? { ...recipe, bookmarked: !recipe.bookmarked } : recipe
       )
     );
+  };
+
+  const handleCardClick = (recipeId) => { 
+    navigate(`/recipesPage/${recipeId}`);
   };
 
   return (
@@ -181,6 +186,7 @@ const UserHome = () => {
                 onBookmarkClick={handleBookmarkClick}
                 userId={userId}
                 onBookmarkRemove={onBookmarkRemove}
+                onCardClick={handleCardClick}
               />
             ))}
           </div>
@@ -190,7 +196,7 @@ const UserHome = () => {
       <div className="relative px-4 lg:px-16 mb-20 hidden lg:block">
         <RecipeCategoryCarousel />
         <div className="lg:absolute lg:top-0 lg:right-0 w-full lg:w-1/2 lg:px-16 text-center pt-16">
-          <p className="text-2xl text-left lg:text-center lg:text-4xl font-bold text-black mb-3 lg:mb-6">
+          <p className="text-lg md:text-2xl text-left lg:text-center lg:text-4xl font-bold text-black mb-3 lg:mb-6">
             Discover Delicious Diversity : Recipes For Every{" "}
             <span className="text-hotPink">Lifestyle</span>
           </p>
@@ -221,7 +227,7 @@ const UserHome = () => {
         </div>
         <RecipeCategoryCarousel />
       </div>
-      <h2 className="section-title mb-4 px-16 text-black text-lg lg:text-2xl font-semibold">
+      <h2 className="section-title mb-4 px-4 md:px-16 text-black text-lg lg:text-2xl font-semibold">
         Follow the best chefs around the globe
       </h2>
       <div className="px-4 lg:px-16 grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-4 lg:gap-x-8 mt-8 mb-36">

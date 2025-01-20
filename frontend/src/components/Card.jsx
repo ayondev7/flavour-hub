@@ -36,9 +36,9 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
         disabled={isDeleting}
       >
         {recipe?.bookmarked ? (
-          <BsBookmarkCheckFill className="text-2xl font-medium text-green-400" />
+          <BsBookmarkCheckFill className="text-lg md:text-2xl font-medium text-green-400" />
         ) : (
-          <BsBookmarkPlusFill className="text-2xl font-medium text-brightPink" />
+          <BsBookmarkPlusFill className="text-lg md:text-2xl font-medium text-brightPink" />
         )}
       </button>
       <figure className="h-[100px] lg:h-[200px]">
@@ -64,13 +64,13 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
         ))}
       </div>
       <div className="p-3">
-        <h2 className="text-sm line-clamp-1 lg:text-lg text-black mb-4 font-semibold">
+        <h2 className="text-[10px] line-clamp-1 lg:text-lg text-black mb-4 font-semibold">
           {recipe?.title}
         </h2>
         <div className="flex justify-between">
           <div className="flex items-center">
             <div className="avatar">
-              <div className="lg:w-8 w-4 rounded-full">
+              <div className="lg:w-8 w-3 rounded-full">
                 <img
                   className="object-contain"
                   src={`data:image/jpeg;base64,${recipe?.chefImage}`}
@@ -78,7 +78,7 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
                 />
               </div>
             </div>
-            <span className="lg:ml-2 ml-1 text-black text-xs lg:text-md font-bold line-clamp-1">
+            <span className="lg:ml-2 ml-1 text-black text-[8px] lg:text-md font-semibold line-clamp-1">
               {recipe?.chefName}
             </span>
           </div>

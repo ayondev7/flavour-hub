@@ -42,7 +42,7 @@ const handleFollowChange = (chefId) => {
 };
 
   return (
-    <div className="px-4 lg:px-12 pb-24 pt-10 bg-gray-100 min-h-screen">
+    <div className="px-4 lg:px-12 pb-24 pt-4 lg:pt-10 bg-gray-100 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-4 w-full">
         {/* Left Sidebar */}
         <div className="hidden lg:block lg:col-span-3">

@@ -50,9 +50,9 @@ const PostCard = ({ data, onFollowChange, userId }) => {
   };
 
   return (
-    <div className="shadow-lg rounded-xl p-6 bg-white">
+    <div className="shadow-lg rounded-xl p-4 lg:p-6 bg-white relative">
       {/* User Info */}
-      <div className="flex items-center gap-x-2 gap-y-4 mb-4 relative">
+      <div className="flex items-center mt-6 lg:mt-0 gap-x-2 gap-y-4 mb-4">
         <div className="avatar">
           <div className="w-12 rounded-full">
             <img
@@ -63,19 +63,19 @@ const PostCard = ({ data, onFollowChange, userId }) => {
         </div>
         <div>
           <div className="flex gap-x-1">
-            <p className="font-bold text-gray-800 text-base">
+            <p className="font-bold text-gray-800 text-xs lg:text-base">
               {data?.chefName}
             </p>
-            <span>-</span>
-            <h2 className="text-sm lg:text-base font-medium italic opacity-80">
+            <span className="text-xs lg:text-base">-</span>
+            <h2 className="text-xs lg:text-base font-medium italic opacity-80">
               {data?.chefRank}
             </h2>
           </div>
-          <p className="text-xs text-gray-500">{formatDate(data?.createdAt)}</p>
+          <p className="text-[10px] lg:text-xs text-gray-500">{formatDate(data?.createdAt)}</p>
         </div>
         <button
           onClick={() => handleFollowClick(data.chefId)}
-          className={`absolute flex gap-x-1 items-center border border-brightPink top-0 right-0 z-10 rounded-full px-4 py-2 text-sm font-bold transition-all duration-200 
+          className={`absolute flex gap-x-1 items-center border border-brightPink top-2 lg:top-6 right-2 lg:right-6 z-10 rounded-full px-4 py-2 text-[10px] md:text-sm font-bold transition-all duration-200 
     ${
       data?.following ? "bg-brightPink text-white" : "bg-white text-brightPink"
     }`}
@@ -99,8 +99,8 @@ const PostCard = ({ data, onFollowChange, userId }) => {
 
       {/* Post Content */}
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">{data?.title}</h3>
-        <p className="text-gray-600 leading-relaxed">{data?.description}</p>
+        <h3 className="text-sm lg:text-lg font-semibold text-gray-800">{data?.title}</h3>
+        <p className="text-xs lg:text-base text-gray-600 leading-relaxed">{data?.description}</p>
       </div>
 
       {/* Post Image */}

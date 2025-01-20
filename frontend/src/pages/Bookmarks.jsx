@@ -33,14 +33,14 @@ const Bookmarks = () => {
     <div className="px-4 lg:px-12 pb-20">
       {/* Header Section */}
       <div className="text-center pt-4 mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 text-transparent bg-clip-text">Your Bookmarked Recipes</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-lg lg:text-3xl font-bold bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 text-transparent bg-clip-text">Your Bookmarked Recipes</h1>
+        <p className="text-sm lg:text-base text-gray-600 mt-2">
           Explore your favorite recipes saved for later. Manage and revisit the ones you love!
         </p>
       </div>
 
       {/* Recipe Cards or Skeletons */}
-      <div className="grid grid-cols-4 gap-x-6 gap-y-10">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 lg:gap-x-6 gap-y-10">
         {loading
           ? // Show 8 skeletons while loading
             Array.from({ length: 8 }).map((_, index) => (

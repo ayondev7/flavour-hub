@@ -80,17 +80,17 @@ const Navbar = () => {
             >
               Recipe<span className="text-pink-600">Finder</span>
             </Link>
-            <div className="flex lg:gap-x-10 relative">
+            <div className="flex gap-x-4 lg:gap-x-10 relative">
               <Searchbar
                 onSearchResults={setSearchResults}
                 onSearchQueryChange={(query) => setSearchQuery(query)}  // Handle search query change
               />
               {(searchResults.length > 0 || searchQuery.trim() !== "") && (  // Only show if there are results or the query is not empty
-                <div className="absolute top-12 left-0 w-[400px] bg-white border border-gray-300 rounded-md shadow-md z-10">
+                <div className="absolute top-10 lg:top-12 right-4 lg:right-auto lg:left-0 lg:w-[400px] bg-white border border-gray-300 rounded-md shadow-md z-10">
                   {searchResults.length > 0 ? (
                     searchResults.map((result, index) => (
                       <Link to={`/recipesPage/${result._id}`} key={index}>
-                        <div className="p-2 hover:bg-gray-100 cursor-pointer">
+                        <div className="text-xs lg:text-base p-2 hover:bg-gray-100 cursor-pointer">
                           {result.title}
                         </div>
                       </Link>
@@ -104,7 +104,7 @@ const Navbar = () => {
                 htmlFor="my-drawer-4"
                 className="text-hotPink hover:cursor-pointer flex items-center rounded-md"
               >
-                <HiOutlineMenu className="lg:text-3xl text-xl font-semibold" />
+                <HiOutlineMenu className="lg:text-3xl text-2xl font-semibold" />
               </label>
             </div>
           </div>
