@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import { BsPlusLg } from "react-icons/bs";
-import { toast} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {getUserIdFromToken} from '../assets/tokenUtils';
+import { getUserIdFromToken } from "../assets/tokenUtils";
+import { useNavigate } from "react-router-dom";
 
 const CreateNewRecipe = () => {
   const userId = getUserIdFromToken();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -105,17 +107,15 @@ const CreateNewRecipe = () => {
           },
         }
       );
-      toast.success("Recipe created successfully!", {
-        onClose: () => {
-          window.location.reload();
-        },
-      });
+      setIsLoading(false);
+      toast.success("Recipe created successfully!");
+
+      setTimeout(() => {
+        navigate("/myRecipes");
+      }, 3000);
     } catch (error) {
-      toast.error("Failed to create recipe.", {
-        onClose: () => {
-          window.location.reload();
-        },
-      });
+      toast.error("Failed to create recipe.");
+      setIsLoading(false);
     }
 
     setFormData({
@@ -135,7 +135,8 @@ const CreateNewRecipe = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
+      <ToastContainer />
       <form onSubmit={handleSubmit}>
         <div className="flex justify-between border-y px-4 lg:px-16 py-4">
           <h1 className="text-xl text-black font-semibold">
@@ -447,7 +448,7 @@ const CreateNewRecipe = () => {
               <option value="Mexican">Mexican</option>
               <option value="French">French</option>
               <option value="Japanese">Japanese</option>
-              <option value="Japanese">Middle Eastern</option>
+              <option value="Middle Eastern">Middle Eastern</option>
             </select>
           </div>
 

@@ -410,7 +410,7 @@ const EditRecipe = () => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen">
       <ToastContainer />
       <div className="flex justify-between border-y px-4 lg:px-16 py-4">
         <h1 className="text-base lg:text-xl text-black font-semibold">Edit Recipe</h1>

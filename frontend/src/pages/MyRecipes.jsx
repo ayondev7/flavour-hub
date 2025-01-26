@@ -78,7 +78,7 @@ const MyRecipes = () => {
   const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <p className="px-4 lg:px-16 lg:my-5 text-black text-base lg:text-xl font-semibold">
         My Recipes Collection
       </p>

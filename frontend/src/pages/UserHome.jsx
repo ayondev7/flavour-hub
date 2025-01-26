@@ -12,7 +12,7 @@ import BookmarkDialog from "../components/BookmarkDialogue";
 import { ToastContainer } from "react-toastify";
 
 const UserHome = () => {
-  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
+  const baseURL = "http://localhost:5000";
   const userId = getUserIdFromToken();
   const [recipes, setRecipes] = useState([]);
   const [chefs, setChefs] = useState([]);
@@ -92,17 +92,19 @@ const UserHome = () => {
   const onBookmarkRemove = (recipeId) => {
     setRecipes((prevRecipes) =>
       prevRecipes.map((recipe) =>
-        recipe._id === recipeId ? { ...recipe, bookmarked: !recipe.bookmarked } : recipe
+        recipe._id === recipeId
+          ? { ...recipe, bookmarked: !recipe.bookmarked }
+          : recipe
       )
     );
   };
 
-  const handleCardClick = (recipeId) => { 
+  const handleCardClick = (recipeId) => {
     navigate(`/recipesPage/${recipeId}`);
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden min-h-screen">
       <ToastContainer />
       <div className="bg-white overflow-hidden relative h-screen">
         <div className="hero-content lg:flex-row-reverse lg:justify-between flex-col relative z-10 lg:px-16 px-4">
@@ -179,7 +181,7 @@ const UserHome = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-16 pb-24">
-            {recipes.map((recipe) => (
+            {recipes.slice(-8).map((recipe) => (
               <Card
                 key={recipe.id}
                 recipe={recipe}

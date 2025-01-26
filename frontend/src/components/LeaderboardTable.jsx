@@ -2,28 +2,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LeaderboardTable = ({ data, userId }) => {
-  // Function to render star ratings
-  const renderStars = (rating) => {
-    const roundedRating = Math.round(rating); // Round rating to nearest whole number
-    return (
-      <div className="rating flex items-center">
-        {Array(5)
-          .fill()
-          .map((_, index) => (
-            <input
-              key={index}
-              type="radio"
-              className={`mask mask-star-2 size-4 ${
-                index < roundedRating ? "bg-pink-500" : "bg-gray-300"
-              }`}
-              disabled
-              defaultChecked={index < roundedRating}
-            />
-          ))}
-      </div>
-    );
-  };
-
   return (
     <div className="overflow-x-auto h-full bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 p-6 shadow-lg rounded-lg">
       <motion.table
@@ -34,14 +12,16 @@ const LeaderboardTable = ({ data, userId }) => {
       >
         <thead>
           <tr>
-            {["Rank", "Chef", "Title", "Points", "Avg Rating", "Recipes"].map((header, index) => (
-              <motion.th
-                key={index}
-                className="px-4 py-2 text-left text-sm font-medium text-gray-800"
-              >
-                {header}
-              </motion.th>
-            ))}
+            {["Rank", "Chef", "Title", "Points", "Avg Rating", "Recipes"].map(
+              (header, index) => (
+                <motion.th
+                  key={index}
+                  className="px-4 py-2 text-left text-sm font-medium text-gray-800"
+                >
+                  {header}
+                </motion.th>
+              )
+            )}
           </tr>
         </thead>
         <motion.tbody layout>
@@ -86,7 +66,21 @@ const LeaderboardTable = ({ data, userId }) => {
 
                 {/* Average Rating */}
                 <motion.td className="px-4 py-2 text-sm">
-                  {renderStars(row.averageRating)}
+                  <div className="rating flex items-center">
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <input
+                        key={value}
+                        type="radio"
+                        name={`rating-${row._id}`}
+                        className={`mask mask-star-2 size-2 lg:size-4 ${
+                          row?.averageRating >= value
+                            ? "bg-brightPink"
+                            : "bg-gray-200"
+                        }`}
+                        readOnly
+                      />
+                    ))}
+                  </div>
                 </motion.td>
 
                 {/* Recipes */}

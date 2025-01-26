@@ -75,7 +75,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="px-0 lg:px-16 flex items-center h-screen bg-white overflow-hidden">
+    <div className="px-0 lg:px-16 flex items-center min-h-screen bg-white overflow-hidden">
       <ToastContainer />
       <div className="flex justify-center lg:pt-[100px] lg:pb-[150px] w-full">
         <img

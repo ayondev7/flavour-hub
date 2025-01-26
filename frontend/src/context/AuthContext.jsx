@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   // Function to check if the token is valid
   const checkAuth = async () => {
-    const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
+    const baseURL = "http://localhost:5000";
     const token = sessionStorage.getItem('token');
     if (token) {
       try {

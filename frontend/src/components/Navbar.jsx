@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar";
 import Searchbar from "../components/Searchbar";
 
 const Navbar = () => {
-  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
+  const baseURL = "http://localhost:5000";
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const userId = getUserIdFromToken();

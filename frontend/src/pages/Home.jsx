@@ -26,7 +26,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="h-auto">
+    <div className="min-h-screen">
       <div className="flex h-screen">
         <div className="w-[50%] pt-[10%] pl-16 h-[90vh]">
           <p className="text-black font-semibold text-5xl">

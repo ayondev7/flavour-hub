@@ -102,7 +102,7 @@ const RecipesPage = () => {
   }
 
   return (
-    <div className="lg:px-12 lg:py-6 px-2 py-2">
+    <div className="lg:px-12 lg:py-6 px-2 py-2 min-h-screen">
       <p className="lg:w-1/2 lg:text-xl text-black font-semibold text-lg">{recipe.title}</p>
       {recipeDetails && (
         <div className="lg:w-1/2 w-full flex flex-wrap gap-x-4 gap-y-2 lg:gap-x-6 my-4 lg:items-center">

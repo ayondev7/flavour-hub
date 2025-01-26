@@ -95,7 +95,7 @@ const AllRecipes = () => {
   };
 
   return (
-    <div className="px-4 lg:px-12">
+    <div className="px-4 lg:px-12 min-h-screen">
       <ToastContainer />
       <Marquee>
         {mealType.map((meal, index) => (

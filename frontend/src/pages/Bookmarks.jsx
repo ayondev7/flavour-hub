@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams from react-router-dom
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams from react-router-dom
 import axios from "axios";
 import Card from "../components/Card"; // Assuming you have a Card component to display bookmarks
 import RecipeCardSkeleton from "../Skeleton/RecipeCardSkeleton"; // Skeleton component for loading state
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
+  const navigate = useNavigate(); 
   const [loading, setLoading] = useState(true); // Loading state
   const { collectionId } = useParams(); // Get collectionId from URL params
 
@@ -29,8 +30,12 @@ const Bookmarks = () => {
     }
   }, [collectionId]); // Re-fetch when collectionId changes
 
+  const recipeCardClick = (recipeId) => {
+    navigate(`/recipesPage/${recipeId}`);
+  };
+
   return (
-    <div className="px-4 lg:px-12 pb-20">
+    <div className="px-4 lg:px-12 pb-20 min-h-screen">
       {/* Header Section */}
       <div className="text-center pt-4 mb-8">
         <h1 className="text-lg lg:text-3xl font-bold bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 text-transparent bg-clip-text">Your Bookmarked Recipes</h1>
@@ -48,7 +53,7 @@ const Bookmarks = () => {
             ))
           : // Render the bookmarks dynamically if any exist
             bookmarks.map((bookmark) => (
-              <Card key={bookmark._id} recipe={bookmark} /> // Assuming Card is the component to display each bookmark
+              <Card key={bookmark._id} recipe={bookmark}   onCardClick={recipeCardClick}/> // Assuming Card is the component to display each bookmark
             ))}
       </div>
     </div>
