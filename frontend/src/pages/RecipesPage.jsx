@@ -105,7 +105,7 @@ const RecipesPage = () => {
     <div className="lg:px-12 lg:py-6 px-2 py-2">
       <p className="lg:w-1/2 lg:text-xl text-black font-semibold text-lg">{recipe.title}</p>
       {recipeDetails && (
-        <div className="lg:w-1/2 w-full flex flex-wrap lg:gap-x-6 my-4 lg:items-center">
+        <div className="lg:w-1/2 w-full flex flex-wrap gap-x-4 gap-y-2 lg:gap-x-6 my-4 lg:items-center">
           <div className="flex items-center">
             <div className="avatar">
               <div className="lg:size-8 rounded-full size-6">
@@ -151,7 +151,7 @@ const RecipesPage = () => {
       <div className="w-[100%] h-[2px] bg-hotPink mt-1"></div>
 
       <div className="w-[100%] grid grid-cols-12">
-        <section className="col-span-7">
+        <section className="col-span-12 lg:col-span-7">
           {recipe.image && (
             <img
               className="h-[300px] w-[500px] object-cover mt-6 rounded-lg"
@@ -203,7 +203,7 @@ const RecipesPage = () => {
           </p>
           <div className="space-y-2">
             {recipe.ingredients.map((ingredient, index) => (
-              <div key={index} className="flex items-center">
+              <div key={index} className="flex items-start lg:items-center">
                 <span className="mr-2 text-hotPink">
                   <FaHashtag className="text-sm lg:text-base" />
                 </span>
@@ -219,11 +219,11 @@ const RecipesPage = () => {
           </p>
           <div className="space-y-2">
             {recipe.instructions.map((instruction, index) => (
-              <div key={index} className="flex items-center">
-                <span className="mr-2 text-hotPink lg:text-base font-semibold">
+              <div key={index} className="flex items-start lg:items-center">
+                <span className="mr-2 text-hotPink text-sm lg:text-base font-semibold">
                   {index + 1}.
                 </span>
-                <span className="lg:text-base text-black font-medium">
+                <span className="text-sm lg:text-base text-black font-medium">
                   {instruction.value}
                 </span>
               </div>
@@ -237,7 +237,7 @@ const RecipesPage = () => {
           </div>
         </section>{" "}
         {/*left section end shere */}
-        <section className="flex flex-col items-end border-slate-200 col-span-5">
+        <section className="hidden lg:flex flex-col items-end border-slate-200 col-span-5">
           <NutritionalValuesCard nutritionalValues={recipe?.nutritionalValues}/>
           <div className="flex flex-col items-start my-12">
             <p className="text-black text-2xl font-semibold">Related Recipes</p>
@@ -263,7 +263,7 @@ const RecipesPage = () => {
           <div>
             <Rating recipeId={recipe._id} />
           </div>
-          <div className="w-[400px] px-6 py-4 bg-lightPink rounded-lg">
+          <div className="w-[400px] px-6 py-4 bg-lightPink rounded-lg hidden lg:block">
             <p className="text-black text-xl font-semibold text-center my-2">
               Stay connected with our recipe updates
             </p>
@@ -290,7 +290,7 @@ const RecipesPage = () => {
               Sign Up
             </button>
           </div>
-          <div className="flex flex-col items-start my-12">
+          <div className="lg:flex flex-col items-start my-12 hidden">
             <p className="text-black text-2xl font-semibold">
               Trending Recipes
             </p>

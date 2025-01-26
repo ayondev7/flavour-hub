@@ -102,7 +102,7 @@ const Home = () => {
         <p className="flex w-[100%] justify-end mt-2 text-base mb-10 text-hotPink font-bold">
           <Link to={"/allRecipes"}>View more</Link>
         </p>
-        <div className="grid grid-cols-4 gap-y-16">
+        <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-0 pb-24">
           {loading
             ? // Render skeleton loader
               Array.from({ length: 6 }).map((_, index) => (

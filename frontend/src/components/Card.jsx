@@ -78,7 +78,7 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
                 />
               </div>
             </div>
-            <span className="lg:ml-2 ml-1 text-black text-[8px] lg:text-md font-semibold line-clamp-1">
+            <span className="lg:ml-2 ml-1 text-black text-[8px] lg:text-sm lg:text-md font-semibold line-clamp-1">
               {recipe?.chefName}
             </span>
           </div>
