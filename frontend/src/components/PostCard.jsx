@@ -1,33 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaUserCheck, FaPlus } from "react-icons/fa";
-import { RxShare2 } from "react-icons/rx";
+import { FaUserCheck, FaPlus, FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useToggleFollowMutation } from "../redux/store/followSlice";
+import { useToggleLikeMutation } from "../redux/store/likesApi"; // Import like mutation
 
-const formatDate = (isoDate) => {
-  if (!isoDate) return "Date not available"; // Fallback if date is missing or invalid
-
-  const date = new Date(isoDate);
-
-  // Check if the date is valid
-  if (isNaN(date)) return "Date not available";
-
-  const options = {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
-  return date.toLocaleDateString("en-US", options).replace(",", " at"); // Replace comma for better readability
-};
-
-const PostCard = ({ data, onFollowChange, userId }) => {
-  const [loading, setLoading] = useState(false);
+const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
   const [loadingChefIds, setLoadingChefIds] = useState(new Set());
+  const [loadingLikes, setLoadingLikes] = useState(false); // To track like/unlike loading
   const [toggleFollow] = useToggleFollowMutation();
+  const [toggleLike] = useToggleLikeMutation(); // Use the like mutation
 
+  // Follow/Unfollow logic
   const handleFollowClick = async (chefId) => {
     try {
       setLoadingChefIds((prev) => new Set(prev).add(chefId));
@@ -46,6 +30,24 @@ const PostCard = ({ data, onFollowChange, userId }) => {
         updated.delete(chefId);
         return updated;
       });
+    }
+  };
+
+  // Like/Unlike logic
+  const handleLikeClick = async (recipeId) => {
+    try {
+      setLoadingLikes(true);
+
+      const result = await toggleLike({
+        userId,
+        recipeId,
+      }).unwrap();
+      toast.success(result?.message);
+      onLikeChange(recipeId);
+    } catch (error) {
+      toast.error(error?.data?.message || "Failed to update like status");
+    } finally {
+      setLoadingLikes(false);
     }
   };
 
@@ -71,26 +73,21 @@ const PostCard = ({ data, onFollowChange, userId }) => {
               {data?.chefRank}
             </h2>
           </div>
-          <p className="text-[10px] lg:text-xs text-gray-500">{formatDate(data?.createdAt)}</p>
+          <p className="text-[10px] lg:text-xs text-gray-500">{data?.createdAt}</p>
         </div>
         <button
           onClick={() => handleFollowClick(data.chefId)}
           className={`absolute flex gap-x-1 items-center border border-brightPink top-2 lg:top-6 right-2 lg:right-6 z-10 rounded-full px-4 py-2 text-[10px] md:text-sm font-bold transition-all duration-200 
-    ${
-      data?.following ? "bg-brightPink text-white" : "bg-white text-brightPink"
-    }`}
+            ${data?.following ? "bg-brightPink text-white" : "bg-white text-brightPink"}
+          `}
           aria-label={data?.following ? "Unfollow Chef" : "Follow Chef"}
-          disabled={loadingChefIds.has(data.chefId)} // Check if the chefId is in the loading set
+          disabled={loadingChefIds.has(data.chefId)}
         >
           {loadingChefIds.has(data.chefId) ? (
             "Loading..."
           ) : (
             <>
-              {data?.following ? (
-                <FaUserCheck className="text-xs" />
-              ) : (
-                <FaPlus className="text-xs" />
-              )}
+              {data?.following ? <FaUserCheck className="text-xs" /> : <FaPlus className="text-xs" />}
               {data?.following ? "Following" : "Follow"}
             </>
           )}
@@ -115,9 +112,18 @@ const PostCard = ({ data, onFollowChange, userId }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex justify-end mt-4">
-        <button className="items-center flex gap-x-1 text-brightPink rounded-lg">
-          <RxShare2 /> Share
+      <div className="flex justify-start mt-4 gap-x-4 text-brightPink">
+        <button
+          className="flex gap-x-2 items-center justify-center"
+          onClick={() => handleLikeClick(data._id)} // Handle like click
+          disabled={loadingLikes} // Disable button while loading
+        >
+          {data?.likedByUser ? <FaHeart /> : <FaRegHeart />}
+          <span className="text-xs">{data?.totalLikes || 0}</span>
+        </button>
+        <button className="flex gap-x-2 items-center justify-center">
+          <FaRegComment />
+          <span className="text-xs">{data?.totalComments || 0}</span>
         </button>
       </div>
     </div>

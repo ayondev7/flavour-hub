@@ -35,7 +35,6 @@ const CollectionCard = ({ data }) => {
               className="absolute top-2 right-2"
               onClick={(e) => {
                 e.stopPropagation(); // Prevent navigation when clicking the trash icon
-                console.log("Delete clicked");
               }}
             >
               <HiOutlineTrash className="lg:text-lg text-sm text-white" />

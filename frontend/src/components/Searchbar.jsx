@@ -15,7 +15,6 @@ const Searchbar = ({ onSearchResults }) => {
           { params: { title: query } }
         );
         onSearchResults(response.data);
-        console.log("serach", response.data);
       } catch (error) {
         console.error("Error searching for recipes:", error);
       }

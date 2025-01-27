@@ -40,7 +40,6 @@ const RecipesPage = () => {
             `http://localhost:5000/api/recipe/getRelatedRecipes/${cuisineType}`
           );
           const relatedRecipe = response.data;
-          console.log("related = ",response.data);
           setRelatedRecipes(relatedRecipe);
           setLoadingRelatedRecipes(false);
         } catch (error) {

@@ -69,7 +69,6 @@ const UserHome = () => {
       .then((response) => {
         setChefs(response.data.slice(0, 8)); // Assuming you only want the first 8 users
         setLoading(false);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching chefs:", error);

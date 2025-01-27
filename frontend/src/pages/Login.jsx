@@ -22,9 +22,7 @@ const Login = () => {
 
     try {
         const response = await axios.post(`${baseURL}/api/user/loginUser`, { email, password });
-        console.log(response.data);
         if (response.data.token) {
-          console.log(response.data.token);
             sessionStorage.setItem("token", response.data.token);
             await checkAuth(); // Update authentication state
             navigate("/userHome");

@@ -24,6 +24,22 @@ if (recipesData && recipesData.length > 0 && recipes.length === 0) {
   setRecipes(recipesData); // Set the chefs data to local state only once
 }
 
+const handleLikeChange = (recipeId) => {
+  setRecipes((prevRecipes) =>
+    prevRecipes.map((recipe) =>
+      recipe._id === recipeId
+        ? {
+            ...recipe,
+            likedByUser: !recipe.likedByUser, // Toggle likedByUser
+            totalLikes: recipe.likedByUser
+              ? recipe.totalLikes - 1 // Decrease if previously liked
+              : recipe.totalLikes + 1, // Increase if not liked
+          }
+        : recipe
+    )
+  );
+};
+
 
 const handleFollowChange = (chefId) => {
   setChefs((prevChefs) =>
@@ -68,9 +84,18 @@ const handleFollowChange = (chefId) => {
             {isRecipesLoading || recipes.length <= 0 ? (
               <PostCardSkeleton />
             ) : (
-              recipes.map((recipe) => (
-                <PostCard data={recipe} key={recipe.id} onFollowChange={handleFollowChange} userId={userId}/>
-              ))
+              recipes.map((_, index) => {
+                const recipe = recipes[recipes.length - 1 - index];
+                return (
+                  <PostCard
+                    data={recipe}
+                    key={recipe._id}
+                    onFollowChange={handleFollowChange}
+                    userId={userId}
+                    onLikeChange={handleLikeChange}
+                  />
+                );
+              })
             )}
           </div>
         </div>
