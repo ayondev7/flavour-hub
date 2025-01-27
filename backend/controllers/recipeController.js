@@ -6,6 +6,8 @@ const Collection = require("../models/Collection");
 const Bookmark = require("../models/Bookmark");
 const Follow = require("../models/Follow");
 const mongoose = require("mongoose");
+const Like = require('../models/Like'); 
+const { format } = require("date-fns");
 
 exports.createRecipe = async (req, res) => {
   const {
@@ -170,11 +172,24 @@ exports.getAllRecipes = async (req, res) => {
           bookmarked = !!bookmarkStatus; // Set to true if bookmark status exists
         }
 
+        // Calculate total likes and check if the user has liked the recipe
+        const likes = await Like.find({ recipeId: recipe._id });
+        const totalLikes = likes.length;
+
+        // Check if the user has liked this recipe
+        const likedByUser = likes.some((like) => like.userId.toString() === userId);
+
+        // Calculate total comments for the recipe
+        const totalComments = await Comment.countDocuments({ recipeId: recipe._id });
+
         // Convert images to Base64 if available
         const recipeImage = recipe.image
           ? recipe.image.toString("base64")
           : null;
         const chefImage = chef.image ? chef.image.toString("base64") : null;
+
+        // Format the createdAt date
+        const formattedDate = format(new Date(recipe.createdAt), "d MMMM yyyy 'at' h:mma");
 
         return {
           _id: recipe._id,
@@ -194,9 +209,12 @@ exports.getAllRecipes = async (req, res) => {
           chefRank: chefRank,
           following: following, // Include following status
           bookmarked: bookmarked, // Include bookmarked status
+          totalLikes: totalLikes, // Include total likes count
+          totalComments: totalComments, // Include total comments count
+          likedByUser: likedByUser, // Include user's like status
           image: recipeImage,
           chefImage: chefImage,
-          createdAt: recipe.createdAt,
+          createdAt: formattedDate, // Include formatted created date
         };
       })
     );
@@ -208,6 +226,8 @@ exports.getAllRecipes = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
 
 // Controller function to get recipes by user ID
 exports.getMyRecipes = async (req, res) => {

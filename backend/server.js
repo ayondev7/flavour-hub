@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const bookmarkRoutes = require('./routes/bookmarkRoutes');
 const followRoutes = require('./routes/followRoutes');
+const likeRoutes = require('./routes/likeRoutes');
 require('dotenv').config(); // Load environment variables
 
 const app = express();
@@ -61,6 +62,8 @@ app.use('/api/bookmark',bookmarkRoutes);
 app.use('/api/followers',followRoutes);
 
 app.use('/api/auth', authRoutes);
+
+app.use('/api/like', likeRoutes);
 
 
 

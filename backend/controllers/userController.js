@@ -38,7 +38,7 @@ const createUser = async (req, res) => {
 
         // Respond with success message and token
         return res.status(201).json({ 
-            message: 'User created successfully', 
+            message: 'User created successfully',  
             token 
         });
     } catch (error) {

@@ -50,9 +50,48 @@ exports.postComment = async (req, res) => {
 
 exports.getComments = async (req, res) => {
   try {
-    const comments = await Comment.find({ recipeId: req.params.recipeId });
-    res.json(comments);
+    const comments = await Comment.aggregate([
+      {
+        $match: { recipeId: new mongoose.Types.ObjectId(req.params.recipeId) },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$userDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $addFields: {
+          name: "$userDetails.name",
+          image: "$userDetails.image",
+          isReply: { $cond: [{ $ifNull: ["$parentId", false] }, true, false] },
+        },
+      },
+      {
+        $project: {
+          userDetails: 0,
+        },
+      },
+    ]);
+
+    const commentsWithBase64Images = comments.map((comment) => {
+      return {
+        ...comment,
+        image:comment.image.toString("base64"),
+        formattedDate: comment.createdAt ? format(comment.createdAt, "d MMMM yyyy, h:mm a") : null,
+      };
+    });
+    res.status(200).json(commentsWithBase64Images);
   } catch (error) {
+    console.error("Error fetching comments:", error);
     res.status(500).json({ message: "Server error", error });
   }
 };
@@ -102,13 +141,6 @@ exports.getNotificationsById = async (req, res) => {
     // Find notifications where chefId matches the userId
     const notifications = await Notification.find({ chefId: userId });
 
-    // If no notifications found, return an error
-    if (!notifications || notifications.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No notifications found for this user." });
-    }
-
     // Prepare response data
     const notificationsData = await Promise.all(
       notifications.map(async (notification) => {
@@ -153,6 +185,7 @@ exports.getNotificationsById = async (req, res) => {
       (notification) => notification !== null
     );
 
+    // Return success with empty array if no notifications are found
     res.status(200).json(filteredNotifications);
   } catch (error) {
     console.error("Error fetching notifications:", error);
