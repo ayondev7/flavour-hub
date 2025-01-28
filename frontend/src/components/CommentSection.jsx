@@ -178,10 +178,10 @@ const CommentSection = ({ recipeId }) => {
         </p>
 
         {comments && users && comments
-          .filter((comment) => comment.parentCommentId === null)
+          .filter((comment) => comment?.parentCommentId === null)
           .map((comment) => {
             return (
-              <div className="comment mb-8 rounded-md bg-gray-100" key={comment._id}>
+              <div className="comment mb-8 rounded-md bg-gray-100" key={comment?._id}>
                 <div className="flex py-4 px-6">
                   <div className="mr-3">
                     <div className="avatar">
@@ -199,11 +199,11 @@ const CommentSection = ({ recipeId }) => {
                       {comment?.name}
                     </p>
                     <p className="text-gray-500 text-[10px] font-semibold mb-3">
-                      {comment?.createdAt}
+                      {comment?.formattedDate}
                     </p>
                     <p className="text-black pr-4 text-sm">{comment?.content}</p>
                     <div className="flex gap-x-16 my-4">
-                      {userId === comment.userId && (
+                      {userId === comment?.userId && (
                         <>
                           <button
                             className="flex items-center text-slate-500 text-sm font-medium"
@@ -214,7 +214,7 @@ const CommentSection = ({ recipeId }) => {
 
                           <button
                             className="flex items-center text-slate-500 text-sm font-medium"
-                            onClick={() => openDeleteModal(comment._id)}
+                            onClick={() => openDeleteModal(comment?._id)}
                           >
                             <FaRegTrashCan className="text-sm mr-1" /> Delete
                           </button>
@@ -223,7 +223,7 @@ const CommentSection = ({ recipeId }) => {
                       <button
                         className="flex items-center text-slate-500 text-sm font-medium"
                         onClick={() => {
-                          setParentCommentId(comment._id);
+                          setParentCommentId(comment?._id);
                           document.getElementById("my_modal_2").showModal();
                         }}
                       >
@@ -234,10 +234,10 @@ const CommentSection = ({ recipeId }) => {
                 </div>
 
                 {comments
-                  .filter((reply) => reply.parentCommentId === comment._id)
+                  .filter((reply) => reply?.parentCommentId === comment?._id)
                   .map((reply) => {
                     return (
-                      <div key={reply._id} className="flex py-4 px-12 ml-6">
+                      <div key={reply?._id} className="flex py-4 px-12 ml-6">
                         <div className="mr-3">
                           <div className="avatar">
                             <div className="w-10 rounded-full">
@@ -254,7 +254,7 @@ const CommentSection = ({ recipeId }) => {
                             {reply?.name}
                           </p>
                           <p className="text-gray-500 text-[10px] font-semibold mb-3">
-                            {reply?.createdAt}
+                            {reply?.formattedDate}
                           </p>
                           <p className="text-black pr-4 text-sm">{reply?.content}</p>
                         </div>

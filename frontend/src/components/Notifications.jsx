@@ -21,6 +21,13 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
     hover: { scale: 1.05, transition: { duration: 0.3 } },
   };
 
+  const handleNotificationClick = (notification) => {
+    // Only trigger on comment or like notifications
+    if (notification.type === "comment" || notification.type === "like") {
+      onNotificationClick(notification?.recipeId);
+    }
+  };
+
   return (
     <motion.div
       className="fixed inset-0 flex items-center justify-center text-black bg-black bg-opacity-50"
@@ -51,23 +58,23 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
         {/* Notifications Content */}
         <div className="p-4 h-[500px] lg:h-[300px] overflow-y-auto">
           <div className="flex flex-col gap-y-4">
-            {notificationsData.length === 0 ? (
+            {notificationsData?.length === 0 ? (
               <p className="text-center text-lg text-gray-500">
                 No notifications to show
               </p>
             ) : (
-              notificationsData.map((notification, index) => (
+              notificationsData?.map((notification, index) => (
                 <motion.div
                   key={notification._id || index}
                   className="flex items-start cursor-pointer w-full py-3 px-3 rounded-lg shadow-md"
-                  onClick={() => onNotificationClick(notification.recipeId)}
+                  onClick={() => handleNotificationClick(notification)}
                   variants={notificationItemVariants}
                   whileHover="hover"
                 >
                   <div className="avatar mt-1">
                     <div className="lg:w-10 w-8 rounded-full">
                       <img
-                        src={`data:image/jpeg;base64,${notification.image}`}
+                        src={`data:image/jpeg;base64,${notification?.image}`}
                         alt="avatar"
                       />
                     </div>
@@ -75,11 +82,15 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
                   <div className="ml-3 relative w-full">
                     <p className="text-sm lg:text-base mb-1">
                       <span className="font-medium text-base lg:text-lg">
-                        {notification.name}
+                        {notification?.name}
                       </span>{" "}
-                      commented on your recipe post.
+                      {notification.type === "comment"
+                        ? "commented on your recipe post."
+                        : notification.type === "like"
+                        ? "liked your recipe post."
+                        : "has started following you."}
                     </p>
-                    <p className="text-xs">{notification.createdAt}</p>
+                    <p className="text-xs">{notification?.createdAt}</p>
                   </div>
                 </motion.div>
               ))

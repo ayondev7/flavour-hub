@@ -109,25 +109,25 @@ const RecipesPage = () => {
             <div className="avatar">
               <div className="lg:size-8 rounded-full size-6">
                 <img
-                  src={`data:image/jpeg;base64,${recipeDetails.chef.image}`}
+                  src={`data:image/jpeg;base64,${recipeDetails?.chef.image}`}
                   alt={recipe.title}
                 />
               </div>
             </div>
             <span className="lg:text-md ml-2 text-black font-semibold text-sm">
-              {recipeDetails.chef.name}
+              {recipeDetails?.chef.name}
             </span>
           </div>
           <div className="flex items-center">
             <BsCalendar2Date className="text-md text-hotPink" />
             <span className="lg:text-md ml-2 text-black font-semibold text-sm">
-              {recipeDetails.createdAt}
+              {recipeDetails?.createdAt}
             </span>
           </div>
           <div className="flex items-center">
             <FaRegCommentDots className="text-md text-hotPink" />
             <span className="lg:text-md ml-2 text-black font-semibold text-sm">
-              {recipeDetails.totalComments} comments
+              {recipeDetails?.totalComments} comments
             </span>
           </div>
           <div>
@@ -151,10 +151,10 @@ const RecipesPage = () => {
 
       <div className="w-[100%] grid grid-cols-12">
         <section className="col-span-12 lg:col-span-7">
-          {recipe.image && (
+          {recipe?.image && (
             <img
               className="h-[300px] w-[500px] object-cover mt-6 rounded-lg"
-              src={`data:image/jpeg;base64,${recipe.image}`}
+              src={`data:image/jpeg;base64,${recipe?.image}`}
               alt=""
             />
           )}

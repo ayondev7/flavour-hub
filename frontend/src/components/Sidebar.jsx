@@ -42,7 +42,7 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
   const fetchNotifications = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/comment/getNotifications/${userId}`
+        `http://localhost:5000/api/comment/get-notifications/${userId}`
       );
       setNotificationsData(response.data);
     } catch (error) {
