@@ -13,7 +13,7 @@ router.put('/updateComment',upload.none(), commentController.updateComment);
 
 router.delete('/deleteComment',upload.none(), commentController.deleteComment);
 
-router.get('/getNotifications/:userId', commentController.getNotificationsById);
+router.get('/get-notifications/:userId', commentController.getNotificationsById);
 
 module.exports = router;
 

@@ -1,5 +1,6 @@
 const Follow = require('../models/Follow');
-const User = require('../models/User'); // Assuming you have a User model
+const User = require('../models/User');
+const Notification = require('../models/Notification'); // Import Notification model
 
 // Function to follow a user
 const followUser = async (req, res) => {
@@ -29,6 +30,16 @@ const followUser = async (req, res) => {
       });
 
       await follow.save();
+
+      // Create a notification for the new follow
+      const notification = new Notification({
+        followerId,       // The user who is following
+        userId: followingId,  // The user being followed
+        type: 'follow',    // The type of notification
+      });
+
+      await notification.save();
+
       return res.status(201).json({ message: 'You have followed this user' });
     }
   } catch (error) {
@@ -36,7 +47,6 @@ const followUser = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
-
 
 module.exports = {
   followUser

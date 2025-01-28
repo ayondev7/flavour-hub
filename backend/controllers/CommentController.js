@@ -18,7 +18,7 @@ exports.postComment = async (req, res) => {
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
-    const chefId = recipe.chefId; // Assuming the Recipe model has a field userId for the chef
+    const chefId = recipe.chefId; // Assuming the Recipe model has a field chefId for the chef
 
     // Create and save the new comment
     const newComment = new Comment({
@@ -29,11 +29,12 @@ exports.postComment = async (req, res) => {
     });
     await newComment.save();
 
-    // Create and save the notification
+    // Create and save the notification with the chefId as the userId
     const newNotification = new Notification({
       commentorId: userId,
       recipeId,
-      chefId,
+      userId: chefId, // Set the chefId as the userId in the notification
+      type: 'comment',
     });
     await newNotification.save();
 
@@ -47,6 +48,7 @@ exports.postComment = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
 
 exports.getComments = async (req, res) => {
   try {
@@ -85,10 +87,11 @@ exports.getComments = async (req, res) => {
     const commentsWithBase64Images = comments.map((comment) => {
       return {
         ...comment,
-        image:comment.image.toString("base64"),
-        formattedDate: comment.createdAt ? format(comment.createdAt, "d MMMM yyyy, h:mm a") : null,
+        image: comment.image ? comment.image.toString("base64") : null,
+        formattedDate: comment.createdAt ? format(new Date(comment.createdAt), "d MMMM yyyy, h:mm a") : null,
       };
     });
+
     res.status(200).json(commentsWithBase64Images);
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -134,61 +137,98 @@ exports.deleteComment = async (req, res) => {
   }
 };
 
+
 exports.getNotificationsById = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    // Find notifications where chefId matches the userId
-    const notifications = await Notification.find({ chefId: userId });
+    // Fetch notifications
+    const notifications = await Notification.find({ userId });
 
-    // Prepare response data
+    // Prepare response data by separating notifications based on type
     const notificationsData = await Promise.all(
       notifications.map(async (notification) => {
-        const { recipeId, commentorId, createdAt } = notification;
+        const { type, commentorId, likerId, followerId, recipeId, createdAt } = notification;
 
-        // Fetch the commentor details from User model
-        const commentor = await User.findById(commentorId);
-        if (!commentor) {
-          return null;
-        }
+        let userDetails = null;
+        let notificationType = '';
+        let recipeIdData = null;
 
-        const { name, image } = commentor;
+        if (type === 'follow' && followerId) {
+          // Handle follow type notification
+          notificationType = 'follow';
+          userDetails = await User.findById(followerId);
+        } else if (type === 'comment' || type === 'like') {
+          // Handle comment or like type notification
+          notificationType = type;
 
-        // Convert binary image to base64 if the image exists
-        let imageBase64 = "";
-        if (image) {
-          try {
-            imageBase64 = image.toString("base64");
-          } catch (error) {
-            console.error("Error converting image to base64:", error);
+          // Look up the recipe by recipeId
+          const recipe = await Recipe.findById(recipeId);
+          if (!recipe) return null; // If no recipe found, skip this notification
+
+          // Check if the recipe's chefId matches the userId from params
+          if (recipe.chefId.toString() === userId) {
+            // If it matches, proceed based on the type of notification
+            if (type === 'comment' && commentorId) {
+              userDetails = await User.findById(commentorId); // Get commentor details
+            } else if (type === 'like' && likerId) {
+              userDetails = await User.findById(likerId); // Get liker details
+            }
+
+            // If userDetails is available, store the recipeId for response
+            if (userDetails) {
+              recipeIdData = recipeId;
+            }
           }
         }
 
-        // Format createdAt to "hh:mm A, dd MMMM yyyy" format
-        const formattedCreatedAt = format(
-          new Date(createdAt),
-          "hh:mm a, dd MMMM yyyy"
-        );
+        // Skip the notification if userDetails are not found
+        if (!userDetails) {
+          return null; // Skip if no user details found
+        }
+
+        // Skip the notification if the user is the commentor or liker
+        if ((type === 'comment' && commentorId.toString() === userId) || 
+            (type === 'like' && likerId.toString() === userId)) {
+          return null; // Skip if the commentorId or likerId is the same as userId
+        }
+
+        const { name, image } = userDetails;
+
+        // Convert binary image to base64 if the image exists
+        let imageBase64 = '';
+        if (image) {
+          try {
+            imageBase64 = image.toString('base64');
+          } catch (error) {
+            console.error('Error converting image to base64:', error);
+          }
+        }
+
+        // Format createdAt to "dd MMMM yyyy, hh:mm a" format
+        const formattedCreatedAt = format(new Date(createdAt), 'dd MMMM yyyy, hh:mm a');
 
         return {
-          recipeId,
-          commentorId,
+          type: notificationType,
+          recipeId: recipeIdData, // Only include recipeId for comment and like notifications
+          userId: userDetails._id,
           name,
           image: imageBase64,
-          createdAt: formattedCreatedAt,
+          createdAt: formattedCreatedAt
         };
       })
     );
 
-    // Filter out any null values (in case of errors fetching commentor details)
+    // Filter out any null values (in case of errors fetching user details)
     const filteredNotifications = notificationsData.filter(
       (notification) => notification !== null
     );
 
-    // Return success with empty array if no notifications are found
+    // Return success with notifications
     res.status(200).json(filteredNotifications);
   } catch (error) {
-    console.error("Error fetching notifications:", error);
-    res.status(500).json({ message: "Server error", error });
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ message: 'Server error', error });
   }
 };
+
