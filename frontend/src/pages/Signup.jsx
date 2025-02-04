@@ -75,13 +75,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="px-0 lg:px-16 flex items-center min-h-screen bg-white overflow-hidden">
+    <div className="px-0 lg:px-16 flex items-center lg:h-screen bg-white overflow-hidden">
       <ToastContainer />
-      <div className="flex justify-center lg:pt-[100px] lg:pb-[150px] w-full">
+      <div className="flex justify-center lg:pt-[100px] lg:pb-[150px] w-full relative">
         <img
           src={images.login}
           alt="Signup"
-          className="h-[600px] absolute left-[10%] top-[5%] lg:block hidden"
+          className="h-[600px] absolute left-[10%] top-[16%] lg:block hidden"
         />
         <div className="w-[80%] lg:w-[40%] lg:ml-[40%] mt-16">
           <form className="space-y-3" onSubmit={handleSignup}>
