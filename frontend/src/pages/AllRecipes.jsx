@@ -78,7 +78,6 @@ const AllRecipes = () => {
 
   const handleCuisineSelect = (cuisine) => {
     setCuisineTypeState(cuisine);
-    navigate(`/allRecipes/${cuisine}`);
   };
 
   const handleBookmarkClick = (recipe) => {
