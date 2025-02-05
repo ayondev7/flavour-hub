@@ -271,77 +271,101 @@ exports.getMyRecipes = async (req, res) => {
 
 exports.getRelatedRecipes = async (req, res) => {
   const { cuisineType } = req.params;
+  const userId = req.headers.userid; 
 
   try {
-    // Perform aggregation to fetch related recipes along with user info and average rating
-    const relatedRecipes = await Recipe.aggregate([
-      {
-        $match: { cuisineType: cuisineType }, // Match recipes with the given cuisineType
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the User collection
-          localField: "chefId", // Field in Recipe collection
-          foreignField: "_id", // Field in User collection
-          as: "chefDetails", // Output array field for joined user data
-        },
-      },
-      { $unwind: { path: "$chefDetails", preserveNullAndEmptyArrays: true } },
-      {
-        $lookup: {
-          from: "ratings", // Name of the Ratings collection
-          localField: "_id", // Field in Recipe collection
-          foreignField: "recipeId", // Field in Rating collection
-          as: "ratings", // Output array field for ratings
-        },
-      },
-      {
-        $addFields: {
-          averageRating: {
-            $cond: {
-              if: { $gt: [{ $size: "$ratings" }, 0] },
-              then: { $avg: "$ratings.rating" },
-              else: null,
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          description: 1,
-          ingredients: 1,
-          instructions: 1,
-          servings: 1,
-          prepTime: 1,
-          cookTime: 1,
-          cuisineType: 1,
-          nutritionalValues: 1,
-          dietaryInformation: 1,
-          chefId: 1,
-          averageRating: 1,
-          chefName: "$chefDetails.name",
-          chefImage: "$chefDetails.image",
-          image: 1,
-        },
-      },
-    ]);
+    // Helper function to determine the rank of a chef
+    const getChefRank = (points) => {
+      if (points >= 1001) return "Legendary Chef";
+      if (points >= 501) return "Master Chef";
+      if (points >= 301) return "Chef de Cuisine";
+      if (points >= 101) return "Sous Chef";
+      return "Apprentice Chef";
+    };
 
-    // Convert images (both recipe and chef) to Base64
-    const recipesWithImages = relatedRecipes.map((recipe) => ({
-      ...recipe,
-      image: recipe.image ? recipe.image.toString("base64") : null, // Convert recipe image
-      chefImage: recipe.chefImage ? recipe.chefImage.toString("base64") : null, // Convert chef image
-    }));
+    // Fetch related recipes by cuisine type
+    const relatedRecipes = await Recipe.find({ cuisineType });
 
-    // Send the aggregated data as JSON response
-    res.json(recipesWithImages);
+    // Fetch the user's collections
+    const userCollections = await Collection.find({ userId: userId });
+    const collectionIds = userCollections.map((collection) => collection._id);
+
+    // Process each recipe
+    const recipesWithDetails = await Promise.all(
+      relatedRecipes.map(async (recipe) => {
+        const chef = await User.findById(recipe.chefId);
+        const chefRank = getChefRank(chef.points);
+
+        // Calculate the average rating
+        const ratings = await Rating.find({ recipeId: recipe._id });
+        const totalRatings = ratings.length;
+        const sumRatings = ratings.reduce((acc, ratingDoc) => acc + ratingDoc.rating, 0);
+        const averageRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(2) : "No ratings yet";
+
+        // Check following status
+        let following = false;
+        if (userId) {
+          const followStatus = await Follow.findOne({ follower: userId, following: chef._id });
+          following = !!followStatus;
+        }
+
+        // Check bookmarked status
+        let bookmarked = false;
+        if (collectionIds.length > 0) {
+          const bookmarkStatus = await Bookmark.findOne({ collectionId: { $in: collectionIds }, recipeId: recipe._id });
+          bookmarked = !!bookmarkStatus;
+        }
+
+        // Calculate total likes and check if the user has liked the recipe
+        const likes = await Like.find({ recipeId: recipe._id });
+        const totalLikes = likes.length;
+        const likedByUser = likes.some((like) => like.userId.toString() === userId);
+
+        // Calculate total comments
+        const totalComments = await Comment.countDocuments({ recipeId: recipe._id });
+
+        // Convert images to Base64 if available
+        const recipeImage = recipe.image ? recipe.image.toString("base64") : null;
+        const chefImage = chef.image ? chef.image.toString("base64") : null;
+
+        // Format the createdAt date
+        const formattedDate = format(new Date(recipe.createdAt), "d MMMM yyyy 'at' h:mma");
+
+        return {
+          _id: recipe._id,
+          title: recipe.title,
+          description: recipe.description,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          servings: recipe.servings,
+          prepTime: recipe.prepTime,
+          cookTime: recipe.cookTime,
+          cuisineType: recipe.cuisineType,
+          nutritionalValues: recipe.nutritionalValues,
+          dietaryInformation: recipe.dietaryInformation,
+          chefId: recipe.chefId,
+          averageRating: averageRating,
+          chefName: chef.name,
+          chefRank: chefRank,
+          following: following,
+          bookmarked: bookmarked,
+          totalLikes: totalLikes,
+          totalComments: totalComments,
+          likedByUser: likedByUser,
+          image: recipeImage,
+          chefImage: chefImage,
+          createdAt: formattedDate,
+        };
+      })
+    );
+
+    res.status(200).json(recipesWithDetails);
   } catch (error) {
     console.error("Error fetching related recipes:", error);
-    res.status(500).send("Internal server error");
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 exports.getRecipe = async (req, res) => {
   const { recipeId } = req.params;
