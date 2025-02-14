@@ -18,19 +18,20 @@ require("dotenv").config(); // Load environment variables
 const app = express();
 const port = process.env.PORT || 5000; // Change port to 5000
 const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: "https://recipe-finder-frontend-80g8.onrender.com",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  },
-});
+
+// CORS configuration
+const corsOptions = {
+  origin: "https://recipe-finder-frontend-80g8.onrender.com", // Replace with your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+// Middleware to enable CORS
+app.use(cors(corsOptions));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-
-// Middleware to enable CORS
-app.use(cors());
 
 // Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,21 +50,24 @@ const connectToDatabase = async () => {
 // Call the function to establish the connection
 connectToDatabase();
 
+// Routes
 app.use("/api/recipe", recipeRoutes);
-
 app.use("/api/user", userRoutes);
-
 app.use("/api/comment", commentRoutes);
-
 app.use("/api/collections", collectionRoutes);
-
 app.use("/api/bookmark", bookmarkRoutes);
-
 app.use("/api/followers", followRoutes);
-
 app.use("/api/auth", authRoutes);
-
 app.use("/api/like", likeRoutes);
+
+// Socket.IO configuration
+const io = socketIo(server, {
+  cors: {
+    origin: "https://recipe-finder-frontend-80g8.onrender.com", // Replace with your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  },
+});
 
 // Watch for changes in notifications
 const changeStream = Notification.watch();
@@ -73,6 +77,7 @@ changeStream.on("change", (change) => {
   }
 });
 
+// Start the server
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
