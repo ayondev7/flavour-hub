@@ -20,7 +20,7 @@ const port = process.env.PORT || 5000; // Change port to 5000
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: '*', // Adjust this to restrict allowed origins
+    origin: 'https://recipe-finder-frontend-80g8.onrender.com',
     methods: ['GET', 'POST'],
   },
 });
