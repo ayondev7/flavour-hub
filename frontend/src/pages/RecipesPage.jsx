@@ -29,7 +29,7 @@ const RecipesPage = () => {
       setLoadingRelatedRecipes(true);
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/recipe/getRecipe/${recipeId}`
+          `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getRecipe/${recipeId}`
         );
         const recipe = response.data;
         setRecipe(recipe);
@@ -37,7 +37,7 @@ const RecipesPage = () => {
         try {
           const cuisineType = recipe.cuisineType;
           const response = await axios.get(
-            `http://localhost:5000/api/recipe/getRelatedRecipes/${cuisineType}`
+            `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getRelatedRecipes/${cuisineType}`
           );
           const relatedRecipe = response.data;
           setRelatedRecipes(relatedRecipe);
@@ -61,7 +61,7 @@ const RecipesPage = () => {
     setLoadingTrendingRecipes(true);
     // Fetch recipes from the server
     axios
-      .get("http://localhost:5000/api/recipe/getAllRecipes")
+      .get("https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getAllRecipes")
       .then((response) => {
         setTrendingRecipes(response.data);
         setLoadingTrendingRecipes(false);
@@ -75,7 +75,7 @@ const RecipesPage = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:5000/api/recipe/getRecipeDetails/${recipeId}`)
+      .get(`https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getRecipeDetails/${recipeId}`)
       .then((response) => {
         setRecipeDetails(response.data);
         setIsLoading(false);

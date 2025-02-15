@@ -39,7 +39,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/user/create-user",
+        "https://recipe-finder-backend-pt7i.onrender.com/api/user/create-user",
         formData,
         {
           headers: {

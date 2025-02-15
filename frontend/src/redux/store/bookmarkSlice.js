@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const bookmarkApi = createApi({
   reducerPath: "bookmarkApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://recipe-finder-backend-pt7i.onrender.com/api/" }),
   endpoints: (builder) => ({
     toggleBookmark: builder.mutation({
       query: ({ collectionId, recipeId}) => ({

@@ -8,7 +8,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const baseURL = "http://localhost:5000";
+  const baseURL = "https://recipe-finder-backend-pt7i.onrender.com";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Track password visibility

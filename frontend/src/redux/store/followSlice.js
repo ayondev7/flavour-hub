@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const followApi = createApi({
   reducerPath: 'followApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://recipe-finder-backend-pt7i.onrender.com/api/' }),
   endpoints: (builder) => ({
     toggleFollow: builder.mutation({
       query: ({ followerId, followingId }) => ({

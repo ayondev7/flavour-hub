@@ -17,7 +17,7 @@ const Rating = ({ recipeId }) => {
       setIsSubmitting(true); // Set loading state to true
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/recipe/postRating",
+          "https://recipe-finder-backend-pt7i.onrender.com/api/recipe/postRating",
           {
             userId: userId,
             recipeId: recipeId,

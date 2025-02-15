@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const chefsApi = createApi({
   reducerPath: "chefsApi", // The reducer path for this API
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/user" }), // Base URL for the API
+  baseQuery: fetchBaseQuery({ baseUrl: "https://recipe-finder-backend-pt7i.onrender.com/api/user" }), // Base URL for the API
   endpoints: (builder) => ({
     getChefs: builder.query({
       query: (userId) => `get-all-users/${userId}`, // API endpoint

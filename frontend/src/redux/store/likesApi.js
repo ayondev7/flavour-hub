@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const likesApi = createApi({
   reducerPath: "likesApi", // The reducer path for this API
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/like" }), // Base URL for the API
+  baseQuery: fetchBaseQuery({ baseUrl: "https://recipe-finder-backend-pt7i.onrender.com/api/like" }), // Base URL for the API
   tagTypes: ["Likes"], // Define tag types for invalidation
   endpoints: (builder) => ({
     getLikes: builder.query({

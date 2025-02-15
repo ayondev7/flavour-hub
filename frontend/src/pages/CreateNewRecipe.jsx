@@ -98,7 +98,7 @@ const CreateNewRecipe = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/recipe/upload",
+        "https://recipe-finder-backend-pt7i.onrender.com/api/recipe/upload",
         data,
         {
           headers: {

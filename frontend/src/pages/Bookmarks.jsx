@@ -14,7 +14,7 @@ const Bookmarks = () => {
     try {
       setLoading(true); // Start loading
       const response = await axios.get(
-        `http://localhost:5000/api/bookmark/get-bookmarks/${collectionId}`
+        `https://recipe-finder-backend-pt7i.onrender.com/api/bookmark/get-bookmarks/${collectionId}`
       );
       setBookmarks(response.data); // Set the fetched bookmarks data
     } catch (error) {

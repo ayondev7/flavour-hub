@@ -11,7 +11,7 @@ const Searchbar = ({ onSearchResults }) => {
     if (query) {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/recipe/search",
+          "https://recipe-finder-backend-pt7i.onrender.com/api/recipe/search",
           { params: { title: query } }
         );
         onSearchResults(response.data);
