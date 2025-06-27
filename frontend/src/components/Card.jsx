@@ -1,15 +1,15 @@
 import React from "react";
 import { BsFire, BsBookmarkPlusFill, BsBookmarkCheckFill } from "react-icons/bs";
-import { useDeleteBookmarkMutation } from "../redux/store/bookmarkSlice"; // Import the delete hook
+import { useDeleteBookmarkMutation } from "../redux/store/bookmarkSlice"; 
 import { toast } from "react-toastify";
 
 const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }) => {
   const [deleteBookmark, { isLoading: isDeleting }] = useDeleteBookmarkMutation();
 
   const handleBookmarkClick = (e) => {
-    e.stopPropagation(); // Prevent triggering `onCardClick`
+    e.stopPropagation(); 
     if (recipe?.bookmarked) {
-      // Call deleteBookmark if the recipe is already bookmarked
+     
       deleteBookmark({ recipeId: recipe._id, userId: userId })
         .unwrap()
         .then((response) => {
@@ -20,7 +20,7 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
           toast.error(error.message);
         });
     } else {
-      // Call onBookmarkClick if the recipe is not bookmarked
+    
       onBookmarkClick(recipe);
     }
   };

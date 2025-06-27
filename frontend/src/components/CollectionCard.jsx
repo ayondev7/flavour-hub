@@ -3,7 +3,7 @@ import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 const CollectionCard = ({ data }) => {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   const gradients = [
     "bg-gradient-to-r from-purple-400 to-pink-600",
@@ -27,14 +27,14 @@ const CollectionCard = ({ data }) => {
         return (
           <div
             key={index}
-            onClick={() => handleCardClick(collection?._id)} // Navigate on click
+            onClick={() => handleCardClick(collection?._id)} 
             className={`rounded-lg relative shadow-lg p-4 flex flex-col justify-between text-white ${gradientClass} cursor-pointer`} // Add cursor-pointer
             style={{ height: "200px" }}
           >
             <button
               className="absolute top-2 right-2"
               onClick={(e) => {
-                e.stopPropagation(); // Prevent navigation when clicking the trash icon
+                e.stopPropagation(); 
               }}
             >
               <HiOutlineTrash className="lg:text-lg text-sm text-white" />

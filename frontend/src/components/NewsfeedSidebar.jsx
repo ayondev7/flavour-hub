@@ -5,21 +5,21 @@ import { toast } from "react-toastify";
 import { useToggleFollowMutation } from "../redux/store/followSlice";
 
 const NewsfeedSidebar = ({ showSearchBar, title, followersSidebar, userId, chefs, onFollowChange }) => {
-  const [loadingChefIds, setLoadingChefIds] = useState(new Set()); // Track loading state for each chef
+  const [loadingChefIds, setLoadingChefIds] = useState(new Set()); 
   const [toggleFollow] = useToggleFollowMutation();
 
   const handleFollowClick = async (chefId, isFollowing) => {
     try {
-      // Set the loading state for the specific chef
+    
       setLoadingChefIds((prev) => new Set(prev).add(chefId));
 
       const result = await toggleFollow({ followerId: userId, followingId: chefId }).unwrap();
-      onFollowChange(chefId); // Update the follow state
+      onFollowChange(chefId); 
       toast.success(result?.message || "Follow status updated!");
     } catch (error) {
       toast.error(error?.data?.message || "Failed to update follow status");
     } finally {
-      // Remove the loading state once the action is complete
+    
       setLoadingChefIds((prev) => {
         const updated = new Set(prev);
         updated.delete(chefId);
@@ -73,7 +73,7 @@ const NewsfeedSidebar = ({ showSearchBar, title, followersSidebar, userId, chefs
                `}
                 aria-label={user?.following ? "Unfollow Chef" : "Follow Chef"}
                 onClick={() => handleFollowClick(user._id, user?.following)}
-                disabled={loadingChefIds.has(user._id)} // Disable only the button of the chef currently being followed/unfollowed
+                disabled={loadingChefIds.has(user._id)} 
               >
                 {loadingChefIds.has(user._id) ? (
                   "Loading..."

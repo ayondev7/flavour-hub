@@ -1,4 +1,4 @@
-// src/redux/store/recipesApi.js
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const recipesApi = createApi({

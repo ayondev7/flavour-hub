@@ -13,7 +13,7 @@ const Navbar = () => {
   const userId = getUserIdFromToken();
   const [userData, setUserData] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");  // Track search query state
+  const [searchQuery, setSearchQuery] = useState("");  
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   useEffect(() => {
@@ -83,9 +83,9 @@ const Navbar = () => {
             <div className="flex gap-x-4 lg:gap-x-10 relative">
               <Searchbar
                 onSearchResults={setSearchResults}
-                onSearchQueryChange={(query) => setSearchQuery(query)}  // Handle search query change
+                onSearchQueryChange={(query) => setSearchQuery(query)}  
               />
-              {(searchResults.length > 0 || searchQuery.trim() !== "") && (  // Only show if there are results or the query is not empty
+              {(searchResults.length > 0 || searchQuery.trim() !== "") && (  
                 <div className="absolute top-10 lg:top-12 right-4 lg:right-auto lg:left-0 lg:w-[400px] bg-white border border-gray-300 rounded-md shadow-md z-10">
                   {searchResults.length > 0 ? (
                     searchResults.map((result, index) => (

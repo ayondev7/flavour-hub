@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion'; // Import motion from framer-motion
+import { motion } from 'framer-motion'; 
 import Home from './pages/Home'; 
 import Layout from './components/Layout';
 import CreateNewRecipe from './pages/CreateNewRecipe';
@@ -24,11 +24,11 @@ const PageTransition = ({ children }) => {
 
   return (
     <motion.div
-      key={location.key} // This ensures a new animation is triggered on route change
-      initial={{ opacity: 0 }} // Starting opacity
-      animate={{ opacity: 1 }} // Ending opacity
-      exit={{ opacity: 0 }} // Exit animation
-      transition={{ duration: 0.5 }} // Duration of the animation
+      key={location.key} 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      exit={{ opacity: 0 }} 
+      transition={{ duration: 0.5 }} 
     >
       {children}
     </motion.div>
@@ -54,7 +54,7 @@ const App = () => {
                 }
               />
               
-              {/* Protected Routes */}
+              
               <Route
                 path="userHome"
                 element={

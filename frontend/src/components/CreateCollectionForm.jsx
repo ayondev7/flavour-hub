@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createCollection } from '../redux/store/collectionSlice'; // Path to your slice
+import { createCollection } from '../redux/store/collectionSlice'; 
 
 const CreateCollectionForm = ({ onBack, onCreate, userId, onCollectionCreated }) => {
   const [title, setTitle] = useState('');
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.collections); // Get loading and error from Redux store
+  const { loading, error } = useSelector((state) => state.collections); 
 
   const handleCreate = async () => {
     if (!title.trim()) {
@@ -16,12 +16,12 @@ const CreateCollectionForm = ({ onBack, onCreate, userId, onCollectionCreated })
       return;
     }
 
-    // Dispatch the createCollection action
+   
     try {
-      const response = await dispatch(createCollection({ title, userId })).unwrap(); // unwrap() to access the result
+      const response = await dispatch(createCollection({ title, userId })).unwrap(); 
       toast.success('Collection created successfully!');
-      onCreate(response); // Pass the new collection data to the parent
-      onCollectionCreated(); // Call callback to update the parent with the new collection
+      onCreate(response); 
+      onCollectionCreated(); 
       setTitle('');
     } catch (error) {
       toast.error(error || 'Failed to create collection. Please try again.');

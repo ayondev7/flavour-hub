@@ -7,14 +7,14 @@ import { getUserIdFromToken, isTokenValid } from '../assets/tokenUtils';
 import { useNavigate } from 'react-router-dom';
 
 const Rating = ({ recipeId }) => {
-  const [rating, setRating] = useState(1); // default to 40
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state for loading
+  const [rating, setRating] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false); 
   const navigate = useNavigate();
 
   const postRating = async (e) => {
     e.preventDefault();
       let userId = getUserIdFromToken();
-      setIsSubmitting(true); // Set loading state to true
+      setIsSubmitting(true); 
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/api/recipe/postRating`,
@@ -25,13 +25,13 @@ const Rating = ({ recipeId }) => {
           }
         );
         toast.success("Thank You for your feedback.");
-        setRating(1); // Reset the rating slider
-        e.target.reset(); // Clear the form
+        setRating(1); 
+        e.target.reset(); 
       } catch (error) {
         console.error("Error posting rating", error);
         toast.error("Error submitting rating");
       } finally {
-        setIsSubmitting(false); // Reset loading state
+        setIsSubmitting(false); 
       }
   };
 
@@ -74,7 +74,7 @@ const Rating = ({ recipeId }) => {
             <button
               type="submit"
               className="bg-hotPink px-4 py-2 rounded-lg text-white font-semibold"
-              disabled={isSubmitting} // Disable button while submitting
+              disabled={isSubmitting} 
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>

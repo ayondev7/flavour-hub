@@ -4,13 +4,13 @@ import { IoIosWarning } from "react-icons/io";
 const DeleteModal = ({ isSpinnerVisible, onClose, onDelete }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
+     
       <div
         className="absolute inset-0 bg-black bg-opacity-30 backdrop-blur-sm"
-        onClick={onClose} // Close modal if clicking outside
+        onClick={onClose} 
       ></div>
 
-      {/* Modal */}
+     
       <div className="relative z-10 modal-box bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
         {!isSpinnerVisible ? (
           <>

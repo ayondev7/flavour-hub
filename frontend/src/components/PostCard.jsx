@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import { FaUserCheck, FaPlus, FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useToggleFollowMutation } from "../redux/store/followSlice";
-import { useToggleLikeMutation } from "../redux/store/likesApi"; // Import like mutation
+import { useToggleLikeMutation } from "../redux/store/likesApi";
 
 const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
   const [loadingChefIds, setLoadingChefIds] = useState(new Set());
-  const [loadingLikes, setLoadingLikes] = useState(false); // To track like/unlike loading
+  const [loadingLikes, setLoadingLikes] = useState(false); 
   const [toggleFollow] = useToggleFollowMutation();
-  const [toggleLike] = useToggleLikeMutation(); // Use the like mutation
+  const [toggleLike] = useToggleLikeMutation(); 
 
-  // Follow/Unfollow logic
+
   const handleFollowClick = async (chefId) => {
     try {
       setLoadingChefIds((prev) => new Set(prev).add(chefId));
@@ -33,7 +33,7 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
     }
   };
 
-  // Like/Unlike logic
+  
   const handleLikeClick = async (recipeId) => {
     try {
       setLoadingLikes(true);
@@ -53,7 +53,7 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
 
   return (
     <div className="shadow-lg rounded-xl p-4 lg:p-6 bg-white relative">
-      {/* User Info */}
+    
       <div className="flex items-center mt-6 lg:mt-0 gap-x-2 gap-y-4 mb-4">
         <div className="avatar">
           <div className="w-12 rounded-full">
@@ -94,13 +94,13 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
         </button>
       </div>
 
-      {/* Post Content */}
+   
       <div className="mb-4">
         <h3 className="text-sm lg:text-lg font-semibold text-gray-800">{data?.title}</h3>
         <p className="text-xs lg:text-base text-gray-600 leading-relaxed">{data?.description}</p>
       </div>
 
-      {/* Post Image */}
+   
       <div className="overflow-hidden rounded-lg">
         <Link to={`/recipesPage/${data?._id}`}>
           <img
@@ -111,12 +111,12 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
         </Link>
       </div>
 
-      {/* Action Buttons */}
+  
       <div className="flex justify-start mt-4 gap-x-4 text-brightPink">
         <button
           className="flex gap-x-2 items-center justify-center"
-          onClick={() => handleLikeClick(data._id)} // Handle like click
-          disabled={loadingLikes} // Disable button while loading
+          onClick={() => handleLikeClick(data._id)} 
+          disabled={loadingLikes} 
         >
           {data?.likedByUser ? <FaHeart /> : <FaRegHeart />}
           <span className="text-xs">{data?.totalLikes || 0}</span>

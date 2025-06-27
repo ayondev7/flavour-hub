@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import collectionReducer from './collectionSlice';
 import { chefsApi } from "./chefSlice";
-import { followApi } from './followSlice'; // Import the RTK Query API slice
+import { followApi } from './followSlice';
 import { recipesApi } from './recipeSlice';
 import { bookmarkApi } from './bookmarkSlice';
 import {likesApi} from './likesApi';
@@ -16,7 +16,6 @@ const store = configureStore({
     [recipesApi.reducerPath]: recipesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    // Combine all middlewares in a single call
     getDefaultMiddleware().concat(followApi.middleware, chefsApi.middleware,recipesApi.middleware,bookmarkApi.middleware,likesApi.middleware),
 });
 

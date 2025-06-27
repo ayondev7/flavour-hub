@@ -3,7 +3,7 @@ import React from 'react';
 const Pagination = ({ totalRecipes, recipesPerPage, currentPage, paginate }) => {
     const totalPages = Math.ceil(totalRecipes / recipesPerPage);
 
-    // Function to generate the pagination items with ellipsis
+   
     const renderPageNumbers = () => {
         const pages = [];
         if (totalPages <= 5) {

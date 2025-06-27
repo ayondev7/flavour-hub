@@ -22,7 +22,7 @@ const CommentSection = ({ recipeId }) => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
-  // Function to fetch comments
+ 
   const fetchComments = async () => {
     try {
       const response = await axios.get(
@@ -266,7 +266,7 @@ const CommentSection = ({ recipeId }) => {
           })}
       </div>
 
-      {/* Modal for delete confirmation */}
+    
       <dialog id="deleteCommentModal" className="modal">
         <form method="dialog" className="modal-box">
           <h3 className="text-lg font-bold text-center">
@@ -281,7 +281,7 @@ const CommentSection = ({ recipeId }) => {
         </form>
       </dialog>
 
-      {/* Modal for edit comment */}
+      
       <dialog id="editCommentModal" className="modal">
         <form method="dialog" className="modal-box">
           <textarea
@@ -298,7 +298,7 @@ const CommentSection = ({ recipeId }) => {
         </form>
       </dialog>
 
-      {/* Modal for reply */}
+    
       <dialog id="my_modal_2" className="modal">
         <form method="dialog" className="modal-box">
           <textarea

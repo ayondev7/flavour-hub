@@ -11,8 +11,8 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
     try {
       const result = await toggleFollow({
         followerId: userId,
-        followingId: chefData._id, // Use chefData._id directly here
-      }).unwrap(); // Use `unwrap` to handle the response directly
+        followingId: chefData._id,
+      }).unwrap(); 
       toast.success(result?.message);
 
       onFollowChange(chefData._id);
@@ -23,15 +23,15 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
 
   return (
     <div className="relative rounded-xl z-10 w-[150px] lg:w-[320px] h-[250px] lg:h-[300px] text-black shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
-      {/* Background Gradient */}
+   
       <div className="h-[100px] w-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 absolute top-0 rounded-xl"></div>
 
-      {/* Follow Button */}
+      
       <button
         className={`absolute text-xs flex gap-x-1 items-center top-3 right-3 z-20 bg-white text-indigo-500 rounded-full px-4 py-2 md:text-sm font-bold shadow-md transition-all duration-200`}
         aria-label={chefData.following ? "Unfollow Chef" : "Follow Chef"}
         onClick={handleFollowClick}
-        disabled={isLoading} // Disable the button while loading
+        disabled={isLoading} 
       >
         {isLoading ? (
           "Loading..."
@@ -47,7 +47,7 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
         )}
       </button>
 
-      {/* Avatar and Name Section */}
+     
       <div className="flex flex-col w-full items-center pt-16">
         <div className="avatar">
           <div className="ring-green-500 ring-offset-base-100 w-12 lg:w-16 rounded-full ring ring-offset-2 overflow-hidden">
@@ -67,7 +67,7 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
           </h2>
         </div>
 
-        {/* Dynamic Rating System */}
+        
         <div className="rating mt-2 ml-3">
           {[1, 2, 3, 4, 5].map((value) => (
             <input
@@ -84,7 +84,7 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
           ))}
         </div>
 
-        {/* Recipes and Points Section */}
+    
         <div className="flex flex-col items-center bg-white text-indigo-500 p-2 rounded-lg shadow-sm w-10/12 lg:w-8/12">
           <p className="text-[10px] lg:text-sm font-medium">
             Recipes: {chefData?.numberOfRecipes}

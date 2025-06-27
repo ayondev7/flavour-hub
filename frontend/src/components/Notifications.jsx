@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { RxCross2 } from "react-icons/rx";
 
 const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
-  // Framer Motion Variants
+ 
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5 } },
@@ -22,7 +22,7 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
   };
 
   const handleNotificationClick = (notification) => {
-    // Only trigger on comment or like notifications
+  
     if (notification.type === "comment" || notification.type === "like") {
       onNotificationClick(notification?.recipeId);
     }
@@ -43,19 +43,19 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
         animate="visible"
         exit="exit"
       >
-        {/* Close Button */}
+        
         <motion.button
           onClick={onClose}
           className="absolute right-1 text-base font-medium top-1 text-black z-30"
         >
           <RxCross2 className="text-xl" />
         </motion.button>
-        {/* Notifications Title */}
+      
         <h3 className="font-bold text-lg rounded-tr-lg rounded-tl-lg sticky text-hotPink top-0 w-full p-4 bg-white z-20 border-b flex gap-x-1 items-center">
           <IoIosNotifications />
           Notifications
         </h3>
-        {/* Notifications Content */}
+       
         <div className="p-4 h-[500px] lg:h-[300px] overflow-y-auto">
           <div className="flex flex-col gap-y-4">
             {notificationsData?.length === 0 ? (

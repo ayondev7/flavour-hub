@@ -17,7 +17,7 @@ const BookmarkDialog = ({
 }) => {
   const [selected, setSelected] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state for bookmark creation
+  const [loading, setLoading] = useState(false); 
   const [toggleBookmark, { isLoading, isSuccess, error }] = useToggleBookmarkMutation();
 
   if (!isVisible) return null;
@@ -42,30 +42,30 @@ const BookmarkDialog = ({
     setLoading(true);
 
     try {
-      // Call the RTK Query mutation
+     
       const response = await toggleBookmark({
         collectionId: selected,
         recipeId: recipe._id,
       }).unwrap();
 
-      // Handle success or conflict response
+      
       if (response.conflict) {
-        toast.warning(response.message); // Show warning for conflict
+        toast.warning(response.message);
       } else {
-        toast.success(response.message); // Normal success message
+        toast.success(response.message); 
 
-        // Notify parent about changes
+       
         onConfirm(selected);
         onClose();
 
-        // Optimistically update the bookmark count
+        
         const updatedCollections = collections.map((collection) =>
           collection._id === selected
             ? { ...collection, bookmarkCount: collection.bookmarkCount + 1 }
             : collection
         );
 
-        // Update parent with new data
+      
         onCollectionCreated(updatedCollections);
       }
     } catch (error) {
@@ -87,7 +87,7 @@ const BookmarkDialog = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
             >
-              {/* Header */}
+           
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-bold text-gray-800">
                   Add "{recipe?.title}" to a collection
@@ -100,7 +100,7 @@ const BookmarkDialog = ({
                 </button>
               </div>
 
-              {/* Collection List */}
+             
               <div className="mt-4 space-y-4 overflow-y-scroll max-h-[300px] pr-6">
                 {collections?.map((collection) => (
                   <div
@@ -152,7 +152,7 @@ const BookmarkDialog = ({
                 ))}
               </div>
 
-              {/* Create New and Save Buttons */}
+           
               <div className="mt-6 flex justify-between items-center">
                 <button
                   className="text-sm text-brightPink font-medium flex items-center gap-x-2"
