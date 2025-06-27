@@ -14,7 +14,7 @@ const Leaderboard = () => {
     const fetchLeaderboardData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://recipe-finder-backend-pt7i.onrender.com/api/user/get-leaderboard-rankings/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/user/get-leaderboard-rankings/${userId}`);
         setLeaderboardData(response.data); // Set leaderboard data
       } catch (err) {
         setError("Failed to fetch leaderboard data. Please try again later.");

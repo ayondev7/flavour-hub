@@ -39,7 +39,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "https://recipe-finder-backend-pt7i.onrender.com/api/user/create-user",
+        `${process.env.REACT_APP_BACKEND_URL}/api/user/create-user`,
         formData,
         {
           headers: {

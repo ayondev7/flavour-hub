@@ -26,7 +26,7 @@ const CommentSection = ({ recipeId }) => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/comment/getComments/${recipeId}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/comment/getComments/${recipeId}`
       );
       setComments(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       const response = await axios.post(
-        "https://recipe-finder-backend-pt7i.onrender.com/api/comment/postComment",
+        `${process.env.REACT_APP_BACKEND_URL}/api/comment/postComment`,
         {
           userId: userId,
           content: comment,
@@ -68,7 +68,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       const response = await axios.post(
-        "https://recipe-finder-backend-pt7i.onrender.com/api/comment/postComment",
+        `${process.env.REACT_APP_BACKEND_URL}/api/comment/postComment`,
         {
           userId: userId,
           content: reply,
@@ -103,7 +103,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       await axios.delete(
-        "https://recipe-finder-backend-pt7i.onrender.com/api/comment/deleteComment",
+        `${process.env.REACT_APP_BACKEND_URL}/api/comment/deleteComment`,
         { data: { commentId: commentId } }
       );
       document.getElementById("deleteCommentModal").close();
@@ -121,7 +121,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       const response = await axios.put(
-        "https://recipe-finder-backend-pt7i.onrender.com/api/comment/updateComment",
+        `${process.env.REACT_APP_BACKEND_URL}/api/comment/updateComment`,
         { commentId: commentId, content: fetchedComment }
       );
       if (response.status === 200) {

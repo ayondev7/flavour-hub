@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const recipesApi = createApi({
   reducerPath: 'recipesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://recipe-finder-backend-pt7i.onrender.com/api/recipe/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BACKEND_URL}/api/recipe/` }),
   endpoints: (builder) => ({
     getAllRecipes: builder.query({
       query: (userId) => ({

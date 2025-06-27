@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar";
 import Searchbar from "../components/Searchbar";
 
 const Navbar = () => {
-  const baseURL = "https://recipe-finder-backend-pt7i.onrender.com";
+  const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const userId = getUserIdFromToken();

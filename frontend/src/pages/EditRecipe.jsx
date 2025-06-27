@@ -49,7 +49,7 @@ const EditRecipe = () => {
   const handlePrepTimeSave = async () => {
     try {
       await axios.put(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updatePrepTime/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updatePrepTime/${recipeId}`,
         {
           prepTime: {
             hours: formData.prepTime.hours,
@@ -89,7 +89,7 @@ const EditRecipe = () => {
   const handleCookTimeSave = async () => {
     try {
       await axios.put(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updateCookTime/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updateCookTime/${recipeId}`,
         {
           cookTime: {
             hours: formData.cookTime.hours,
@@ -127,7 +127,7 @@ const EditRecipe = () => {
   const handleNutritionalSave = async (field) => {
     try {
       await axios.put(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updateNutritionalValues/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updateNutritionalValues/${recipeId}`,
         {
           nutritionalValues: {
             ...formData.nutritionalValues,
@@ -169,7 +169,7 @@ const EditRecipe = () => {
       try {
         const updatedData = { [field]: formData[field] };
         await axios.put(
-          `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updateRecipe/${recipeId}`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updateRecipe/${recipeId}`,
           updatedData
         );
         toast.success("Recipe updated successfully!");
@@ -199,7 +199,7 @@ const EditRecipe = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get(
-          `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getRecipe/${recipeId}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getRecipe/${recipeId}`
         );
         const fetchedRecipe = response.data;
         setRecipe(response.data);
@@ -257,7 +257,7 @@ const EditRecipe = () => {
     try {
       const instruction = formData.instructions[instructionIndex];
       await axios.put(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updateInstruction/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updateInstruction/${recipeId}`,
         JSON.stringify({
           value: instruction.value,
           instructionId: id, // Include ingredient._id as ingredientId
@@ -286,7 +286,7 @@ const EditRecipe = () => {
   const deleteInstruction = async (instructionId) => {
     try {
       await axios.delete(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/deleteInstruction/${recipeId}/${instructionId}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/deleteInstruction/${recipeId}/${instructionId}`
       );
 
       setFormData((prev) => ({
@@ -314,7 +314,7 @@ const EditRecipe = () => {
     try {
       const ingredient = formData.ingredients[ingredientIndex];
       await axios.put(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updateIngredient/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updateIngredient/${recipeId}`,
         JSON.stringify({
           value: ingredient.value,
           ingredientId: id, // Include ingredient._id as ingredientId
@@ -343,7 +343,7 @@ const EditRecipe = () => {
   const deleteIngredient = async (ingredientId) => {
     try {
       await axios.delete(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/deleteIngredient/${recipeId}/${ingredientId}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/deleteIngredient/${recipeId}/${ingredientId}`
       );
 
       setFormData((prev) => ({
@@ -385,7 +385,7 @@ const EditRecipe = () => {
 
     try {
       await axios.put(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/updateRecipeImage/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/updateRecipeImage/${recipeId}`,
         formData,
         {
           headers: {

@@ -8,7 +8,7 @@ import ReviewCard from "../components/ReviewCard.jsx";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
-  const baseURL = "https://recipe-finder-backend-dhmj.onrender.com";
+  const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

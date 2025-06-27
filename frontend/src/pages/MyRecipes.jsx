@@ -27,7 +27,7 @@ const MyRecipes = () => {
 
         try {
           const response = await axios.get(
-            `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getMyRecipes/${userId}`
+            `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getMyRecipes/${userId}`
           );
           setRecipes(response.data);
           setLoading(false);
@@ -45,7 +45,7 @@ const MyRecipes = () => {
     if (selectedRecipe) {
       try {
         await axios.delete(
-          `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/deleteRecipe/${selectedRecipe._id}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/deleteRecipe/${selectedRecipe._id}`
         );
         setRecipes((prevRecipes) =>
           prevRecipes.filter((recipe) => recipe._id !== selectedRecipe._id)

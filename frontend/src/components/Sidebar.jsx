@@ -20,7 +20,7 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const socket = io("https://recipe-finder-backend-pt7i.onrender.com");
+  const socket = io(`${process.env.REACT_APP_BACKEND_URL}`);
 
   useEffect(() => {
     if (userId) {
@@ -42,7 +42,7 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
   const fetchNotifications = async (userId) => {
     try {
       const response = await axios.get(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/comment/get-notifications/${userId}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/comment/get-notifications/${userId}`
       );
       setNotificationsData(response.data);
     } catch (error) {

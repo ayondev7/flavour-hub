@@ -6,7 +6,7 @@ export const createCollection = createAsyncThunk(
   'collections/createCollection',
   async ({ title, userId }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://recipe-finder-backend-pt7i.onrender.com/api/collections/create', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/collections/create`, {
         title,
         userId,
       });

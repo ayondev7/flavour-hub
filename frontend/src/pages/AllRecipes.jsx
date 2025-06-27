@@ -30,11 +30,11 @@ const AllRecipes = () => {
     try {
       const response = await axios.get(
         cuisineTypeState
-          ? `https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getRelatedRecipes/${cuisineTypeState}`
-          : "https://recipe-finder-backend-pt7i.onrender.com/api/recipe/getAllRecipes",
+          ? `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getRelatedRecipes/${cuisineTypeState}`
+          : `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getAllRecipes`,
         {
           headers: {
-            userId: userId, // Include userId in the headers
+            userId: userId, 
           },
         }
       );
@@ -49,7 +49,7 @@ const AllRecipes = () => {
   const fetchCollections = async () => {
     try {
       const response = await axios.get(
-        `https://recipe-finder-backend-pt7i.onrender.com/api/collections/get-collections/${userId}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/collections/get-collections/${userId}`
       );
       setCollections(response.data);
     } catch (error) {

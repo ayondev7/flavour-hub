@@ -12,7 +12,7 @@ import BookmarkDialog from "../components/BookmarkDialogue";
 import { ToastContainer } from "react-toastify";
 
 const UserHome = () => {
-  const baseURL = "https://recipe-finder-backend-pt7i.onrender.com";
+  const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
   const userId = getUserIdFromToken();
   const [recipes, setRecipes] = useState([]);
   const [chefs, setChefs] = useState([]);

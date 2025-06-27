@@ -11,7 +11,7 @@ const Collections = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`https://recipe-finder-backend-pt7i.onrender.com/api/collections/get-collections/${userId}`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/collections/get-collections/${userId}`)
       .then((response) => {
         setCollections(response.data);
         setLoading(false); // Only stop loading once recipes are set
