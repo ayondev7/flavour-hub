@@ -1,7 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const {createRecipe, getAllRecipes, searchRecipes, getMyRecipes, deleteRecipe,
-     getRecipe, updateRecipe, getRelatedRecipes, postRating, getAverageRatingPerRecipe, getRecipeByGenre} = require('../controllers/recipeController');
+const auth = require('../middleware/authMiddleware');
 const recipeController = require('../controllers/recipeController');
 const router = express.Router();
 const upload = multer({
@@ -17,25 +16,25 @@ const upload = multer({
   },
 });
 
-router.post('/upload', upload.single('image'), createRecipe);
+router.post('/upload',auth, upload.single('image'), recipeController.createRecipe);
 
 router.put('/updateRecipeImage/:recipeId', upload.single('image'), recipeController.updateImage);
 
-router.get('/getAllRecipes', getAllRecipes);
+router.get('/getAllRecipes', recipeController.getAllRecipes);
 
-router.get('/getRecipe/:recipeId', getRecipe);
+router.get('/getRecipe/:recipeId', recipeController.getRecipe);
 
-router.get('/getRelatedRecipes/:cuisineType', getRelatedRecipes);
+router.get('/getRelatedRecipes/:cuisineType', recipeController.getRelatedRecipes);
 
-router.get('/search', searchRecipes);
+router.get('/search', recipeController.searchRecipes);
 
-router.get('/getMyRecipes/:userId', getMyRecipes);
+router.get('/getMyRecipes/:userId', recipeController.getMyRecipes);
 
-router.put('/updateRecipe/:id', recipeController.updateRecipe);
+router.put('/updateRecipe/:id',recipeController.updateRecipe);
 
-router.delete('/deleteRecipe/:id', deleteRecipe);
+router.delete('/deleteRecipe/:id', recipeController.deleteRecipe);
 
-router.post('/postRating', upload.none(), postRating);
+router.post('/postRating', upload.none(), recipeController.postRating);
 
 router.put('/updateIngredient/:recipeId', recipeController.updateIngredient);
 

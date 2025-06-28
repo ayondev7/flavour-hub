@@ -15,9 +15,12 @@ const followRoutes = require("./routes/followRoutes");
 const likeRoutes = require("./routes/likeRoutes");
 require("dotenv").config();
 
-if (!process.env.PORT) throw new Error("PORT environment variable is not defined.");
-if (!process.env.MONGO_URI) throw new Error("MONGO_URI environment variable is not defined.");
-if (!process.env.CORS_ORIGIN) throw new Error("CORS_ORIGIN environment variable is not defined.");
+if (!process.env.PORT)
+  throw new Error("PORT environment variable is not defined.");
+if (!process.env.MONGO_URI)
+  throw new Error("MONGO_URI environment variable is not defined.");
+if (!process.env.CORS_ORIGIN)
+  throw new Error("CORS_ORIGIN environment variable is not defined.");
 
 const app = express();
 const port = process.env.PORT;
@@ -60,6 +63,7 @@ const io = socketIo(server, {
     origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   },
 });
 

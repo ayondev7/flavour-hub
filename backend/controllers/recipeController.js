@@ -23,9 +23,10 @@ exports.createRecipe = async (req, res) => {
     nutritionalValues,
     dietaryInformation,
   } = req.body;
-  const id = req.headers.id;
+  
+  const {user} = req;
+  const id = user._id;
 
-  // Validate and parse the instruction data
   let instructionsArray;
   try {
     instructionsArray = JSON.parse(instructions);
@@ -40,7 +41,7 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
-  // Validate and parse the ingredients data
+ 
   let ingredientsArray;
   try {
     ingredientsArray = JSON.parse(ingredients);
@@ -55,7 +56,7 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
-  // Parse nutritionalValues
+ 
   let nutritionalValuesParsed;
   try {
     nutritionalValuesParsed = JSON.parse(nutritionalValues);
@@ -63,7 +64,7 @@ exports.createRecipe = async (req, res) => {
     return res.status(400).json({ error: "Invalid nutritional values format" });
   }
 
-  // Parse prepTime and cookTime
+  
   let prepTimeParsed, cookTimeParsed;
   try {
     prepTimeParsed = JSON.parse(prepTime);
@@ -74,7 +75,7 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
-  // Create new recipe
+  
   const newRecipe = new Recipe({
     title,
     description,
@@ -88,22 +89,22 @@ exports.createRecipe = async (req, res) => {
     nutritionalValues: nutritionalValuesParsed,
     dietaryInformation,
     chefId: id,
-    image: req.file ? req.file.buffer : null, // Save the image binary data if provided
+    image: req.file ? req.file.buffer : null, 
   });
 
   try {
-    // Save the recipe to the database
+    
     const savedRecipe = await newRecipe.save();
 
-    // Increment the numberOfRecipes field in the user's document
+    
     const user = await User.findById(id);
     if (user) {
-      user.numberOfRecipes += 1; // Increment the numberOfRecipes field by 1
-      user.points += 100; // Add 100 points to the user's points field
-      await user.save(); // Save the updated user document
+      user.numberOfRecipes += 1; 
+      user.points += 100; 
+      await user.save(); 
     }
 
-    // Respond with the saved recipe data
+   
     res.json(savedRecipe);
   } catch (err) {
     res
@@ -114,9 +115,9 @@ exports.createRecipe = async (req, res) => {
 
 exports.getAllRecipes = async (req, res) => {
   try {
-    const userId = req.headers.userid; // Extract userId from headers
+    const userId = req.headers.userid; 
 
-    // Helper function to determine the rank of a chef
+   
     const getChefRank = (points) => {
       if (points >= 1001) return "Legendary Chef";
       if (points >= 501) return "Master Chef";
@@ -125,22 +126,22 @@ exports.getAllRecipes = async (req, res) => {
       return "Apprentice Chef";
     };
 
-    // Fetch all recipes
+ 
     const recipes = await Recipe.find();
 
-    // Fetch the user's collections
+  
     const userCollections = await Collection.find({ userId: userId });
 
-    // Extract collection IDs for the user
+   
     const collectionIds = userCollections.map((collection) => collection._id);
 
-    // Use Promise.all to process recipes in parallel
+    
     const recipesWithDetails = await Promise.all(
       recipes.map(async (recipe) => {
         const chef = await User.findById(recipe.chefId);
         const chefRank = getChefRank(chef.points);
 
-        // Calculate the average rating for the recipe from the Rating collection
+      
         const ratings = await Rating.find({ recipeId: recipe._id });
         const totalRatings = ratings.length;
         const sumRatings = ratings.reduce(
@@ -152,43 +153,42 @@ exports.getAllRecipes = async (req, res) => {
             ? (sumRatings / totalRatings).toFixed(2)
             : "No ratings yet";
 
-        // Check following status
+      
         let following = false;
         if (userId) {
           const followStatus = await Follow.findOne({
             follower: userId,
             following: chef._id,
           });
-          following = !!followStatus; // Set to true if follow status exists
+          following = !!followStatus; 
         }
 
-        // Check bookmarked status
+       
         let bookmarked = false;
         if (collectionIds.length > 0) {
           const bookmarkStatus = await Bookmark.findOne({
             collectionId: { $in: collectionIds },
             recipeId: recipe._id,
           });
-          bookmarked = !!bookmarkStatus; // Set to true if bookmark status exists
+          bookmarked = !!bookmarkStatus; 
         }
 
-        // Calculate total likes and check if the user has liked the recipe
+       
         const likes = await Like.find({ recipeId: recipe._id });
         const totalLikes = likes.length;
 
-        // Check if the user has liked this recipe
+     
         const likedByUser = likes.some((like) => like.userId.toString() === userId);
 
-        // Calculate total comments for the recipe
+     
         const totalComments = await Comment.countDocuments({ recipeId: recipe._id });
 
-        // Convert images to Base64 if available
         const recipeImage = recipe.image
           ? recipe.image.toString("base64")
           : null;
         const chefImage = chef.image ? chef.image.toString("base64") : null;
 
-        // Format the createdAt date
+      
         const formattedDate = format(new Date(recipe.createdAt), "d MMMM yyyy 'at' h:mma");
 
         return {
@@ -204,22 +204,22 @@ exports.getAllRecipes = async (req, res) => {
           nutritionalValues: recipe.nutritionalValues,
           dietaryInformation: recipe.dietaryInformation,
           chefId: recipe.chefId,
-          averageRating: averageRating, // Include calculated average rating
+          averageRating: averageRating, 
           chefName: chef.name,
           chefRank: chefRank,
-          following: following, // Include following status
-          bookmarked: bookmarked, // Include bookmarked status
-          totalLikes: totalLikes, // Include total likes count
-          totalComments: totalComments, // Include total comments count
-          likedByUser: likedByUser, // Include user's like status
+          following: following, 
+          bookmarked: bookmarked,
+          totalLikes: totalLikes, 
+          totalComments: totalComments,
+          likedByUser: likedByUser, 
           image: recipeImage,
           chefImage: chefImage,
-          createdAt: formattedDate, // Include formatted created date
+          createdAt: formattedDate, 
         };
       })
     );
 
-    // Respond with the processed recipes
+  
     res.status(200).json(recipesWithDetails);
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -229,7 +229,7 @@ exports.getAllRecipes = async (req, res) => {
 
 
 
-// Controller function to get recipes by user ID
+
 exports.getMyRecipes = async (req, res) => {
   const { userId } = req.params;
 
@@ -242,7 +242,7 @@ exports.getMyRecipes = async (req, res) => {
         .json({ message: "No recipes found for this user" });
     }
 
-    // Convert each image's binary data to Base64
+  
     const recipesWithImages = recipes.map((recipe) => {
       const base64Image = recipe.image ? recipe.image.toString("base64") : null;
       return {
@@ -262,7 +262,7 @@ exports.getMyRecipes = async (req, res) => {
       };
     });
 
-    // Send the recipes with images as JSON response
+   
     res.json(recipesWithImages);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -274,7 +274,7 @@ exports.getRelatedRecipes = async (req, res) => {
   const userId = req.headers.userid; 
 
   try {
-    // Helper function to determine the rank of a chef
+  
     const getChefRank = (points) => {
       if (points >= 1001) return "Legendary Chef";
       if (points >= 501) return "Master Chef";
@@ -283,52 +283,52 @@ exports.getRelatedRecipes = async (req, res) => {
       return "Apprentice Chef";
     };
 
-    // Fetch related recipes by cuisine type
+   
     const relatedRecipes = await Recipe.find({ cuisineType });
 
-    // Fetch the user's collections
+  
     const userCollections = await Collection.find({ userId: userId });
     const collectionIds = userCollections.map((collection) => collection._id);
 
-    // Process each recipe
+   
     const recipesWithDetails = await Promise.all(
       relatedRecipes.map(async (recipe) => {
         const chef = await User.findById(recipe.chefId);
         const chefRank = getChefRank(chef.points);
 
-        // Calculate the average rating
+      
         const ratings = await Rating.find({ recipeId: recipe._id });
         const totalRatings = ratings.length;
         const sumRatings = ratings.reduce((acc, ratingDoc) => acc + ratingDoc.rating, 0);
         const averageRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(2) : "No ratings yet";
 
-        // Check following status
+      
         let following = false;
         if (userId) {
           const followStatus = await Follow.findOne({ follower: userId, following: chef._id });
           following = !!followStatus;
         }
 
-        // Check bookmarked status
+      
         let bookmarked = false;
         if (collectionIds.length > 0) {
           const bookmarkStatus = await Bookmark.findOne({ collectionId: { $in: collectionIds }, recipeId: recipe._id });
           bookmarked = !!bookmarkStatus;
         }
 
-        // Calculate total likes and check if the user has liked the recipe
+       
         const likes = await Like.find({ recipeId: recipe._id });
         const totalLikes = likes.length;
         const likedByUser = likes.some((like) => like.userId.toString() === userId);
 
-        // Calculate total comments
+     
         const totalComments = await Comment.countDocuments({ recipeId: recipe._id });
 
-        // Convert images to Base64 if available
+        
         const recipeImage = recipe.image ? recipe.image.toString("base64") : null;
         const chefImage = chef.image ? chef.image.toString("base64") : null;
 
-        // Format the createdAt date
+        
         const formattedDate = format(new Date(recipe.createdAt), "d MMMM yyyy 'at' h:mma");
 
         return {
@@ -377,10 +377,10 @@ exports.getRecipe = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    // Convert the image's binary data to Base64
+    
     const base64Image = recipe.image ? recipe.image.toString("base64") : null;
 
-    // Create the recipe object with the image in Base64 format
+    
     const recipeWithImage = {
       _id: recipe._id,
       title: recipe.title,
@@ -397,7 +397,7 @@ exports.getRecipe = async (req, res) => {
       chefId: recipe.chefId,
     };
 
-    // Send the recipe with the image as JSON response
+    
     res.json(recipeWithImage);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -409,12 +409,12 @@ exports.updateRecipe = async (req, res) => {
   const updates = req.body;
 
   try {
-    // Check if any updates were provided
+    
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ message: "No updates provided" });
     }
 
-    // Find and update the recipe
+   
     const recipe = await Recipe.findByIdAndUpdate(
       id,
       { $set: updates },
@@ -448,27 +448,27 @@ exports.searchRecipes = async (req, res) => {
   }
 };
 
-// Controller function to delete a recipe
+
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipeId = req.params.id;
 
-    // Find the recipe to be deleted
+  
     const recipe = await Recipe.findById(recipeId);
 
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    // Find the user who created the recipe
-    const user = await User.findById(recipe.chefId); // Assuming chefId is the user who created the recipe
+ 
+    const user = await User.findById(recipe.chefId); 
     if (user) {
-      // Decrement the user's numberOfRecipes by 1
+     
       user.numberOfRecipes -= 1;
-      await user.save(); // Save the updated user document
+      await user.save(); 
     }
 
-    // Delete the recipe
+   
     await Recipe.findByIdAndDelete(recipeId);
 
     res.status(200).json({ message: "Recipe deleted successfully" });
@@ -485,7 +485,7 @@ exports.postRating = async (req, res) => {
   }
 
   try {
-    // Fetch the recipe to get the chefId
+    
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
@@ -493,25 +493,25 @@ exports.postRating = async (req, res) => {
 
     const chefId = recipe.chefId;
 
-    // Check if the user has already rated this recipe
+   
     const existingRating = await Rating.findOne({ userId, recipeId });
-    let isNewRecord = false; // Flag to check if a new record is created
+    let isNewRecord = false; 
 
-    // If the rating already exists, update it
+   
     if (existingRating) {
       existingRating.rating = rating;
       await existingRating.save();
     } else {
-      // Create a new rating if it doesn't exist
+      
       const newRating = new Rating({ userId, recipeId, chefId, rating });
       await newRating.save();
-      isNewRecord = true; // Set flag to true for a new record
+      isNewRecord = true; 
     }
 
-    // Recalculate the average rating of the chef's recipes
+   
     const chefRatings = await Rating.find({ chefId });
 
-    // Calculate average rating for the chef
+   
     const totalRatings = chefRatings.length;
     const sumRatings = chefRatings.reduce(
       (acc, ratingDoc) => acc + ratingDoc.rating,
@@ -519,20 +519,20 @@ exports.postRating = async (req, res) => {
     );
     const averageRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
 
-    // Update the chef's averageRating field
+    
     const chef = await User.findById(chefId);
     if (!chef) {
       return res.status(404).json({ message: "Chef not found" });
     }
     chef.averageRating = averageRating;
 
-    // Add points to the chef only if a new record is created
+  
     if (isNewRecord) {
       const pointsToAdd = rating * 100;
       chef.points += pointsToAdd;
     }
 
-    // Save the updated chef
+  
     await chef.save();
 
     res.status(200).json({
@@ -688,14 +688,14 @@ exports.updateNutritionalValues = async (req, res) => {
   const { nutritionalValues } = req.body;
 
   try {
-    // Ensure nutritionalValues is an object and not empty
+    
     if (!nutritionalValues || Object.keys(nutritionalValues).length === 0) {
       return res
         .status(400)
         .json({ error: "No nutritional values provided for update." });
     }
 
-    // Create the update object for MongoDB, ensuring values are not empty
+   
     const updateFields = {};
     for (const key in nutritionalValues) {
       if (nutritionalValues[key] && nutritionalValues[key].trim() !== "") {
@@ -706,11 +706,11 @@ exports.updateNutritionalValues = async (req, res) => {
       }
     }
 
-    // Find the recipe and update the nutritional values
+   
     const updatedRecipe = await Recipe.findByIdAndUpdate(
       recipeId,
       { $set: updateFields },
-      { new: true, runValidators: true } // new: true returns the updated document
+      { new: true, runValidators: true } 
     );
 
     if (!updatedRecipe) {
@@ -807,22 +807,22 @@ exports.updateImage = async (req, res) => {
   const { recipeId } = req.params;
 
   try {
-    // Find the recipe by ID
+   
     const recipe = await Recipe.findById(recipeId);
 
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    // Check if a new image file is provided
+   
     if (req.file) {
-      // Update the image field with the new file's buffer
+     
       recipe.image = req.file.buffer;
     } else {
       return res.status(400).json({ message: "No image file provided." });
     }
 
-    // Save the updated recipe document
+    
     await recipe.save();
 
     res.json({ message: "Image updated successfully!" });
@@ -836,30 +836,30 @@ exports.getRecipeDetails = async (req, res) => {
   try {
     const { recipeId } = req.params;
 
-    // Validate the recipeId
+   
     if (!mongoose.Types.ObjectId.isValid(recipeId)) {
       return res.status(400).json({ error: "Invalid recipe ID" });
     }
 
-    // Fetch the recipe details by recipeId
+    
     const recipe = await Recipe.findById(recipeId).exec();
     if (!recipe) {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
-    // Fetch the chef details
+    
     const chef = await User.findById(recipe.chefId).exec();
     if (!chef) {
       return res.status(404).json({ error: "Chef not found" });
     }
 
-    // Convert image buffer to base64
+    
     const chefImageBase64 = chef.image ? chef.image.toString("base64") : null;
 
-    // Fetch total number of comments for the recipe
+   
     const totalComments = await Comment.countDocuments({ recipeId }).exec();
 
-    // Fetch average rating for the recipe and convert it to an integer
+   
     const averageRating = await Rating.aggregate([
       { $match: { recipeId: new mongoose.Types.ObjectId(recipeId) } },
       { $group: { _id: null, avgRating: { $avg: "$rating" } } },
@@ -868,7 +868,7 @@ exports.getRecipeDetails = async (req, res) => {
       ? Math.floor(averageRating[0].avgRating)
       : 0;
 
-    // Format the createdAt date to the desired format
+   
     const formattedCreatedAt = new Date(recipe.createdAt).toLocaleDateString(
       "en-GB",
       {
@@ -878,7 +878,7 @@ exports.getRecipeDetails = async (req, res) => {
       }
     );
 
-    // Form the response JSON
+   
     const response = {
       recipeId: recipe._id,
       chef: {
@@ -891,7 +891,7 @@ exports.getRecipeDetails = async (req, res) => {
       createdAt: formattedCreatedAt,
     };
 
-    // Send the response
+    
     res.json(response);
   } catch (error) {
     console.error(error);
