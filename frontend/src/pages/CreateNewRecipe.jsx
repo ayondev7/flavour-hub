@@ -4,11 +4,9 @@ import { FaTrashAlt } from "react-icons/fa";
 import { BsPlusLg } from "react-icons/bs";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserIdFromToken } from "../assets/tokenUtils";
 import { useNavigate } from "react-router-dom";
 
 const CreateNewRecipe = () => {
-  const userId = getUserIdFromToken();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -77,7 +75,7 @@ const CreateNewRecipe = () => {
     if (!file) return;
 
     const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-    const maxSize = 5 * 1024 * 1024; 
+    const maxSize = 5 * 1024 * 1024;
 
     if (!validTypes.includes(file.type)) {
       toast.error(
@@ -116,18 +114,20 @@ const CreateNewRecipe = () => {
     }
 
     try {
+      const token = sessionStorage.getItem("token");
+
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/recipe/upload`,
         data,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            id: userId,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      setIsLoading(false);
       toast.success("Recipe created successfully!");
+      setIsLoading(false);
 
       setTimeout(() => {
         navigate("/myRecipes");

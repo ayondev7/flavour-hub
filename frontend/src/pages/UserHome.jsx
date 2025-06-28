@@ -21,24 +21,25 @@ const UserHome = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [collections, setCollections] = useState(null);
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     setLoading(true);
     axios
       .get(`${baseURL}/api/recipe/getAllRecipes`, {
         headers: {
-          userId: userId, // Include userId in the headers
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         setRecipes(response.data);
-        setLoading(false); // Only stop loading once recipes are set
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching recipes:", error);
-        setLoading(false); // Stop loading even if there's an error
+        setLoading(false);
       });
-  }, []);
+  }, [token]);
 
   const fetchCollections = async () => {
     try {
@@ -61,13 +62,12 @@ const UserHome = () => {
     setIsBookmarkDialogOpen(true);
   };
 
-  // Fetch chefs function
   const fetchChefs = () => {
-    setLoading(true); // Ensure loading is displayed while fetching
+    setLoading(true);
     axios
       .get(`${baseURL}/api/user/get-all-users/${userId}`)
       .then((response) => {
-        setChefs(response.data.slice(0, 8)); // Assuming you only want the first 8 users
+        setChefs(response.data.slice(0, 8));
         setLoading(false);
       })
       .catch((error) => {
@@ -77,7 +77,7 @@ const UserHome = () => {
   };
 
   useEffect(() => {
-    fetchChefs(); // Fetch chefs when the component mounts
+    fetchChefs();
   }, []);
 
   const onFollowChange = (chefId) => {
@@ -152,7 +152,7 @@ const UserHome = () => {
           collections={collections}
           onCollectionCreated={fetchCollections}
           onConfirm={(selectedCollection) => {
-            setIsBookmarkDialogOpen(false); // Close the dialog
+            setIsBookmarkDialogOpen(false);
             setRecipes((prevRecipes) =>
               prevRecipes.map((r) =>
                 r._id === selectedRecipe._id ? { ...r, bookmarked: true } : r
@@ -163,7 +163,6 @@ const UserHome = () => {
       )}
 
       {loading || recipes.length <= 0 ? (
-        // Render skeleton loader
         <div className="grid grid-cols-2 gap-x-4 lg:gap-x-0 lg:grid-cols-4 gap-y-16 px-4 lg:px-16 py-10">
           {Array.from({ length: 8 }).map((_, index) => (
             <RecipeCardSkeleton key={index} />
@@ -182,7 +181,7 @@ const UserHome = () => {
           <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-16 pb-24">
             {recipes.slice(-8).map((recipe) => (
               <Card
-                key={recipe.id}
+                key={recipe._id}
                 recipe={recipe}
                 onBookmarkClick={handleBookmarkClick}
                 userId={userId}
@@ -235,9 +234,9 @@ const UserHome = () => {
         {loading
           ? Array(8)
               .fill()
-              .map((_, index) => <ChefCardSkeleton />)
+              .map((_, index) => <ChefCardSkeleton key={index} />)
           : chefs
-              .filter((chef) => chef._id !== userId) // Exclude the chef matching the userId
+              .filter((chef) => chef._id !== userId)
               .map((chef) => (
                 <ChefCard
                   key={chef._id}

@@ -19,8 +19,8 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
-    e.preventDefault(); // Prevent form submission
-    setIsLoading(true); // Start loading
+    e.preventDefault();
+    setIsLoading(true);
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!", {
@@ -70,7 +70,7 @@ const Signup = () => {
         });
       }
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     }
   };
 
@@ -115,9 +115,44 @@ const Signup = () => {
               <input
                 type="file"
                 className="file-input file-input-bordered focus:border-none file-input-primary border border-gray-400 bg-white w-full"
-                onChange={(e) => setImage(e.target.files[0])}
+                accept=".jpg,.jpeg,.png,.webp"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+
+                  if (!file) return;
+
+                  const allowedTypes = [
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png",
+                    "image/webp",
+                  ];
+                  const maxSize = 5 * 1024 * 1024;
+
+                  if (!allowedTypes.includes(file.type)) {
+                    toast.error(
+                      "Only JPEG, JPG, PNG, or WEBP formats are allowed",
+                      {
+                        position: "top-center",
+                        autoClose: 3000,
+                      }
+                    );
+                    return;
+                  }
+
+                  if (file.size > maxSize) {
+                    toast.error("Image size must be 5MB or less", {
+                      position: "top-center",
+                      autoClose: 3000,
+                    });
+                    return;
+                  }
+
+                  setImage(file);
+                }}
               />
             </div>
+
             <div className="flex flex-col">
               <label
                 className="text-customGrayMedium text-base font-semibold mb-2"

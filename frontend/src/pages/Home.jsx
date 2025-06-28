@@ -9,19 +9,20 @@ import ReviewCard from "../components/ReviewCard.jsx";
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
+  console.log("baseURL", baseURL);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch recipes from the server
+   
     axios
       .get(`${baseURL}/api/recipe/getAllRecipes`)
       .then((response) => {
         setRecipes(response.data);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false); 
       })
       .catch((error) => {
         console.error("Error fetching recipes:", error);
-        setLoading(false); // Set loading to false in case of error
+        setLoading(false); 
       });
   }, []);
 
@@ -104,13 +105,13 @@ const Home = () => {
         </p>
         <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-0 pb-24">
           {loading
-            ? // Render skeleton loader
+            ? 
               Array.from({ length: 6 }).map((_, index) => (
-                <RecipeCardSkeleton />
+                <RecipeCardSkeleton key={index} />
               ))
-            : // Render recipe cards
+            : 
               recipes.slice(0, 6).map((recipe) => {
-                return <RecipeCard recipe={recipe} />;
+                return <RecipeCard key={recipe._id} recipe={recipe} />;
               })}
         </div>
       </div>
