@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaUserCheck, FaPlus, FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useToggleFollowMutation } from "../redux/store/followSlice";
-import { useToggleLikeMutation } from "../redux/store/likesApi";
+import { useToggleLikeMutation } from "../redux/hooks/likesHook";
 
 const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
   const [loadingChefIds, setLoadingChefIds] = useState(new Set());

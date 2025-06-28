@@ -4,8 +4,8 @@ import PostCard from "../components/PostCard";
 import NewsfeedSidebar from "../components/NewsfeedSidebar";
 import NewsfeedSidebarSkeleton from "../Skeleton/NewsfeedSidebarSkeleton";
 import PostCardSkeleton from "../Skeleton/PostCardSkeleton";
-import { useGetChefsQuery } from "../redux/store/chefSlice";
-import {useGetAllRecipesQuery } from "../redux/store/recipeSlice";
+import { useGetChefsQuery} from "../redux/hooks/chefHook";
+import {useGetAllRecipesQuery } from "../redux/hooks/recipeHook";
 
 const Newsfeed = () => {
   const userId = getUserIdFromToken();
@@ -13,15 +13,15 @@ const Newsfeed = () => {
   const [chefs, setChefs] = useState([]);
 
   const { data: chefsData = [], isLoading: isChefsLoading } =
-    useGetChefsQuery(userId);
+    useGetChefsQuery();
   if (chefsData && chefsData.length > 0 && chefs.length === 0) {
-    setChefs(chefsData); // Set the chefs data to local state only once
+    setChefs(chefsData); 
   }
 
   const { data: recipesData = [], isLoading: isRecipesLoading } =
-  useGetAllRecipesQuery(userId);
+  useGetAllRecipesQuery();
 if (recipesData && recipesData.length > 0 && recipes.length === 0) {
-  setRecipes(recipesData); // Set the chefs data to local state only once
+  setRecipes(recipesData); 
 }
 
 const handleLikeChange = (recipeId) => {
@@ -30,10 +30,10 @@ const handleLikeChange = (recipeId) => {
       recipe._id === recipeId
         ? {
             ...recipe,
-            likedByUser: !recipe.likedByUser, // Toggle likedByUser
+            likedByUser: !recipe.likedByUser, 
             totalLikes: recipe.likedByUser
-              ? recipe.totalLikes - 1 // Decrease if previously liked
-              : recipe.totalLikes + 1, // Increase if not liked
+              ? recipe.totalLikes - 1 
+              : recipe.totalLikes + 1, 
           }
         : recipe
     )
@@ -60,7 +60,6 @@ const handleFollowChange = (chefId) => {
   return (
     <div className="px-4 lg:px-12 pb-24 pt-4 lg:pt-10 bg-gray-100 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 gap-x-4 w-full">
-        {/* Left Sidebar */}
         <div className="hidden lg:block lg:col-span-3">
           <div className="sticky top-16">
             {isChefsLoading ? (
@@ -72,13 +71,13 @@ const handleFollowChange = (chefId) => {
                 followersSidebar={true}
                 userId={userId}
                 chefs={chefs}
-                onFollowChange={handleFollowChange} // Pass down handler
+                onFollowChange={handleFollowChange}
               />
             )}
           </div>
         </div>
 
-        {/* Newsfeed */}
+      
         <div className="col-span-1 lg:col-span-6">
           <div className="space-y-6">
             {isRecipesLoading || recipes.length <= 0 ? (
@@ -100,7 +99,7 @@ const handleFollowChange = (chefId) => {
           </div>
         </div>
 
-        {/* Right Sidebar */}
+        
         <div className="hidden lg:block lg:col-span-3">
           <div className="sticky top-16">
             {isChefsLoading ? (
@@ -112,7 +111,7 @@ const handleFollowChange = (chefId) => {
                 followersSidebar={false}
                 userId={userId}
                 chefs={chefs}
-                onFollowChange={handleFollowChange} // Pass down handler
+                onFollowChange={handleFollowChange}
               />
             )}
           </div>

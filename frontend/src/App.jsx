@@ -56,7 +56,7 @@ const App = () => {
               
               
               <Route
-                path="userHome"
+                path="user-home"
                 element={
                   <ProtectedRoute>
                     <PageTransition>
@@ -106,7 +106,7 @@ const App = () => {
                 }
               />
               <Route
-                path="createNewRecipe"
+                path="create-new-recipe"
                 element={
                   <ProtectedRoute>
                     <PageTransition>
@@ -116,7 +116,7 @@ const App = () => {
                 }
               />
               <Route
-                path="editRecipe/:recipeId"
+                path="edit-recipe/:recipeId"
                 element={
                   <ProtectedRoute>
                     <PageTransition>
@@ -126,7 +126,7 @@ const App = () => {
                 }
               />
               <Route
-                path="myRecipes"
+                path="my-recipes"
                 element={
                   <ProtectedRoute>
                     <PageTransition>
@@ -136,7 +136,7 @@ const App = () => {
                 }
               />
               <Route
-                path="recipesPage/:recipeId"
+                path="recipes-page/:recipeId"
                 element={
                   <ProtectedRoute>
                     <PageTransition>
@@ -146,7 +146,7 @@ const App = () => {
                 }
               />
               <Route
-                path="allRecipes/:genre"
+                path="all-recipes/:genre"
                 element={
                   <ProtectedRoute>
                     <PageTransition>

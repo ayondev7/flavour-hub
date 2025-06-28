@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import collectionReducer from './collectionSlice';
-import { chefsApi } from "./chefSlice";
+import { chefsApi } from "../hooks/chefHook";
 import { followApi } from './followSlice';
-import { recipesApi } from './recipeSlice';
-import { bookmarkApi } from './bookmarkSlice';
-import {likesApi} from './likesApi';
+import { recipesApi } from '../hooks/recipeHook';
+import { bookmarkApi } from '../hooks/bookmarkHook';
+import {likesApi} from '../hooks/likesHook';
 
 const store = configureStore({
   reducer: {

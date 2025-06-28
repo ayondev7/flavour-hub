@@ -26,7 +26,7 @@ const UserHome = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${baseURL}/api/recipe/getAllRecipes`, {
+      .get(`${baseURL}/api/recipe/get-all-recipes`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -65,7 +65,11 @@ const UserHome = () => {
   const fetchChefs = () => {
     setLoading(true);
     axios
-      .get(`${baseURL}/api/user/get-all-users/${userId}`)
+      .get(`${baseURL}/api/user/get-all-users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setChefs(response.data.slice(0, 8));
         setLoading(false);
@@ -99,7 +103,7 @@ const UserHome = () => {
   };
 
   const handleCardClick = (recipeId) => {
-    navigate(`/recipesPage/${recipeId}`);
+    navigate(`/recipes-page/${recipeId}`);
   };
 
   return (

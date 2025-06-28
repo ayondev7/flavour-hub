@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { FaPlus } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import CreateCollectionForm from "./CreateCollectionForm";
-import { useToggleBookmarkMutation } from "../redux/store/bookmarkSlice";
+import { useToggleBookmarkMutation } from "../redux/hooks/bookmarkHook";
 
 const BookmarkDialog = ({
   isVisible,

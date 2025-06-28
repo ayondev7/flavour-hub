@@ -1,6 +1,6 @@
 import React from "react";
 import { BsFire, BsBookmarkPlusFill, BsBookmarkCheckFill } from "react-icons/bs";
-import { useDeleteBookmarkMutation } from "../redux/store/bookmarkSlice"; 
+import { useDeleteBookmarkMutation } from "../redux/hooks/bookmarkHook"; 
 import { toast } from "react-toastify";
 
 const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }) => {
