@@ -105,7 +105,6 @@ const getLeaderboardRankings = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  console.log("getAllUsers");
   try {
     const { user } = req;
     const userId = user._id;
