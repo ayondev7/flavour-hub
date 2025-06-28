@@ -6,7 +6,7 @@ const Collection = require("../models/Collection");
 const Bookmark = require("../models/Bookmark");
 const Follow = require("../models/Follow");
 const mongoose = require("mongoose");
-const Like = require('../models/Like'); 
+const Like = require("../models/Like");
 const { format } = require("date-fns");
 
 exports.createRecipe = async (req, res) => {
@@ -23,8 +23,8 @@ exports.createRecipe = async (req, res) => {
     nutritionalValues,
     dietaryInformation,
   } = req.body;
-  
-  const {user} = req;
+
+  const { user } = req;
   const id = user._id;
 
   let instructionsArray;
@@ -41,7 +41,6 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
- 
   let ingredientsArray;
   try {
     ingredientsArray = JSON.parse(ingredients);
@@ -56,7 +55,6 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
- 
   let nutritionalValuesParsed;
   try {
     nutritionalValuesParsed = JSON.parse(nutritionalValues);
@@ -64,7 +62,6 @@ exports.createRecipe = async (req, res) => {
     return res.status(400).json({ error: "Invalid nutritional values format" });
   }
 
-  
   let prepTimeParsed, cookTimeParsed;
   try {
     prepTimeParsed = JSON.parse(prepTime);
@@ -75,7 +72,6 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
-  
   const newRecipe = new Recipe({
     title,
     description,
@@ -89,22 +85,19 @@ exports.createRecipe = async (req, res) => {
     nutritionalValues: nutritionalValuesParsed,
     dietaryInformation,
     chefId: id,
-    image: req.file ? req.file.buffer : null, 
+    image: req.file ? req.file.buffer : null,
   });
 
   try {
-    
     const savedRecipe = await newRecipe.save();
 
-    
     const user = await User.findById(id);
     if (user) {
-      user.numberOfRecipes += 1; 
-      user.points += 100; 
-      await user.save(); 
+      user.numberOfRecipes += 1;
+      user.points += 100;
+      await user.save();
     }
 
-   
     res.json(savedRecipe);
   } catch (err) {
     res
@@ -115,9 +108,8 @@ exports.createRecipe = async (req, res) => {
 
 exports.getAllRecipes = async (req, res) => {
   try {
-    const userId = req.headers.userid; 
-
-   
+    const { user } = req;
+    const userId = user._id;
     const getChefRank = (points) => {
       if (points >= 1001) return "Legendary Chef";
       if (points >= 501) return "Master Chef";
@@ -126,22 +118,17 @@ exports.getAllRecipes = async (req, res) => {
       return "Apprentice Chef";
     };
 
- 
     const recipes = await Recipe.find();
 
-  
     const userCollections = await Collection.find({ userId: userId });
 
-   
     const collectionIds = userCollections.map((collection) => collection._id);
 
-    
     const recipesWithDetails = await Promise.all(
       recipes.map(async (recipe) => {
         const chef = await User.findById(recipe.chefId);
         const chefRank = getChefRank(chef.points);
 
-      
         const ratings = await Rating.find({ recipeId: recipe._id });
         const totalRatings = ratings.length;
         const sumRatings = ratings.reduce(
@@ -153,43 +140,44 @@ exports.getAllRecipes = async (req, res) => {
             ? (sumRatings / totalRatings).toFixed(2)
             : "No ratings yet";
 
-      
         let following = false;
         if (userId) {
           const followStatus = await Follow.findOne({
             follower: userId,
             following: chef._id,
           });
-          following = !!followStatus; 
+          following = !!followStatus;
         }
 
-       
         let bookmarked = false;
         if (collectionIds.length > 0) {
           const bookmarkStatus = await Bookmark.findOne({
             collectionId: { $in: collectionIds },
             recipeId: recipe._id,
           });
-          bookmarked = !!bookmarkStatus; 
+          bookmarked = !!bookmarkStatus;
         }
 
-       
         const likes = await Like.find({ recipeId: recipe._id });
         const totalLikes = likes.length;
 
-     
-        const likedByUser = likes.some((like) => like.userId.toString() === userId);
+        const likedByUser = likes.some(
+          (like) => like.userId.toString() === userId
+        );
 
-     
-        const totalComments = await Comment.countDocuments({ recipeId: recipe._id });
+        const totalComments = await Comment.countDocuments({
+          recipeId: recipe._id,
+        });
 
         const recipeImage = recipe.image
           ? recipe.image.toString("base64")
           : null;
         const chefImage = chef.image ? chef.image.toString("base64") : null;
 
-      
-        const formattedDate = format(new Date(recipe.createdAt), "d MMMM yyyy 'at' h:mma");
+        const formattedDate = format(
+          new Date(recipe.createdAt),
+          "d MMMM yyyy 'at' h:mma"
+        );
 
         return {
           _id: recipe._id,
@@ -204,22 +192,21 @@ exports.getAllRecipes = async (req, res) => {
           nutritionalValues: recipe.nutritionalValues,
           dietaryInformation: recipe.dietaryInformation,
           chefId: recipe.chefId,
-          averageRating: averageRating, 
+          averageRating: averageRating,
           chefName: chef.name,
           chefRank: chefRank,
-          following: following, 
+          following: following,
           bookmarked: bookmarked,
-          totalLikes: totalLikes, 
+          totalLikes: totalLikes,
           totalComments: totalComments,
-          likedByUser: likedByUser, 
+          likedByUser: likedByUser,
           image: recipeImage,
           chefImage: chefImage,
-          createdAt: formattedDate, 
+          createdAt: formattedDate,
         };
       })
     );
 
-  
     res.status(200).json(recipesWithDetails);
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -227,11 +214,9 @@ exports.getAllRecipes = async (req, res) => {
   }
 };
 
-
-
-
 exports.getMyRecipes = async (req, res) => {
-  const { userId } = req.params;
+  const { user } = req;
+  const userId = user._id;
 
   try {
     const recipes = await Recipe.find({ chefId: userId });
@@ -242,7 +227,6 @@ exports.getMyRecipes = async (req, res) => {
         .json({ message: "No recipes found for this user" });
     }
 
-  
     const recipesWithImages = recipes.map((recipe) => {
       const base64Image = recipe.image ? recipe.image.toString("base64") : null;
       return {
@@ -262,7 +246,6 @@ exports.getMyRecipes = async (req, res) => {
       };
     });
 
-   
     res.json(recipesWithImages);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -271,10 +254,10 @@ exports.getMyRecipes = async (req, res) => {
 
 exports.getRelatedRecipes = async (req, res) => {
   const { cuisineType } = req.params;
-  const userId = req.headers.userid; 
+  const { user } = req;
+  const userId = user._id;
 
   try {
-  
     const getChefRank = (points) => {
       if (points >= 1001) return "Legendary Chef";
       if (points >= 501) return "Master Chef";
@@ -283,53 +266,64 @@ exports.getRelatedRecipes = async (req, res) => {
       return "Apprentice Chef";
     };
 
-   
     const relatedRecipes = await Recipe.find({ cuisineType });
 
-  
     const userCollections = await Collection.find({ userId: userId });
     const collectionIds = userCollections.map((collection) => collection._id);
 
-   
     const recipesWithDetails = await Promise.all(
       relatedRecipes.map(async (recipe) => {
         const chef = await User.findById(recipe.chefId);
         const chefRank = getChefRank(chef.points);
 
-      
         const ratings = await Rating.find({ recipeId: recipe._id });
         const totalRatings = ratings.length;
-        const sumRatings = ratings.reduce((acc, ratingDoc) => acc + ratingDoc.rating, 0);
-        const averageRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(2) : "No ratings yet";
+        const sumRatings = ratings.reduce(
+          (acc, ratingDoc) => acc + ratingDoc.rating,
+          0
+        );
+        const averageRating =
+          totalRatings > 0
+            ? (sumRatings / totalRatings).toFixed(2)
+            : "No ratings yet";
 
-      
         let following = false;
         if (userId) {
-          const followStatus = await Follow.findOne({ follower: userId, following: chef._id });
+          const followStatus = await Follow.findOne({
+            follower: userId,
+            following: chef._id,
+          });
           following = !!followStatus;
         }
 
-      
         let bookmarked = false;
         if (collectionIds.length > 0) {
-          const bookmarkStatus = await Bookmark.findOne({ collectionId: { $in: collectionIds }, recipeId: recipe._id });
+          const bookmarkStatus = await Bookmark.findOne({
+            collectionId: { $in: collectionIds },
+            recipeId: recipe._id,
+          });
           bookmarked = !!bookmarkStatus;
         }
 
-       
         const likes = await Like.find({ recipeId: recipe._id });
         const totalLikes = likes.length;
-        const likedByUser = likes.some((like) => like.userId.toString() === userId);
+        const likedByUser = likes.some(
+          (like) => like.userId.toString() === userId
+        );
 
-     
-        const totalComments = await Comment.countDocuments({ recipeId: recipe._id });
+        const totalComments = await Comment.countDocuments({
+          recipeId: recipe._id,
+        });
 
-        
-        const recipeImage = recipe.image ? recipe.image.toString("base64") : null;
+        const recipeImage = recipe.image
+          ? recipe.image.toString("base64")
+          : null;
         const chefImage = chef.image ? chef.image.toString("base64") : null;
 
-        
-        const formattedDate = format(new Date(recipe.createdAt), "d MMMM yyyy 'at' h:mma");
+        const formattedDate = format(
+          new Date(recipe.createdAt),
+          "d MMMM yyyy 'at' h:mma"
+        );
 
         return {
           _id: recipe._id,
@@ -366,9 +360,14 @@ exports.getRelatedRecipes = async (req, res) => {
   }
 };
 
-
 exports.getRecipe = async (req, res) => {
   const { recipeId } = req.params;
+  const { user } = req;
+  const userId = user._id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   try {
     const recipe = await Recipe.findById(recipeId);
@@ -377,10 +376,8 @@ exports.getRecipe = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    
     const base64Image = recipe.image ? recipe.image.toString("base64") : null;
 
-    
     const recipeWithImage = {
       _id: recipe._id,
       title: recipe.title,
@@ -397,7 +394,6 @@ exports.getRecipe = async (req, res) => {
       chefId: recipe.chefId,
     };
 
-    
     res.json(recipeWithImage);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -405,16 +401,21 @@ exports.getRecipe = async (req, res) => {
 };
 
 exports.updateRecipe = async (req, res) => {
+  const { user } = req;
+  const userId = user._id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
   const { id } = req.params;
   const updates = req.body;
 
   try {
-    
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ message: "No updates provided" });
     }
 
-   
     const recipe = await Recipe.findByIdAndUpdate(
       id,
       { $set: updates },
@@ -448,27 +449,27 @@ exports.searchRecipes = async (req, res) => {
   }
 };
 
-
 exports.deleteRecipe = async (req, res) => {
+  const { user } = req;
+  const userId = user._id;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   try {
     const recipeId = req.params.id;
 
-  
     const recipe = await Recipe.findById(recipeId);
 
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
- 
-    const user = await User.findById(recipe.chefId); 
+    const user = await User.findById(recipe.chefId);
     if (user) {
-     
       user.numberOfRecipes -= 1;
-      await user.save(); 
+      await user.save();
     }
 
-   
     await Recipe.findByIdAndDelete(recipeId);
 
     res.status(200).json({ message: "Recipe deleted successfully" });
@@ -478,14 +479,18 @@ exports.deleteRecipe = async (req, res) => {
 };
 
 exports.postRating = async (req, res) => {
-  let { userId, recipeId, rating } = req.body;
+  const { user } = req;
+  const userId = user._id;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  let { recipeId, rating } = req.body;
 
   if (!userId || !recipeId || !rating) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
@@ -493,25 +498,20 @@ exports.postRating = async (req, res) => {
 
     const chefId = recipe.chefId;
 
-   
     const existingRating = await Rating.findOne({ userId, recipeId });
-    let isNewRecord = false; 
+    let isNewRecord = false;
 
-   
     if (existingRating) {
       existingRating.rating = rating;
       await existingRating.save();
     } else {
-      
       const newRating = new Rating({ userId, recipeId, chefId, rating });
       await newRating.save();
-      isNewRecord = true; 
+      isNewRecord = true;
     }
 
-   
     const chefRatings = await Rating.find({ chefId });
 
-   
     const totalRatings = chefRatings.length;
     const sumRatings = chefRatings.reduce(
       (acc, ratingDoc) => acc + ratingDoc.rating,
@@ -519,20 +519,17 @@ exports.postRating = async (req, res) => {
     );
     const averageRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
 
-    
     const chef = await User.findById(chefId);
     if (!chef) {
       return res.status(404).json({ message: "Chef not found" });
     }
     chef.averageRating = averageRating;
 
-  
     if (isNewRecord) {
       const pointsToAdd = rating * 100;
       chef.points += pointsToAdd;
     }
 
-  
     await chef.save();
 
     res.status(200).json({
@@ -544,6 +541,11 @@ exports.postRating = async (req, res) => {
 };
 
 exports.updateInstruction = async (req, res) => {
+  const { user } = req;
+  const userId = user._id;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   const { recipeId } = req.params;
   const { instructionId, value } = req.body;
 
@@ -576,6 +578,11 @@ exports.updateInstruction = async (req, res) => {
 };
 
 exports.updateIngredient = async (req, res) => {
+  const { user } = req;
+  const userId = user._id;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   const { recipeId } = req.params;
   const { ingredientId, value } = req.body;
 
@@ -688,14 +695,12 @@ exports.updateNutritionalValues = async (req, res) => {
   const { nutritionalValues } = req.body;
 
   try {
-    
     if (!nutritionalValues || Object.keys(nutritionalValues).length === 0) {
       return res
         .status(400)
         .json({ error: "No nutritional values provided for update." });
     }
 
-   
     const updateFields = {};
     for (const key in nutritionalValues) {
       if (nutritionalValues[key] && nutritionalValues[key].trim() !== "") {
@@ -706,11 +711,10 @@ exports.updateNutritionalValues = async (req, res) => {
       }
     }
 
-   
     const updatedRecipe = await Recipe.findByIdAndUpdate(
       recipeId,
       { $set: updateFields },
-      { new: true, runValidators: true } 
+      { new: true, runValidators: true }
     );
 
     if (!updatedRecipe) {
@@ -804,25 +808,26 @@ exports.updateCookTime = async (req, res) => {
 };
 
 exports.updateImage = async (req, res) => {
+  const { user } = req;
+  const userId = user._id;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   const { recipeId } = req.params;
 
   try {
-   
     const recipe = await Recipe.findById(recipeId);
 
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-   
     if (req.file) {
-     
       recipe.image = req.file.buffer;
     } else {
       return res.status(400).json({ message: "No image file provided." });
     }
 
-    
     await recipe.save();
 
     res.json({ message: "Image updated successfully!" });
@@ -833,33 +838,32 @@ exports.updateImage = async (req, res) => {
 };
 
 exports.getRecipeDetails = async (req, res) => {
+  const { user } = req;
+  const userId = user._id;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   try {
     const { recipeId } = req.params;
 
-   
     if (!mongoose.Types.ObjectId.isValid(recipeId)) {
       return res.status(400).json({ error: "Invalid recipe ID" });
     }
 
-    
     const recipe = await Recipe.findById(recipeId).exec();
     if (!recipe) {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
-    
     const chef = await User.findById(recipe.chefId).exec();
     if (!chef) {
       return res.status(404).json({ error: "Chef not found" });
     }
 
-    
     const chefImageBase64 = chef.image ? chef.image.toString("base64") : null;
 
-   
     const totalComments = await Comment.countDocuments({ recipeId }).exec();
 
-   
     const averageRating = await Rating.aggregate([
       { $match: { recipeId: new mongoose.Types.ObjectId(recipeId) } },
       { $group: { _id: null, avgRating: { $avg: "$rating" } } },
@@ -868,7 +872,6 @@ exports.getRecipeDetails = async (req, res) => {
       ? Math.floor(averageRating[0].avgRating)
       : 0;
 
-   
     const formattedCreatedAt = new Date(recipe.createdAt).toLocaleDateString(
       "en-GB",
       {
@@ -878,7 +881,6 @@ exports.getRecipeDetails = async (req, res) => {
       }
     );
 
-   
     const response = {
       recipeId: recipe._id,
       chef: {
@@ -891,7 +893,6 @@ exports.getRecipeDetails = async (req, res) => {
       createdAt: formattedCreatedAt,
     };
 
-    
     res.json(response);
   } catch (error) {
     console.error(error);

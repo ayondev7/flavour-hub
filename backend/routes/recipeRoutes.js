@@ -20,21 +20,21 @@ router.post('/upload',auth, upload.single('image'), recipeController.createRecip
 
 router.put('/updateRecipeImage/:recipeId', upload.single('image'), recipeController.updateImage);
 
-router.get('/getAllRecipes', recipeController.getAllRecipes);
+router.get('/getAllRecipes',auth, recipeController.getAllRecipes);
 
-router.get('/getRecipe/:recipeId', recipeController.getRecipe);
+router.get('/getRecipe/:recipeId',auth, recipeController.getRecipe);
 
 router.get('/getRelatedRecipes/:cuisineType', recipeController.getRelatedRecipes);
 
 router.get('/search', recipeController.searchRecipes);
 
-router.get('/getMyRecipes/:userId', recipeController.getMyRecipes);
+router.get('/getMyRecipes',auth, recipeController.getMyRecipes);
 
-router.put('/updateRecipe/:id',recipeController.updateRecipe);
+router.put('/updateRecipe/:id',auth,recipeController.updateRecipe);
 
-router.delete('/deleteRecipe/:id', recipeController.deleteRecipe);
+router.delete('/deleteRecipe/:id',auth, recipeController.deleteRecipe);
 
-router.post('/postRating', upload.none(), recipeController.postRating);
+router.post('/postRating',auth, upload.none(), recipeController.postRating);
 
 router.put('/updateIngredient/:recipeId', recipeController.updateIngredient);
 
@@ -50,6 +50,6 @@ router.put('/updatePrepTime/:recipeId', recipeController.updatePrepTime);
 
 router.put('/updateCookTime/:recipeId', recipeController.updateCookTime);
 
-router.get('/getRecipeDetails/:recipeId', recipeController.getRecipeDetails);
+router.get('/getRecipeDetails/:recipeId',auth, recipeController.getRecipeDetails);
 
 module.exports = router;
