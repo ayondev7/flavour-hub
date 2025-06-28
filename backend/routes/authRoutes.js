@@ -1,7 +1,7 @@
 const express = require('express');
-const { verifyToken } = require('../controllers/authController'); // Import controller
+const authController = require('../controllers/authController'); 
 const router = express.Router();
 
-router.get('/verify', verifyToken); // Define the route
+router.get('/verify', authController.verifyToken); 
 
 module.exports = router;

@@ -1,24 +1,32 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-// Controller function to verify token
-const verifyToken = (req, res) => {
-  // Extract the token from the "Authorization" header
-  const token = req.headers['authorization']?.split(' ')[1]; // Get token after "Bearer"
+exports.verifyToken = async (req, res) => {
+  const authHeader = req.header('Authorization');
 
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized, token required' });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
 
-  try {
-    // Verify the token using the secret key stored in environment variables
-    jwt.verify(token, process.env.SECRET_KEY);
+  const token = authHeader.split(' ')[1];
 
-    // Respond with success status
-    res.status(200).json({ message: 'Token is valid' });
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found. Invalid token.' });
+    }
+
+    res.status(200).json({
+      message: 'Token is valid',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
-    // Handle invalid or expired token
     res.status(403).json({ message: 'Invalid or expired token' });
   }
 };
-
-module.exports = { verifyToken };

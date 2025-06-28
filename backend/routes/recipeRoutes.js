@@ -1,11 +1,11 @@
-const express = require('express');
-const multer = require('multer');
-const auth = require('../middleware/authMiddleware');
-const recipeController = require('../controllers/recipeController');
+const express = require("express");
+const multer = require("multer");
+const auth = require("../middleware/authMiddleware");
+const recipeController = require("../controllers/recipeController");
 const router = express.Router();
 const upload = multer({
   limits: {
-    fileSize: 5 * 1024 * 1024, 
+    fileSize: 5 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -16,40 +16,48 @@ const upload = multer({
   },
 });
 
-router.post('/upload',auth, upload.single('image'), recipeController.createRecipe);
-
-router.put('/updateRecipeImage/:recipeId', upload.single('image'), recipeController.updateImage);
-
-router.get('/getAllRecipes',auth, recipeController.getAllRecipes);
-
-router.get('/getRecipe/:recipeId',auth, recipeController.getRecipe);
-
-router.get('/getRelatedRecipes/:cuisineType', recipeController.getRelatedRecipes);
-
-router.get('/search', recipeController.searchRecipes);
-
-router.get('/getMyRecipes',auth, recipeController.getMyRecipes);
-
-router.put('/updateRecipe/:id',auth,recipeController.updateRecipe);
-
-router.delete('/deleteRecipe/:id',auth, recipeController.deleteRecipe);
-
-router.post('/postRating',auth, upload.none(), recipeController.postRating);
-
-router.put('/updateIngredient/:recipeId', recipeController.updateIngredient);
-
-router.delete('/deleteIngredient/:recipeId/:ingredientId', recipeController.deleteIngredient);
-
-router.put('/updateInstruction/:recipeId', recipeController.updateInstruction);
-
-router.delete('/deleteInstruction/:recipeId/:instructionId', recipeController.deleteInstruction);
-
-router.put('/updateNutritionalValues/:recipeId', recipeController.updateNutritionalValues);
-
-router.put('/updatePrepTime/:recipeId', recipeController.updatePrepTime);
-
-router.put('/updateCookTime/:recipeId', recipeController.updateCookTime);
-
-router.get('/getRecipeDetails/:recipeId',auth, recipeController.getRecipeDetails);
+router.post(
+  "/upload",
+  auth,
+  upload.single("image"),
+  recipeController.createRecipe
+);
+router.put(
+  "/update-recipe-image/:recipeId",
+  upload.single("image"),
+  recipeController.updateImage
+);
+router.get("/get-all-recipes", auth, recipeController.getAllRecipes);
+router.get("/get-recipe/:recipeId", auth, recipeController.getRecipe);
+router.get(
+  "/get-related-recipes/:cuisineType",
+  recipeController.getRelatedRecipes
+);
+router.get("/search", recipeController.searchRecipes);
+router.get("/get-my-recipes", auth, recipeController.getMyRecipes);
+router.put("/update-recipe/:id", auth, recipeController.updateRecipe);
+router.delete("/delete-recipe/:id", auth, recipeController.deleteRecipe);
+router.post("/post-rating", auth, upload.none(), recipeController.postRating);
+router.put("/update-ingredient/:recipeId", recipeController.updateIngredient);
+router.delete(
+  "/delete-ingredient/:recipeId/:ingredientId",
+  recipeController.deleteIngredient
+);
+router.put("/update-instruction/:recipeId", recipeController.updateInstruction);
+router.delete(
+  "/delete-instruction/:recipeId/:instructionId",
+  recipeController.deleteInstruction
+);
+router.put(
+  "/update-nutritional-values/:recipeId",
+  recipeController.updateNutritionalValues
+);
+router.put("/update-prep-time/:recipeId", recipeController.updatePrepTime);
+router.put("/update-cook-time/:recipeId", recipeController.updateCookTime);
+router.get(
+  "/get-recipe-details/:recipeId",
+  auth,
+  recipeController.getRecipeDetails
+);
 
 module.exports = router;
