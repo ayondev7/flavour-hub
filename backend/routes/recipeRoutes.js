@@ -4,7 +4,18 @@ const {createRecipe, getAllRecipes, searchRecipes, getMyRecipes, deleteRecipe,
      getRecipe, updateRecipe, getRelatedRecipes, postRating, getAverageRatingPerRecipe, getRecipeByGenre} = require('../controllers/recipeController');
 const recipeController = require('../controllers/recipeController');
 const router = express.Router();
-const upload = multer();
+const upload = multer({
+  limits: {
+    fileSize: 5 * 1024 * 1024, 
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error("Only JPEG, JPG, PNG, and WEBP formats are allowed"));
+    }
+    cb(null, true);
+  },
+});
 
 router.post('/upload', upload.single('image'), createRecipe);
 
