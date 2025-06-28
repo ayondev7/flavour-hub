@@ -72,7 +72,26 @@ const CreateNewRecipe = () => {
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const maxSize = 5 * 1024 * 1024; 
+
+    if (!validTypes.includes(file.type)) {
+      toast.error(
+        "Invalid file format. Only JPEG, JPG, PNG, or WEBP are allowed."
+      );
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast.error("Image size must be less than or equal to 5MB.");
+      return;
+    }
+
+    setFormData({ ...formData, image: file });
   };
 
   const handleSubmit = async (e) => {
