@@ -1,34 +1,34 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion'; 
-import Home from './pages/Home'; 
-import Layout from './components/Layout';
-import CreateNewRecipe from './pages/CreateNewRecipe';
-import UserHome from './pages/UserHome';
-import MyRecipes from './pages/MyRecipes';
-import EditRecipe from './pages/EditRecipe';
-import RecipesPage from './pages/RecipesPage';
-import Login from './pages/Login';
-import AllRecipes from './pages/AllRecipes';
-import Signup from './pages/Signup';
-import Newsfeed from './pages/Newsfeed';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import React from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import Home from "./pages/Home";
+import Layout from "./components/Layout";
+import CreateNewRecipe from "./pages/CreateNewRecipe";
+import UserHome from "./pages/UserHome";
+import MyRecipes from "./pages/MyRecipes";
+import EditRecipe from "./pages/EditRecipe";
+import RecipesPage from "./pages/RecipesPage";
+import Login from "./pages/Login";
+import AllRecipes from "./pages/AllRecipes";
+import Signup from "./pages/Signup";
+import Newsfeed from "./pages/Newsfeed";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
-import Leaderboard from './pages/Leaderboard';
-import Collections from './pages/Collections';
-import Bookmarks from './pages/Bookmarks';
+import Leaderboard from "./pages/Leaderboard";
+import Collections from "./pages/Collections";
+import Bookmarks from "./pages/Bookmarks";
 
 const PageTransition = ({ children }) => {
   const location = useLocation();
 
   return (
     <motion.div
-      key={location.key} 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      exit={{ opacity: 0 }} 
-      transition={{ duration: 0.5 }} 
+      key={location.key}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       {children}
     </motion.div>
@@ -37,8 +37,8 @@ const PageTransition = ({ children }) => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <ToastContainer />
         <div className="bg-white">
           <Routes>
@@ -53,8 +53,7 @@ const App = () => {
                   </PageTransition>
                 }
               />
-              
-              
+
               <Route
                 path="user-home"
                 element={
@@ -85,7 +84,7 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-               <Route
+              <Route
                 path="collections"
                 element={
                   <ProtectedRoute>
@@ -95,7 +94,7 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-               <Route
+              <Route
                 path="bookmarks/:collectionId"
                 element={
                   <ProtectedRoute>
@@ -158,8 +157,8 @@ const App = () => {
             </Route>
           </Routes>
         </div>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 };
 

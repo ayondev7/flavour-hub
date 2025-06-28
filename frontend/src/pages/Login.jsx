@@ -11,7 +11,7 @@ const Login = () => {
   const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Track password visibility
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { checkAuth } = useAuth();
@@ -21,11 +21,11 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-        const response = await axios.post(`${baseURL}/api/user/loginUser`, { email, password });
+        const response = await axios.post(`${baseURL}/api/user/login-user`, { email, password });
         if (response.data.token) {
             sessionStorage.setItem("token", response.data.token);
-            await checkAuth(); // Update authentication state
-            navigate("/userHome");
+            await checkAuth(); 
+            navigate("/user-home");
         } else {
             toast.error(response.data.message, {
                 position: "top-center",

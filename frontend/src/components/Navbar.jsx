@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HiOutlineMenu } from "react-icons/hi";
-import {getUserIdFromToken } from "../assets/tokenUtils";
+import { getUserIdFromToken } from "../assets/tokenUtils";
 import Sidebar from "../components/Sidebar";
 import Searchbar from "../components/Searchbar";
 
@@ -13,8 +13,9 @@ const Navbar = () => {
   const userId = getUserIdFromToken();
   const [userData, setUserData] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");  
+  const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     if (userId) {
@@ -25,14 +26,17 @@ const Navbar = () => {
   }, [userId]);
 
   useEffect(() => {
-      fetchUserData(userId);
+    fetchUserData(userId);
   }, [userId, navigate]);
 
-  const fetchUserData = async (userId) => {
+  const fetchUserData = async () => {
     try {
-      const response = await axios.get(
-        `${baseURL}/api/user/getUser/${userId}`
-      );
+      const response = await axios.get(`${baseURL}/api/user/get-user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setUserData(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -49,19 +53,19 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const homeLink = isAuthenticated ? "/userHome" : "/";
+  const homeLink = isAuthenticated ? "/user-home" : "/";
   const navLinks = isAuthenticated
     ? [
-        { to: "/userHome", label: "Home" },
-        { to: `/allRecipes/${null}`, label: "Recipes" },
-        { to: "/createNewRecipe", label: "Create Recipe" },
-        { to: "/myRecipes", label: "My Recipes" },
+        { to: "/user-home", label: "Home" },
+        { to: `/all-recipes/${null}`, label: "Recipes" },
+        { to: "/create-new-recipe", label: "Create Recipe" },
+        { to: "/my-recipes", label: "My Recipes" },
       ]
     : [
         { to: "/", label: "Home" },
         { to: "/about", label: "About" },
         { to: "/blog", label: "Blog" },
-        { to: "/createNewRecipe", label: "Add Recipe" },
+        { to: "/create-new-recipe", label: "Add Recipe" },
       ];
 
   return (
@@ -83,9 +87,9 @@ const Navbar = () => {
             <div className="flex gap-x-4 lg:gap-x-10 relative">
               <Searchbar
                 onSearchResults={setSearchResults}
-                onSearchQueryChange={(query) => setSearchQuery(query)}  
+                onSearchQueryChange={(query) => setSearchQuery(query)}
               />
-              {(searchResults.length > 0 || searchQuery.trim() !== "") && (  
+              {(searchResults.length > 0 || searchQuery.trim() !== "") && (
                 <div className="absolute top-10 lg:top-12 right-4 lg:right-auto lg:left-0 lg:w-[400px] bg-white border border-gray-300 rounded-md shadow-md z-10">
                   {searchResults.length > 0 ? (
                     searchResults.map((result, index) => (
