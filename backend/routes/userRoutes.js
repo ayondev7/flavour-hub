@@ -1,8 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const authenticateJWT = require('../middleware/authMiddleware');
 const userController = require('../controllers/userController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 const upload = multer({
@@ -18,14 +17,14 @@ const upload = multer({
   },
 });
 
-router.post('/create-user', upload.single('image'), userController.createUser);
+router.post('/create-user',upload.single('image'), userController.createUser);
 
-router.post('/loginUser', userController.loginUser);
+router.post('/login-user', userController.loginUser);
 
-router.get('/get-all-users/:userId', userController.getAllUsers); 
+router.get('/get-all-users', authMiddleware.auth, userController.getAllUsers); 
 
-router.get('/get-leaderboard-rankings/:userId', userController.getLeaderboardRankings);
+router.get('/get-leaderboard-rankings', authMiddleware.auth, userController.getLeaderboardRankings);
 
-router.get('/getUser/:id', userController.getUserById); 
+router.get('/get-user', authMiddleware.auth, userController.getUserById); 
 
 module.exports = router;
