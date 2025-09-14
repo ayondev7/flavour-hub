@@ -21,6 +21,9 @@ router.post('/create-user',upload.single('image'), userController.createUser);
 
 router.post('/login-user', userController.loginUser);
 
+// Guest login route
+router.post('/guest-login', userController.guestLogin);
+
 router.get('/get-all-users', authMiddleware.auth, userController.getAllUsers); 
 
 router.get('/get-leaderboard-rankings', authMiddleware.auth, userController.getLeaderboardRankings);

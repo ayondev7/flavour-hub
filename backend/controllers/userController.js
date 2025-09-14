@@ -4,6 +4,7 @@ const Follow = require("../models/Follow");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY;
+const SECRET_KEY_GUEST = process.env.SECRET_KEY_GUEST;
 
 const createUser = async (req, res) => {
   try {
@@ -230,10 +231,34 @@ const loginUser = async (req, res) => {
   }
 };
 
+const guestLogin = async (req, res) => {
+  try {
+    if (!SECRET_KEY_GUEST) {
+      console.error("SECRET_KEY_GUEST is not defined in environment variables");
+      return res.status(500).json({ success: false, message: "Server configuration error" });
+    }
+
+    // Create a minimal guest payload. You can expand this with more claims if needed.
+    const guestPayload = {
+      role: "guest",
+      guest: true,
+      iat: Math.floor(Date.now() / 1000),
+    };
+
+    const token = jwt.sign(guestPayload, SECRET_KEY_GUEST, { expiresIn: "3h" });
+
+    return res.status(200).json({ success: true, message: "Guest login successful", token });
+  } catch (error) {
+    console.error("Error creating guest token:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   loginUser,
   getUserById,
   getLeaderboardRankings,
+  guestLogin,
 };
