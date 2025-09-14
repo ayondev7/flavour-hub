@@ -4,7 +4,8 @@ const Follow = require("../models/Follow");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY;
-const SECRET_KEY_GUEST = process.env.SECRET_KEY_GUEST;
+const GUEST_USER_EMAIL = process.env.GUEST_USER_EMAIL;
+const GUEST_USER_PASSWORD = process.env.GUEST_USER_PASSWORD;
 
 const createUser = async (req, res) => {
   try {
@@ -233,23 +234,30 @@ const loginUser = async (req, res) => {
 
 const guestLogin = async (req, res) => {
   try {
-    if (!SECRET_KEY_GUEST) {
-      console.error("SECRET_KEY_GUEST is not defined in environment variables");
+    if (!GUEST_USER_EMAIL || !GUEST_USER_PASSWORD) {
+      console.error("Guest credentials are not defined in environment variables");
       return res.status(500).json({ success: false, message: "Server configuration error" });
     }
 
-    // Create a minimal guest payload. You can expand this with more claims if needed.
-    const guestPayload = {
-      role: "guest",
-      guest: true,
-      iat: Math.floor(Date.now() / 1000),
-    };
+    // Find the guest user by email from env
+    const user = await User.findOne({ email: GUEST_USER_EMAIL });
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Guest user not found" });
+    }
 
-    const token = jwt.sign(guestPayload, SECRET_KEY_GUEST, { expiresIn: "3h" });
+    // Compare provided guest password from env with stored hashed password
+    const isPasswordValid = await bcrypt.compare(GUEST_USER_PASSWORD, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ success: false, message: "Guest credentials are incorrect" });
+    }
+
+    const token = jwt.sign({ email: user.email, id: user._id }, SECRET_KEY, {
+      expiresIn: "3h",
+    });
 
     return res.status(200).json({ success: true, message: "Guest login successful", token });
   } catch (error) {
-    console.error("Error creating guest token:", error);
+    console.error("Error during guest login:", error);
     return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
