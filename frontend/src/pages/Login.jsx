@@ -13,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
   const navigate = useNavigate();
   const { checkAuth } = useAuth();
 
@@ -50,6 +51,38 @@ const Login = () => {
         setIsLoading(false);
     }
 };
+
+  const handleGuestLogin = async () => {
+    setIsGuestLoading(true);
+    try {
+      const response = await axios.post(`${baseURL}/api/user/guest-login`);
+      if (response.data.token) {
+        sessionStorage.setItem("token", response.data.token);
+        await checkAuth();
+        navigate("/user-home");
+      } else {
+        toast.error(response.data.message || "Guest login failed", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      console.error("Guest login error:", error.response || error.message);
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      } else {
+        toast.error("Something went wrong. Please try again later.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      }
+    } finally {
+      setIsGuestLoading(false);
+    }
+  };
 
   return (
     <div className="px-0 lg:px-16 flex items-center h-screen bg-white overflow-hidden">
@@ -122,6 +155,22 @@ const Login = () => {
                   <span className="loading loading-spinner loading-sm text-white"></span>
                 ) : (
                   "Login"
+                )}
+              </button>
+            </div>
+            <div className="mt-2">
+              <button
+                type="button"
+                onClick={handleGuestLogin}
+                className={`my-2 px-3 py-3 font-bold text-[#da2778] rounded-lg text-sm w-full border-2 border-[#da2778] transition-all duration-500 ease-in-out ${
+                  isGuestLoading ? "cursor-not-allowed opacity-75" : "hover:text-[#da2778]"
+                }`}
+                disabled={isGuestLoading}
+              >
+                {isGuestLoading ? (
+                  <span className="loading loading-spinner loading-sm text-white"></span>
+                ) : (
+                  "Login as Guest"
                 )}
               </button>
             </div>
