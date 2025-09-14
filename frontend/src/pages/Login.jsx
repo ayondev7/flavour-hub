@@ -162,7 +162,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={handleGuestLogin}
-                className={`my-2 px-3 py-3 font-bold text-[#da2778] rounded-lg text-sm w-full border-2 border-[#da2778] transition-all duration-500 ease-in-out ${
+                className={`px-3 py-3 font-bold text-[#da2778] rounded-lg text-sm w-full border-2 border-[#da2778] transition-all duration-500 ease-in-out ${
                   isGuestLoading ? "cursor-not-allowed opacity-75" : "hover:text-[#da2778]"
                 }`}
                 disabled={isGuestLoading}

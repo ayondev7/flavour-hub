@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import images from "../assets/images";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -74,6 +75,45 @@ const Signup = () => {
     }
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files && e.target.files[0];
+
+    if (!file) return;
+
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const maxSize = 3 * 1024 * 1024;
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only JPEG, JPG, PNG, or WEBP formats are allowed", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast.error("Image size must be 3MB or less", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    setImage(file);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
   return (
     <div className="px-0 lg:px-16 flex items-center lg:h-screen bg-white overflow-hidden">
       <ToastContainer />
@@ -112,45 +152,38 @@ const Signup = () => {
               >
                 Profile Image
               </label>
+
               <input
+                id="image"
                 type="file"
-                className="file-input file-input-bordered focus:border-none file-input-primary border border-gray-400 bg-white w-full"
                 accept=".jpg,.jpeg,.png,.webp"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-
-                  if (!file) return;
-
-                  const allowedTypes = [
-                    "image/jpeg",
-                    "image/jpg",
-                    "image/png",
-                    "image/webp",
-                  ];
-                  const maxSize = 5 * 1024 * 1024;
-
-                  if (!allowedTypes.includes(file.type)) {
-                    toast.error(
-                      "Only JPEG, JPG, PNG, or WEBP formats are allowed",
-                      {
-                        position: "top-center",
-                        autoClose: 3000,
-                      }
-                    );
-                    return;
-                  }
-
-                  if (file.size > maxSize) {
-                    toast.error("Image size must be 5MB or less", {
-                      position: "top-center",
-                      autoClose: 3000,
-                    });
-                    return;
-                  }
-
-                  setImage(file);
-                }}
+                className="hidden"
+                onChange={handleFileSelect}
               />
+
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => document.getElementById("image").click()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ")
+                    document.getElementById("image").click();
+                }}
+                className="w-full border-2 border-dashed border-gray-300 rounded-lg h-12 flex items-center justify-center cursor-pointer bg-white hover:border-hotPink transition-colors"
+              >
+                {previewUrl ? (
+                  <img
+                    src={previewUrl}
+                    alt="preview"
+                    className="max-h-10 w-full object-contain rounded"
+                  />
+                ) : (
+                  <p className="text-customGrayMedium text-sm text-center">
+                    Upload a profile image (JPEG, PNG,
+                    WEBP) — max 3MB
+                  </p>
+                )}
+              </div>
             </div>
 
             <div className="flex flex-col">

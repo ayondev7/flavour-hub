@@ -1,12 +1,12 @@
-import breakfast from '../images/breakfast.jpg';
-import dessert from '../images/dessert.jpg';
-import lunch from '../images/lunch.jpg';
-import beverage from '../images/beverage.jpg';
-import brunch from '../images/brunch.jpg';
-import appetizer from '../images/appetizer.jpg';
-import sidedish from '../images/sidedish.jpg';
-import dinner from '../images/dinner.jpg';
-import snacks from '../images/snacks.jpg';
+const breakfast = '/images/breakfast.jpg';
+const dessert = '/images/dessert.jpg';
+const lunch = '/images/lunch.jpg';
+const beverage = '/images/beverage.jpg';
+const brunch = '/images/brunch.jpg';
+const appetizer = '/images/appetizer.jpg';
+const sidedish = '/images/sidedish.jpg';
+const dinner = '/images/dinner.jpg';
+const snacks = '/images/snacks.jpg';
 
 const mealType = [
     {

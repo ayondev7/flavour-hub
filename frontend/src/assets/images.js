@@ -1,40 +1,40 @@
-import homeImage1 from '../images/home.png';
-import homeImage2 from '../images/home2.jpg';
-import personImage from '../images/pexels-olly-774909.jpg'
-import quinoaStuffedBellPeppers from '../images/quinoa-stuffed-peppers.webp'
-import chickenBiryani from '../images/—Pngtree—chicken biryani halal food menu_14885666.png'
-import donut from '../images/donut.png'
-import veganFriendly from '../images/vegan.jpg'
-import nonVegetarian from '../images/non vegetarian.jpg'
-import vegetarian from '../images/vegetarian.jpg'
-import dairyFree from '../images/dairy free.jpg'
-import login from '../images/login.png'
-import indianRecipe from '../images/indian_recipe.jpg'
-import mexicanRecipe from '../images/mexican_recipe.jpg'
-import koreanRecipe from '../images/korean_recipe.jpg'
-import italianRecipe from '../images/italian_recipe.jpg'
-import americanRecipe from '../images/american_recipe.jpg';
+const homeImage1 = '/images/home.png';
+const homeImage2 = '/images/home2.jpg';
+const personImage = '/images/pexels-olly-774909.jpg';
+const quinoaStuffedBellPeppers = '/images/quinoa-stuffed-peppers.webp';
+const chickenBiryani = '/images/—Pngtree—chicken biryani halal food menu_14885666.png';
+const donut = '/images/donut.png';
+const veganFriendly = '/images/vegan.jpg';
+const nonVegetarian = '/images/non vegetarian.jpg';
+const vegetarian = '/images/vegetarian.jpg';
+const dairyFree = '/images/dairy free.jpg';
+const login = '/images/login.png';
+const indianRecipe = '/images/indian_recipe.jpg';
+const mexicanRecipe = '/images/mexican_recipe.jpg';
+const koreanRecipe = '/images/korean_recipe.jpg';
+const italianRecipe = '/images/italian_recipe.jpg';
+const americanRecipe = '/images/american_recipe.jpg';
 
-    const images = {
+const images = {
 
-        homeImage1,
-        homeImage2,
-        personImage,
-        quinoaStuffedBellPeppers,
-        login,
-        chickenBiryani,
-        donut,
-        nonVegetarian,
-        veganFriendly,
-        dairyFree,
-        vegetarian,
-        indianRecipe,
-        koreanRecipe,
-        mexicanRecipe,
-        italianRecipe,
-        americanRecipe
-    
-    };
+    homeImage1,
+    homeImage2,
+    personImage,
+    quinoaStuffedBellPeppers,
+    login,
+    chickenBiryani,
+    donut,
+    nonVegetarian,
+    veganFriendly,
+    dairyFree,
+    vegetarian,
+    indianRecipe,
+    koreanRecipe,
+    mexicanRecipe,
+    italianRecipe,
+    americanRecipe
+
+};
 
 export default images;
 
