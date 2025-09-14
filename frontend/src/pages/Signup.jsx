@@ -264,7 +264,7 @@ const Signup = () => {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="loading loading-spinner loading-sm text-white"></span>
+                  <span className="loading loading-spinner loading-xs text-white"></span>
                 ) : (
                   "Signup"
                 )}

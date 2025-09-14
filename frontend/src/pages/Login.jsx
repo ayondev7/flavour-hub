@@ -152,7 +152,7 @@ const Login = () => {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="loading loading-spinner loading-sm text-white"></span>
+                  <span className="loading loading-spinner loading-xs text-white"></span>
                 ) : (
                   "Login"
                 )}
@@ -168,7 +168,7 @@ const Login = () => {
                 disabled={isGuestLoading}
               >
                 {isGuestLoading ? (
-                  <span className="loading loading-spinner loading-sm text-white"></span>
+                  <span className="loading loading-spinner loading-xs text-[#da2778]"></span>
                 ) : (
                   "Login as Guest"
                 )}
