@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Provider } from "react-redux";
+import store from "@redux/store";
 import Home from "@pages/general/Home";
 import Layout from "@components/ui/Layout";
 import CreateNewRecipe from "@pages/recipes/CreateNewRecipe";
@@ -48,7 +50,8 @@ const ProtectedPage = (Component) => (
 const App = () => {
   return (
     <BrowserRouter>
-      <AuthProvider>
+      <Provider store={store}>
+        <AuthProvider>
         <ToastContainer />
         <div className="bg-white">
           <Routes>
@@ -73,6 +76,7 @@ const App = () => {
           </Routes>
         </div>
       </AuthProvider>
+    </Provider>
     </BrowserRouter>
   );
 };
