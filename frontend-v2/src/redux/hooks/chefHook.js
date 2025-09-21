@@ -20,7 +20,7 @@ export const chefsApi = createApi({
       providesTags: ['Chefs'],
     }),
     getLeaderboard: builder.query({
-      query: (userId) => `get-leaderboard-rankings/${userId}`,
+      query: (userId) => `get-leaderboard-rankings`,
       providesTags: ['Leaderboard'],
     }),
     toggleFollow: builder.mutation({

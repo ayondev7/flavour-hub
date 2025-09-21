@@ -7,13 +7,9 @@ import { toast } from "react-toastify";
 
 const Leaderboard = () => {
   const userId = getUserIdFromToken();
-  const { data: leaderboardData = [], isLoading, error } = useGetLeaderboardQuery(userId);
+  const { data: leaderboardData = [], isLoading, error } = useGetLeaderboardQuery();
 
-  useEffect(() => {
-    if (error) {
-      toast.error("Failed to fetch leaderboard data. Please try again later.");
-    }
-  }, [error]);
+  console.log("Leaderboard data:", leaderboardData);
 
   return (
     <div className="px-4 lg:px-12 pt-4 lg:pt-10 pb-24">

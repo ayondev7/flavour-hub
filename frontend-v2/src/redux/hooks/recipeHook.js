@@ -18,18 +18,15 @@ export const recipesApi = createApi({
   endpoints: (builder) => ({
     getAllRecipes: builder.query({
       query: () => ({
-        url: 'get-all-recipes',
+        url: `get-all-recipes?userId=${getUserIdFromToken()}`,
         method: 'GET',
       }),
       providesTags: ['Recipes'],
     }),
     getRelatedRecipes: builder.query({
       query: ({ cuisineType, userId }) => ({
-        url: `getRelatedRecipes/${cuisineType}`,
+        url: `getRelatedRecipes/${cuisineType}?userId=${userId}`,
         method: 'GET',
-        headers: {
-          userId: userId,
-        },
       }),
       providesTags: ['Recipes'],
     }),

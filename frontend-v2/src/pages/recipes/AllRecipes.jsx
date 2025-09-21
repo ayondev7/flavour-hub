@@ -76,7 +76,7 @@ const AllRecipes = () => {
   // RTK Query hooks
   const { data: allRecipes = [], isLoading: isLoadingAll } = useGetAllRecipesQuery();
   const { data: relatedRecipes = [], isLoading: isLoadingRelated } = useGetRelatedRecipesQuery(
-    cuisineTypeState,
+    { cuisineType: cuisineTypeState, userId },
     { skip: !cuisineTypeState }
   );
 
