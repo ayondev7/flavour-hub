@@ -19,14 +19,6 @@ export const followApi = createApi({
         message: response.message,
       }),
       invalidatesTags: ['Chefs', 'Recipes'],
-      async onQueryStarted({ followerId, followingId }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled;
-          toast.success("Follow status updated successfully!");
-        } catch (error) {
-          toast.error("Failed to update follow status. Please try again.");
-        }
-      },
     }),
   }),
 });

@@ -8,6 +8,7 @@ import { useGetChefsQuery } from '@redux/hooks/chefHook';
 import { useGetAllRecipesQuery } from '@redux/hooks/recipeHook';
 import { useToggleFollowMutation } from '@redux/hooks/chefHook';
 import { useToggleLikeMutation } from '@redux/hooks/likesHook';
+import { toast } from 'react-toastify';
 
 const Newsfeed = () => {
   const userId = getUserIdFromToken();
@@ -22,7 +23,12 @@ const Newsfeed = () => {
   }, [toggleLike]);
 
   const handleFollowChange = useCallback(async (chefId) => {
-    await toggleFollow({ followerId: userId, followingId: chefId });
+    try {
+      await toggleFollow({ followerId: userId, followingId: chefId });
+      toast.success("Follow status updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update follow status. Please try again.");
+    }
   }, [toggleFollow, userId]);
 
   return (

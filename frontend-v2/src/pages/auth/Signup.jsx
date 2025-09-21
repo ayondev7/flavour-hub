@@ -34,7 +34,7 @@ const Signup = () => {
         <div className="w-[80%] lg:w-[40%] lg:ml-[40%] mt-16">
           <form className="space-y-3" onSubmit={handleSubmit}>
             <h1 className="text-black text-4xl font-bold text-center">
-              Recipe<span className="text-hotPink">Finder</span>
+              Flavor<span className="text-hotPink">Hub</span>
             </h1>
             <div className="flex flex-col">
               <label className="text-customGrayMedium text-base font-semibold mb-2" htmlFor="name">

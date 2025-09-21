@@ -9,15 +9,14 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
 
   const handleFollowClick = async () => {
     try {
-      const result = await toggleFollow({
+      await toggleFollow({
         followerId: userId,
         followingId: chefData._id,
       }).unwrap(); 
-      toast.success(result?.message);
-
+      toast.success("Follow status updated successfully!");
       onFollowChange(chefData._id);
     } catch (error) {
-      toast.error(error?.data?.message);
+      toast.error("Failed to update follow status. Please try again.");
     }
   };
 

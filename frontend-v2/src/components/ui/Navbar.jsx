@@ -82,7 +82,7 @@ const Navbar = () => {
               to={homeLink}
               className="font-bold text-gray-800 lg:text-3xl text-xl"
             >
-              Recipe<span className="text-pink-600">Finder</span>
+              Flavor<span className="text-pink-600">Hub</span>
             </Link>
             <div className="flex gap-x-4 lg:gap-x-10 relative">
               <Searchbar
@@ -117,7 +117,7 @@ const Navbar = () => {
         <nav className="flex justify-between items-center h-20 w-full">
           <div>
             <Link to="/" className="font-bold text-gray-800 pl-4 text-3xl">
-              Recipe<span className="text-pink-600">Finder</span>
+              Flavor<span className="text-pink-600">Hub</span>
             </Link>
           </div>
           <UnauthenticatedNav handleLoginClick={handleLoginClick} />
