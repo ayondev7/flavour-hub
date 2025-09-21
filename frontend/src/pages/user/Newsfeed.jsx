@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { getUserIdFromToken } from '../assets/tokenUtils';
-import PostCard from '../components/PostCard';
-import NewsfeedSidebar from '../components/NewsfeedSidebar';
-import NewsfeedSidebarSkeleton from '../Skeleton/NewsfeedSidebarSkeleton';
-import PostCardSkeleton from '../Skeleton/PostCardSkeleton';
+import { getUserIdFromToken } from '../../assets/tokenUtils';
+import PostCard from '../components/cards/PostCard';
+import NewsfeedSidebar from '../components/ui/NewsfeedSidebar';
+import NewsfeedSidebarSkeleton from '../../Skeleton/NewsfeedSidebarSkeleton';
+import PostCardSkeleton from '../../Skeleton/PostCardSkeleton';
 import { useGetChefsQuery } from '../redux/hooks/chefHook';
 import { useGetAllRecipesQuery } from '../redux/hooks/recipeHook';
 import { useToggleFollowMutation } from '../redux/hooks/chefHook';

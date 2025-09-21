@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import Pagination from "../components/Pagination";
+import Pagination from "../components/ui/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import MyCollectionCard from "../components/MyCollectionCard";
-import DeleteModal from "../components/DeleteModal";
-import RecipeCardSkeleton from "../Skeleton/RecipeCardSkeleton";
+import MyCollectionCard from "../components/cards/MyCollectionCard";
+import DeleteModal from "../components/modals/DeleteModal";
+import RecipeCardSkeleton from "../../Skeleton/RecipeCardSkeleton";
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);

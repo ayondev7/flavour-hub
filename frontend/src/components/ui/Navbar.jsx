@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HiOutlineMenu } from "react-icons/hi";
 import { getUserIdFromToken } from "../assets/tokenUtils";
-import Sidebar from "../components/Sidebar";
-import Searchbar from "../components/Searchbar";
+import Sidebar from "./Sidebar";
+import Searchbar from "./Searchbar";
 
 const Navbar = () => {
   const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;

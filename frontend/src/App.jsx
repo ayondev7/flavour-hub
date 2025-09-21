@@ -1,23 +1,23 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import Home from "./pages/Home";
-import Layout from "./components/Layout";
-import CreateNewRecipe from "./pages/CreateNewRecipe";
-import UserHome from "./pages/UserHome";
-import MyRecipes from "./pages/MyRecipes";
-import EditRecipe from "./pages/EditRecipe";
-import RecipesPage from "./pages/RecipesPage";
-import Login from "./pages/Login";
-import AllRecipes from "./pages/AllRecipes";
-import Signup from "./pages/Signup";
-import Newsfeed from "./pages/Newsfeed";
+import Home from "./pages/general/Home";
+import Layout from "./components/ui/Layout";
+import CreateNewRecipe from "./pages/recipes/CreateNewRecipe";
+import UserHome from "./pages/user/UserHome";
+import MyRecipes from "./pages/recipes/MyRecipes";
+import EditRecipe from "./pages/recipes/EditRecipe";
+import RecipesPage from "./pages/recipes/RecipesPage";
+import Login from "./pages/auth/Login";
+import AllRecipes from "./pages/recipes/AllRecipes";
+import Signup from "./pages/auth/Signup";
+import Newsfeed from "./pages/user/Newsfeed";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/user/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
-import Leaderboard from "./pages/Leaderboard";
-import Collections from "./pages/Collections";
-import Bookmarks from "./pages/Bookmarks";
+import Leaderboard from "./pages/general/Leaderboard";
+import Collections from "./pages/user/Collections";
+import Bookmarks from "./pages/user/Bookmarks";
 
 const PageTransition = ({ children }) => {
   const location = useLocation();

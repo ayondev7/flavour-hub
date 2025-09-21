@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import images from "../assets/images.js";
-import RecipeCard from "../components/RecipeCard.jsx";
-import RecipeCardSkeleton from "../Skeleton/RecipeCardSkeleton.jsx";
-import ReviewCard from "../components/ReviewCard.jsx";
+import images from "../../assets/images.js";
+import RecipeCard from "../components/cards/RecipeCard.jsx";
+import RecipeCardSkeleton from "../../Skeleton/RecipeCardSkeleton.jsx";
+import ReviewCard from "../components/cards/ReviewCard.jsx";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);

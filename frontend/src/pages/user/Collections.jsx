@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import CollectionCard from "../components/CollectionCard";
-import { getUserIdFromToken } from "../assets/tokenUtils";
+import CollectionCard from "../components/cards/CollectionCard";
+import { getUserIdFromToken } from "../../assets/tokenUtils";
 import axios from "axios";
 
 const Collections = () => {
