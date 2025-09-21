@@ -1,23 +1,23 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import Home from "./pages/general/Home";
-import Layout from "./components/ui/Layout";
-import CreateNewRecipe from "./pages/recipes/CreateNewRecipe";
-import UserHome from "./pages/user/UserHome";
-import MyRecipes from "./pages/recipes/MyRecipes";
-import EditRecipe from "./pages/recipes/EditRecipe";
-import RecipesPage from "./pages/recipes/RecipesPage";
-import Login from "./pages/auth/Login";
-import AllRecipes from "./pages/recipes/AllRecipes";
-import Signup from "./pages/auth/Signup";
-import Newsfeed from "./pages/user/Newsfeed";
-import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/user/ProtectedRoute";
+import Home from "@pages/general/Home";
+import Layout from "@components/ui/Layout";
+import CreateNewRecipe from "@pages/recipes/CreateNewRecipe";
+import UserHome from "@pages/user/UserHome";
+import MyRecipes from "@pages/recipes/MyRecipes";
+import EditRecipe from "@pages/recipes/EditRecipe";
+import RecipesPage from "@pages/recipes/RecipesPage";
+import Login from "@pages/auth/Login";
+import AllRecipes from "@pages/recipes/AllRecipes";
+import Signup from "@pages/auth/Signup";
+import Newsfeed from "@pages/user/Newsfeed";
+import { AuthProvider } from "@context/AuthContext";
+import ProtectedRoute from "@components/user/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
-import Leaderboard from "./pages/general/Leaderboard";
-import Collections from "./pages/user/Collections";
-import Bookmarks from "./pages/user/Bookmarks";
+import Leaderboard from "@pages/general/Leaderboard";
+import Collections from "@pages/user/Collections";
+import Bookmarks from "@pages/user/Bookmarks";
 
 // Reusable wrapper for transitions
 const PageTransition = ({ children }) => {
