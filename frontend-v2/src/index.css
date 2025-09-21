@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #FFFFFF; /* Set background color to white */
+  }
+
+  @keyframes customPulse {
+    0%, 100% {
+      background-color: #e0e0e0;
+    }
+    50% {
+      background-color: #c0c0c0;
+    }
+  }
+  
+  .custom-skeleton {
+    animation: customPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .rotate-animation {
+    animation: rotate 25s linear infinite;
+  }
+
+  @keyframes wave {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .wave-animation {
+    animation: wave 3s infinite;
+  }
+
+  .tooltip-arrow {
+  position: absolute;
+  width:10px;
+  height:10px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #f9a8d3; /* Same color as tooltip background */
+  top:3px; /* Position above the tooltip content */
+  right:-13px; /* Adjust based on where you want the arrow to point */
+  transform:rotate(90deg);
+}
+  
+  
