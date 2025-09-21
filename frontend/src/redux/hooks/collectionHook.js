@@ -27,10 +27,15 @@ export const collectionsApi = createApi({
       query: () => "get-all", 
       providesTags: ["Collections"],
     }),
+    getCollectionsByUser: builder.query({
+      query: (userId) => `get-collections/${userId}`,
+      providesTags: ["Collections"],
+    }),
   }),
 });
 
 export const {
   useCreateCollectionMutation,
   useGetCollectionsQuery,
+  useGetCollectionsByUserQuery,
 } = collectionsApi;
