@@ -29,7 +29,7 @@ const RecipesPage = () => {
       setLoadingRelatedRecipes(true);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getRecipe/${recipeId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getRecipe/${recipeId}`
         );
         const recipe = response.data;
         setRecipe(recipe);
@@ -37,7 +37,7 @@ const RecipesPage = () => {
         try {
           const cuisineType = recipe.cuisineType;
           const response = await axios.get(
-            `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getRelatedRecipes/${cuisineType}`
+            `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getRelatedRecipes/${cuisineType}`
           );
           const relatedRecipe = response.data;
           setRelatedRecipes(relatedRecipe);
@@ -61,7 +61,7 @@ const RecipesPage = () => {
     setLoadingTrendingRecipes(true);
     // Fetch recipes from the server
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/getAllRecipes`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getAllRecipes`)
       .then((response) => {
         setTrendingRecipes(response.data);
         setLoadingTrendingRecipes(false);
@@ -75,7 +75,7 @@ const RecipesPage = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/api/recipe/getRecipeDetails/${recipeId}`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getRecipeDetails/${recipeId}`)
       .then((response) => {
         setRecipeDetails(response.data);
         setIsLoading(false);

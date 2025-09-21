@@ -26,7 +26,7 @@ const CommentSection = ({ recipeId }) => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/comment/getComments/${recipeId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/comment/getComments/${recipeId}`
       );
       setComments(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/comment/postComment`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/comment/postComment`,
         {
           userId: userId,
           content: comment,
@@ -68,7 +68,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/comment/postComment`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/comment/postComment`,
         {
           userId: userId,
           content: reply,
@@ -103,7 +103,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/comment/deleteComment`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/comment/deleteComment`,
         { data: { commentId: commentId } }
       );
       document.getElementById("deleteCommentModal").close();
@@ -121,7 +121,7 @@ const CommentSection = ({ recipeId }) => {
     setIsProcessing(true);
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_URL}/api/comment/updateComment`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/comment/updateComment`,
         { commentId: commentId, content: fetchedComment }
       );
       if (response.status === 200) {

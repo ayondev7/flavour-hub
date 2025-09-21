@@ -27,7 +27,7 @@ const MyRecipes = () => {
 
         try {
           const response = await axios.get(
-            `${process.env.REACT_APP_BACKEND_URL}/api/recipe/getMyRecipes/${userId}`
+            `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getMyRecipes/${userId}`
           );
           setRecipes(response.data);
           setLoading(false);
@@ -45,7 +45,7 @@ const MyRecipes = () => {
     if (selectedRecipe) {
       try {
         await axios.delete(
-          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/deleteRecipe/${selectedRecipe._id}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/recipe/deleteRecipe/${selectedRecipe._id}`
         );
         setRecipes((prevRecipes) =>
           prevRecipes.filter((recipe) => recipe._id !== selectedRecipe._id)

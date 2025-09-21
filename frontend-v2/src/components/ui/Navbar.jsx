@@ -7,7 +7,7 @@ import Sidebar from "@components/ui/Sidebar";
 import Searchbar from "@components/ui/Searchbar";
 
 const Navbar = () => {
-  const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
+  const baseURL = `${import.meta.env.VITE_BACKEND_URL}`;
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const userId = getUserIdFromToken();

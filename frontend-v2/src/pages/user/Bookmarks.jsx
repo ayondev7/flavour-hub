@@ -14,7 +14,7 @@ const Bookmarks = () => {
     try {
       setLoading(true); // Start loading
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/bookmark/get-bookmarks/${collectionId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/bookmark/get-bookmarks/${collectionId}`
       );
       setBookmarks(response.data); // Set the fetched bookmarks data
     } catch (error) {

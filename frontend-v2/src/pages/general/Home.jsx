@@ -8,7 +8,7 @@ import ReviewCard from "@components/cards/ReviewCard.jsx";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
-  const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
+  const baseURL = `${import.meta.env.VITE_BACKEND_URL}`;
   console.log("baseURL", baseURL);
   const [loading, setLoading] = useState(true);
 

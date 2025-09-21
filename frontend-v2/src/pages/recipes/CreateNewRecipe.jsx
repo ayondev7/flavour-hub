@@ -117,7 +117,7 @@ const CreateNewRecipe = () => {
       const token = sessionStorage.getItem("token");
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/recipe/upload`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/recipe/upload`,
         data,
         {
           headers: {

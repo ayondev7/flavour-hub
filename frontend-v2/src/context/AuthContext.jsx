@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const checkAuth = async () => {
-    const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
+    const baseURL = `${import.meta.env.VITE_BACKEND_URL}`;
     const token = sessionStorage.getItem('token');
 
     if (token) {

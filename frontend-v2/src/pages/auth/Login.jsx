@@ -8,7 +8,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "@context/AuthContext";
 
 const Login = () => {
-  const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;
+  const baseURL = `${import.meta.env.VITE_BACKEND_URL}`;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

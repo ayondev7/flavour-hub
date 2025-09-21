@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 /**
  * Custom hook for authentication API calls.

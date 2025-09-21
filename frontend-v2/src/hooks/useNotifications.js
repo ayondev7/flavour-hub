@@ -6,7 +6,7 @@ export const useNotifications = (userId) => {
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { data: notificationsData = [], refetch } = useGetNotificationsQuery(userId, { skip: !userId });
-  const socket = io(`${process.env.REACT_APP_BACKEND_URL}`);
+  const socket = io(`${import.meta.env.VITE_BACKEND_URL}`);
 
   useEffect(() => {
     if (userId) {

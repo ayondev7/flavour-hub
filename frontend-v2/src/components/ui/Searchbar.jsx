@@ -11,7 +11,7 @@ const Searchbar = ({ onSearchResults }) => {
     if (query) {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/api/recipe/search`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/recipe/search`,
           { params: { title: query } }
         );
         onSearchResults(response.data);
