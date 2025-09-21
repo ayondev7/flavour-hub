@@ -13,7 +13,12 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
         followerId: userId,
         followingId: chefData._id,
       }).unwrap(); 
-      toast.success("Follow status updated successfully!");
+      
+      const message = chefData.following 
+        ? "You have unfollowed this user" 
+        : "You have followed this user";
+      toast.success(message);
+      
       onFollowChange(chefData._id);
     } catch (error) {
       toast.error("Failed to update follow status. Please try again.");

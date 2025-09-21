@@ -24,12 +24,19 @@ const Newsfeed = () => {
 
   const handleFollowChange = useCallback(async (chefId) => {
     try {
+      const chef = chefsData.find(c => c._id === chefId);
+      const isCurrentlyFollowing = chef?.following;
+      
       await toggleFollow({ followerId: userId, followingId: chefId });
-      toast.success("Follow status updated successfully!");
+      
+      const message = isCurrentlyFollowing 
+        ? "You have unfollowed this user" 
+        : "You have followed this user";
+      toast.success(message);
     } catch (error) {
       toast.error("Failed to update follow status. Please try again.");
     }
-  }, [toggleFollow, userId]);
+  }, [toggleFollow, userId, chefsData]);
 
   return (
     <div className="px-4 lg:px-12 pb-24 pt-4 lg:pt-10 bg-gray-100 min-h-screen">

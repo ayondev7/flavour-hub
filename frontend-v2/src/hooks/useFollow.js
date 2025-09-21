@@ -12,7 +12,6 @@ export const useFollow = (userId, onFollowChange) => {
 
       const result = await toggleFollow({ followerId: userId, followingId: chefId }).unwrap();
       onFollowChange(chefId);
-      toast.success(result?.message || "Follow status updated!");
     } catch (error) {
       toast.error(error?.data?.message || "Failed to update follow status");
     } finally {
