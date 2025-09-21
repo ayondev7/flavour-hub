@@ -12,6 +12,7 @@ export const bookmarkApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Bookmarks"],
   endpoints: (builder) => ({
     toggleBookmark: builder.mutation({
       query: ({ collectionId, recipeId }) => ({
@@ -24,6 +25,7 @@ export const bookmarkApi = createApi({
         recipeId: arg.recipeId,
         message: response.message,
       }),
+      invalidatesTags: ["Bookmarks"],
     }),
 
     deleteBookmark: builder.mutation({
@@ -38,8 +40,14 @@ export const bookmarkApi = createApi({
         recipeId: arg.recipeId,
         message: response.message,
       }),
+      invalidatesTags: ["Bookmarks"],
+    }),
+
+    getBookmarks: builder.query({
+      query: (collectionId) => `bookmark/get-bookmarks/${collectionId}`,
+      providesTags: ["Bookmarks"],
     }),
   }),
 });
 
-export const { useToggleBookmarkMutation, useDeleteBookmarkMutation } = bookmarkApi;
+export const { useToggleBookmarkMutation, useDeleteBookmarkMutation, useGetBookmarksQuery } = bookmarkApi;
