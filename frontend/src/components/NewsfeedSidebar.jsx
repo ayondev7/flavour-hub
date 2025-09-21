@@ -1,34 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaUserCheck, FaPlus } from "react-icons/fa";
 import { VscSearch } from "react-icons/vsc";
-import { toast } from "react-toastify";
-import { useToggleFollowMutation } from "../redux/store/followSlice";
+import { useFollow } from "../hooks/useFollow";
 
 const NewsfeedSidebar = ({ showSearchBar, title, followersSidebar, userId, chefs, onFollowChange }) => {
-  const [loadingChefIds, setLoadingChefIds] = useState(new Set()); 
-  const [toggleFollow] = useToggleFollowMutation();
+  const { loadingChefIds, handleFollowClick } = useFollow(userId, onFollowChange);
 
-  const handleFollowClick = async (chefId, isFollowing) => {
-    try {
-    
-      setLoadingChefIds((prev) => new Set(prev).add(chefId));
-
-      const result = await toggleFollow({ followerId: userId, followingId: chefId }).unwrap();
-      onFollowChange(chefId); 
-      toast.success(result?.message || "Follow status updated!");
-    } catch (error) {
-      toast.error(error?.data?.message || "Failed to update follow status");
-    } finally {
-    
-      setLoadingChefIds((prev) => {
-        const updated = new Set(prev);
-        updated.delete(chefId);
-        return updated;
-      });
-    }
-  };
-
-  const filteredData = chefs.filter((user) => user?.following === followersSidebar);
+  const filteredData = chefs.filter((user) => user?.following === followersSidebar && user._id !== userId);
 
   return (
     <div className="bg-white shadow-md rounded-xl p-4 space-y-4 w-full">
@@ -72,7 +50,7 @@ const NewsfeedSidebar = ({ showSearchBar, title, followersSidebar, userId, chefs
                  }
                `}
                 aria-label={user?.following ? "Unfollow Chef" : "Follow Chef"}
-                onClick={() => handleFollowClick(user._id, user?.following)}
+                onClick={() => handleFollowClick(user._id)}
                 disabled={loadingChefIds.has(user._id)} 
               >
                 {loadingChefIds.has(user._id) ? (

@@ -1,40 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCheck, FaPlus, FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useToggleFollowMutation } from "../redux/store/followSlice";
 import { useToggleLikeMutation } from "../redux/hooks/likesHook";
+import { useFollow } from "../hooks/useFollow";
 
 const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
-  const [loadingChefIds, setLoadingChefIds] = useState(new Set());
   const [loadingLikes, setLoadingLikes] = useState(false); 
-  const [toggleFollow] = useToggleFollowMutation();
   const [toggleLike] = useToggleLikeMutation(); 
+  const { loadingChefIds, handleFollowClick } = useFollow(userId, onFollowChange);
 
-
-  const handleFollowClick = async (chefId) => {
-    try {
-      setLoadingChefIds((prev) => new Set(prev).add(chefId));
-
-      const result = await toggleFollow({
-        followerId: userId,
-        followingId: chefId,
-      }).unwrap();
-      onFollowChange(chefId);
-      toast.success(result?.message || "Follow status updated!");
-    } catch (error) {
-      toast.error(error?.data?.message || "Failed to update follow status");
-    } finally {
-      setLoadingChefIds((prev) => {
-        const updated = new Set(prev);
-        updated.delete(chefId);
-        return updated;
-      });
-    }
-  };
-
-  
-  const handleLikeClick = async (recipeId) => {
+  const handleLikeClick = useCallback(async (recipeId) => {
     try {
       setLoadingLikes(true);
 
@@ -49,7 +25,7 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
     } finally {
       setLoadingLikes(false);
     }
-  };
+  }, [userId, toggleLike, onLikeChange]);
 
   return (
     <div className="shadow-lg rounded-xl p-4 lg:p-6 bg-white relative">
@@ -75,23 +51,25 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
           </div>
           <p className="text-[10px] lg:text-xs text-gray-500">{data?.createdAt}</p>
         </div>
-        <button
-          onClick={() => handleFollowClick(data.chefId)}
-          className={`absolute flex gap-x-1 items-center border border-brightPink top-2 lg:top-6 right-2 lg:right-6 z-10 rounded-full px-4 py-2 text-[10px] md:text-sm font-bold transition-all duration-200 
-            ${data?.following ? "bg-brightPink text-white" : "bg-white text-brightPink"}
-          `}
-          aria-label={data?.following ? "Unfollow Chef" : "Follow Chef"}
-          disabled={loadingChefIds.has(data.chefId)}
-        >
-          {loadingChefIds.has(data.chefId) ? (
-            "Loading..."
-          ) : (
-            <>
-              {data?.following ? <FaUserCheck className="text-xs" /> : <FaPlus className="text-xs" />}
-              {data?.following ? "Following" : "Follow"}
-            </>
-          )}
-        </button>
+        {data.chefId !== userId && (
+          <button
+            onClick={() => handleFollowClick(data.chefId)}
+            className={`absolute flex gap-x-1 items-center border border-brightPink top-2 lg:top-6 right-2 lg:right-6 z-10 rounded-full px-4 py-2 text-[10px] md:text-sm font-bold transition-all duration-200 
+              ${data?.following ? "bg-brightPink text-white" : "bg-white text-brightPink"}
+            `}
+            aria-label={data?.following ? "Unfollow Chef" : "Follow Chef"}
+            disabled={loadingChefIds.has(data.chefId)}
+          >
+            {loadingChefIds.has(data.chefId) ? (
+              "Loading..."
+            ) : (
+              <>
+                {data?.following ? <FaUserCheck className="text-xs" /> : <FaPlus className="text-xs" />}
+                {data?.following ? "Following" : "Follow"}
+              </>
+            )}
+          </button>
+        )}
       </div>
 
    

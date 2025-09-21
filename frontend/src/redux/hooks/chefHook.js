@@ -12,9 +12,11 @@ export const chefsApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Chefs'],
   endpoints: (builder) => ({
     getChefs: builder.query({
       query: () => `get-all-users`, 
+      providesTags: ['Chefs'],
     }),
     toggleFollow: builder.mutation({
       query: ({ followerId, followingId }) => ({
@@ -22,6 +24,7 @@ export const chefsApi = createApi({
         method: "POST",
         body: { followerId, followingId },
       }),
+      invalidatesTags: ['Chefs'],
     }),
   }),
 });

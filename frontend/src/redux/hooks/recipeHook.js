@@ -13,12 +13,14 @@ export const recipesApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Recipes'],
   endpoints: (builder) => ({
     getAllRecipes: builder.query({
       query: () => ({
         url: 'get-all-recipes',
         method: 'GET',
       }),
+      providesTags: ['Recipes'],
     }),
   }),
 });

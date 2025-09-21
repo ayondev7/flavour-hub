@@ -1,61 +1,29 @@
-import React, { useState } from "react";
-import { getUserIdFromToken } from "../assets/tokenUtils";
-import PostCard from "../components/PostCard";
-import NewsfeedSidebar from "../components/NewsfeedSidebar";
-import NewsfeedSidebarSkeleton from "../Skeleton/NewsfeedSidebarSkeleton";
-import PostCardSkeleton from "../Skeleton/PostCardSkeleton";
-import { useGetChefsQuery} from "../redux/hooks/chefHook";
-import {useGetAllRecipesQuery } from "../redux/hooks/recipeHook";
+import React, { useCallback } from 'react';
+import { getUserIdFromToken } from '../assets/tokenUtils';
+import PostCard from '../components/PostCard';
+import NewsfeedSidebar from '../components/NewsfeedSidebar';
+import NewsfeedSidebarSkeleton from '../Skeleton/NewsfeedSidebarSkeleton';
+import PostCardSkeleton from '../Skeleton/PostCardSkeleton';
+import { useGetChefsQuery } from '../redux/hooks/chefHook';
+import { useGetAllRecipesQuery } from '../redux/hooks/recipeHook';
+import { useToggleFollowMutation } from '../redux/hooks/chefHook';
+import { useToggleLikeMutation } from '../redux/hooks/likesHook';
 
 const Newsfeed = () => {
   const userId = getUserIdFromToken();
-  const [recipes, setRecipes] = useState([]);
-  const [chefs, setChefs] = useState([]);
 
-  const { data: chefsData = [], isLoading: isChefsLoading } =
-    useGetChefsQuery();
-  if (chefsData && chefsData.length > 0 && chefs.length === 0) {
-    setChefs(chefsData); 
-  }
+  const { data: chefsData = [], isLoading: isChefsLoading } = useGetChefsQuery();
+  const { data: recipesData = [], isLoading: isRecipesLoading } = useGetAllRecipesQuery();
+  const [toggleFollow] = useToggleFollowMutation();
+  const [toggleLike] = useToggleLikeMutation();
 
-  const { data: recipesData = [], isLoading: isRecipesLoading } =
-  useGetAllRecipesQuery();
-if (recipesData && recipesData.length > 0 && recipes.length === 0) {
-  setRecipes(recipesData); 
-}
+  const handleLikeChange = useCallback(async (recipeId) => {
+    await toggleLike({ recipeId });
+  }, [toggleLike]);
 
-const handleLikeChange = (recipeId) => {
-  setRecipes((prevRecipes) =>
-    prevRecipes.map((recipe) =>
-      recipe._id === recipeId
-        ? {
-            ...recipe,
-            likedByUser: !recipe.likedByUser, 
-            totalLikes: recipe.likedByUser
-              ? recipe.totalLikes - 1 
-              : recipe.totalLikes + 1, 
-          }
-        : recipe
-    )
-  );
-};
-
-
-const handleFollowChange = (chefId) => {
-  setChefs((prevChefs) =>
-    prevChefs.map((chef) =>
-      chef._id === chefId ? { ...chef, following: !chef.following } : chef
-    )
-  );
-
-  setRecipes((prevRecipes) =>
-    prevRecipes.map((recipe) =>
-      recipe.chefId === chefId
-        ? { ...recipe, following: !recipe.following }
-        : recipe
-    )
-  );
-};
+  const handleFollowChange = useCallback(async (chefId) => {
+    await toggleFollow({ followerId: userId, followingId: chefId });
+  }, [toggleFollow, userId]);
 
   return (
     <div className="px-4 lg:px-12 pb-24 pt-4 lg:pt-10 bg-gray-100 min-h-screen">
@@ -70,36 +38,31 @@ const handleFollowChange = (chefId) => {
                 showSearchBar={false}
                 followersSidebar={true}
                 userId={userId}
-                chefs={chefs}
+                chefs={chefsData}
                 onFollowChange={handleFollowChange}
               />
             )}
           </div>
         </div>
 
-      
         <div className="col-span-1 lg:col-span-6">
           <div className="space-y-6">
-            {isRecipesLoading || recipes.length <= 0 ? (
+            {isRecipesLoading || recipesData.length <= 0 ? (
               <PostCardSkeleton />
             ) : (
-              recipes.map((_, index) => {
-                const recipe = recipes[recipes.length - 1 - index];
-                return (
-                  <PostCard
-                    data={recipe}
-                    key={recipe._id}
-                    onFollowChange={handleFollowChange}
-                    userId={userId}
-                    onLikeChange={handleLikeChange}
-                  />
-                );
-              })
+              [...recipesData].reverse().map((recipe) => (
+                <PostCard
+                  data={recipe}
+                  key={recipe._id}
+                  onFollowChange={handleFollowChange}
+                  userId={userId}
+                  onLikeChange={handleLikeChange}
+                />
+              ))
             )}
           </div>
         </div>
 
-        
         <div className="hidden lg:block lg:col-span-3">
           <div className="sticky top-16">
             {isChefsLoading ? (
@@ -110,7 +73,7 @@ const handleFollowChange = (chefId) => {
                 showSearchBar={true}
                 followersSidebar={false}
                 userId={userId}
-                chefs={chefs}
+                chefs={chefsData}
                 onFollowChange={handleFollowChange}
               />
             )}

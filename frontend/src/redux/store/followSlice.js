@@ -4,6 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const followApi = createApi({
   reducerPath: 'followApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BACKEND_URL}/api/` }),
+  tagTypes: ['Chefs'],
   endpoints: (builder) => ({
     toggleFollow: builder.mutation({
       query: ({ followerId, followingId }) => ({
@@ -15,6 +16,7 @@ export const followApi = createApi({
         followingId: arg.followingId,
         message: response.message,
       }),
+      invalidatesTags: ['Chefs', 'Recipes'],
     }),
   }),
 });
