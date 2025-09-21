@@ -1,5 +1,6 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getUserIdFromToken } from '@assets/tokenUtils';
 
 export const recipesApi = createApi({
   reducerPath: 'recipesApi',
@@ -22,8 +23,18 @@ export const recipesApi = createApi({
       }),
       providesTags: ['Recipes'],
     }),
+    getRelatedRecipes: builder.query({
+      query: ({ cuisineType, userId }) => ({
+        url: `getRelatedRecipes/${cuisineType}`,
+        method: 'GET',
+        headers: {
+          userId: userId,
+        },
+      }),
+      providesTags: ['Recipes'],
+    }),
   }),
 });
 
 
-export const { useGetAllRecipesQuery } = recipesApi;
+export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery } = recipesApi;

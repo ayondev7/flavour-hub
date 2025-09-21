@@ -43,7 +43,6 @@ const UserHome = () => {
 
   return (
     <div className="relative overflow-hidden min-h-screen">
-      <ToastContainer />
       <HeroSection />
 
       {isBookmarkDialogOpen && (
