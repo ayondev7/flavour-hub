@@ -30,8 +30,19 @@ export const recipesApi = createApi({
       }),
       providesTags: ['Recipes'],
     }),
+    getMyRecipes: builder.query({
+      query: (userId) => `getMyRecipes/${userId}`,
+      providesTags: ['Recipes'],
+    }),
+    deleteRecipe: builder.mutation({
+      query: (recipeId) => ({
+        url: `deleteRecipe/${recipeId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
   }),
 });
 
 
-export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery } = recipesApi;
+export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery, useGetMyRecipesQuery, useDeleteRecipeMutation } = recipesApi;

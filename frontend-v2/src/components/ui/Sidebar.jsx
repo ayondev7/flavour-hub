@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Notifications from '@components/user/Notifications';
 import { useNotifications } from '@hooks/useNotifications';
 import {
@@ -26,7 +26,15 @@ const menuItems = [
 
 const Sidebar = ({ userData, handleLogoutClick, userId }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { notificationsData, hasNewNotifications, isOpen, setIsOpen, toggleDropdown } = useNotifications(userId);
+
+  const isActiveRoute = useCallback((path) => {
+    if (path === '/all-recipes/null') {
+      return location.pathname.startsWith('/all-recipes');
+    }
+    return location.pathname === path;
+  }, [location.pathname]);
 
   const notificationOnClick = useCallback((recipeId) => {
     navigate(`/recipes-page/${recipeId}`);
@@ -63,7 +71,15 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
           <ul className="text-base lg:text-xl flex flex-col gap-y-4">
             {menuItems.map((item, index) => (
               <li key={index} className="border-white border-b-2 pb-2">
-                <Link className="hover:bg-hotPink flex items-center gap-x-3" to={item.to} onClick={handleSidebarLinkClick}>
+                <Link 
+                  className={`flex items-center gap-x-3 transition-colors duration-200 ${
+                    isActiveRoute(item.to) 
+                      ? 'bg-hotPink text-white font-semibold' 
+                      : 'hover:bg-hotPink'
+                  }`} 
+                  to={item.to} 
+                  onClick={handleSidebarLinkClick}
+                >
                   <item.icon />
                   {item.label}
                 </Link>
