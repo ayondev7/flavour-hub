@@ -1,31 +1,19 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import LeaderboardTable from "@components/user/LeaderboardTable.jsx";
 import { getUserIdFromToken } from "@assets/tokenUtils";
 import LeaderboardTableSkeleton from "@skeleton/LeaderboardTableSkeleton";
+import { useGetLeaderboardQuery } from "@redux/hooks/chefHook";
+import { toast } from "react-toastify";
 
 const Leaderboard = () => {
-  const [leaderboardData, setLeaderboardData] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [error, setError] = useState(null); // Add error state
   const userId = getUserIdFromToken();
+  const { data: leaderboardData = [], isLoading, error } = useGetLeaderboardQuery(userId);
 
   useEffect(() => {
-    const fetchLeaderboardData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/get-leaderboard-rankings/${userId}`);
-        setLeaderboardData(response.data); // Set leaderboard data
-      } catch (err) {
-        setError("Failed to fetch leaderboard data. Please try again later.");
-        console.error(err);
-      } finally {
-        setLoading(false); // Stop loading spinner
-      }
-    };
-
-    fetchLeaderboardData();
-  }, []);
+    if (error) {
+      toast.error("Failed to fetch leaderboard data. Please try again later.");
+    }
+  }, [error]);
 
   return (
     <div className="px-4 lg:px-12 pt-4 lg:pt-10 pb-24">
@@ -42,7 +30,7 @@ const Leaderboard = () => {
       </div>
 
       {/* Conditional Rendering */}
-      {loading ? (
+      {isLoading ? (
         <LeaderboardTableSkeleton/>
       ) : (
         <LeaderboardTable data={leaderboardData} userId={userId} />

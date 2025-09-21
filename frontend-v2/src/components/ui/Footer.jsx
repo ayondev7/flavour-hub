@@ -6,8 +6,8 @@ const Footer = () => {
     <div className='lg:px-16 px-4 lg:py-5 py-6 bg-lightPink'>
 
       <section className='lg:flex lg:flex-row lg:justify-between flex-col'>
-        <div className='text-black w-full lg:w-[30%]'><p className='text-2xl lg:text-4xl mb-2 lg:mb-5 font-bold'>Flavor<span className='text-hotPink'>Hub</span></p>
-            <div><p className='text-sm lg:text-md font-semibold text-gray-800'>Discover and share culinary masterpieces with FlavorHub, your ultimate kitchen companion. 
+        <div className='text-black w-full lg:w-[30%]'><p className='text-2xl lg:text-4xl mb-2 lg:mb-5 font-bold'><span className='bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 text-transparent bg-clip-text'>FlavorHub</span></p>
+            <div><p className='text-sm lg:text-md font-semibold text-gray-800'>Discover and share culinary masterpieces with <span className='bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 text-transparent bg-clip-text'>FlavorHub</span>, your ultimate kitchen companion. 
                     Explore a diverse collection of recipes from a passionate community of food lovers, or 
                     unleash your creativity by uploading your own. Whether you're a seasoned chef or a home cook, 
                     connect with like-minded individuals, find inspiration, and make every meal a memorable one.</p>

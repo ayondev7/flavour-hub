@@ -96,7 +96,7 @@ const Login = () => {
         <div className="w-[80%] lg:w-[40%] lg:ml-[40%]">
           <form className="space-y-4" onSubmit={handleLogin}>
             <h1 className=" text-black text-4xl font-bold text-center">
-              Flavor<span className="text-hotPink">Hub</span>
+              <span className="bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 text-transparent bg-clip-text">FlavorHub</span>
             </h1>
             <div className="flex flex-col">
               <label

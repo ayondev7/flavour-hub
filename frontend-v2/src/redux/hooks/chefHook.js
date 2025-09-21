@@ -19,6 +19,10 @@ export const chefsApi = createApi({
       query: () => `get-all-users`, 
       providesTags: ['Chefs'],
     }),
+    getLeaderboard: builder.query({
+      query: (userId) => `get-leaderboard-rankings/${userId}`,
+      providesTags: ['Leaderboard'],
+    }),
     toggleFollow: builder.mutation({
       query: ({ followerId, followingId }) => ({
         url: "toggle-follow",
@@ -30,4 +34,4 @@ export const chefsApi = createApi({
   }),
 });
 
-export const { useGetChefsQuery, useToggleFollowMutation } = chefsApi;
+export const { useGetChefsQuery, useGetLeaderboardQuery, useToggleFollowMutation } = chefsApi;
