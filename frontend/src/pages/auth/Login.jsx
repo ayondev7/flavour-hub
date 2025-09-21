@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;

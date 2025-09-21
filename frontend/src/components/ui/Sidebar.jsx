@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Notifications from '../components/Notifications';
-import { useNotifications } from '../hooks/useNotifications';
+import Notifications from '../user/Notifications';
+import { useNotifications } from '../../hooks/useNotifications';
 import {
   FaHome,
   FaNewspaper,

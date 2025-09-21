@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HiOutlineMenu } from "react-icons/hi";
-import { getUserIdFromToken } from "../assets/tokenUtils";
+import { getUserIdFromToken } from "../../assets/tokenUtils";
 import Sidebar from "./Sidebar";
 import Searchbar from "./Searchbar";
 
