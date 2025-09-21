@@ -6,11 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSignupForm } from '@hooks/useSignupForm';
 import PasswordInput from '@components/forms/PasswordInput';
 import FileInput from '@components/forms/FileInput';
-
-/**
- * Signup page component.
- * @returns {JSX.Element} - Signup form.
- */
+ 
 const Signup = () => {
   const {
     register,
