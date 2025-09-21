@@ -52,7 +52,7 @@ const App = () => {
     <BrowserRouter>
       <Provider store={store}>
         <AuthProvider>
-        <ToastContainer />
+        <ToastContainer autoClose={3000} />
         <div className="bg-white">
           <Routes>
             {/* Public routes */}

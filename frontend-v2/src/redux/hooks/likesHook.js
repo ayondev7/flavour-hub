@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { toast } from "react-toastify";
 
 export const likesApi = createApi({
   reducerPath: "likesApi",
@@ -25,6 +26,14 @@ export const likesApi = createApi({
         body: { recipeId },
       }),
       invalidatesTags: ["Likes"],
+      async onQueryStarted({ recipeId }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          toast.success("Like status updated successfully!");
+        } catch (error) {
+          toast.error("Failed to update like status. Please try again.");
+        }
+      },
     }),
   }),
 });
