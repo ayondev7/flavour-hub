@@ -41,8 +41,16 @@ export const recipesApi = createApi({
       }),
       invalidatesTags: ['Recipes'],
     }),
+    createRecipe: builder.mutation({
+      query: (formData) => ({
+        url: 'upload',
+        method: 'POST',
+        body: formData,
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
   }),
 });
 
 
-export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery, useGetMyRecipesQuery, useDeleteRecipeMutation } = recipesApi;
+export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery, useGetMyRecipesQuery, useDeleteRecipeMutation, useCreateRecipeMutation } = recipesApi;

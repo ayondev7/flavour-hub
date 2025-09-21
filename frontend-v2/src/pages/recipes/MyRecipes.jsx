@@ -1,81 +1,90 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import Pagination from "@components/ui/Pagination";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import Pagination from "@components/ui/Pagination";
+import { toast } from "react-toastify";
 import MyCollectionCard from "@components/cards/MyCollectionCard";
 import DeleteModal from "@components/modals/DeleteModal";
 import RecipeCardSkeleton from "@skeleton/RecipeCardSkeleton";
+import { getUserIdFromToken } from "@assets/tokenUtils";
+import { useGetMyRecipesQuery, useDeleteRecipeMutation } from "@redux/hooks/recipeHook";
 
-const MyRecipes = () => {
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
+// Custom hook for pagination logic
+const usePagination = (items, itemsPerPage = 6) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const recipesPerPage = 6;
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      const token = sessionStorage.getItem("token");
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        const userId = decodedToken.id;
+  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getMyRecipes/${userId}`
-          );
-          setRecipes(response.data);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching recipes:", error);
-          setLoading(true);
-        }
-      }
-    };
-
-    fetchRecipes();
+  const paginate = useCallback((pageNumber) => {
+    setCurrentPage(pageNumber);
   }, []);
 
-  const handleDelete = async () => {
-    if (selectedRecipe) {
+  // Reset to first page when items change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [items.length]);
+
+  return {
+    currentPage,
+    totalPages,
+    currentItems,
+    paginate,
+  };
+};
+
+// Custom hook for delete modal logic
+const useDeleteModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+  const openModal = useCallback((recipe) => {
+    setSelectedRecipe(recipe);
+    setIsOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+    setSelectedRecipe(null);
+  }, []);
+
+  return {
+    isOpen,
+    selectedRecipe,
+    openModal,
+    closeModal,
+  };
+};
+
+const MyRecipes = () => {
+  const navigate = useNavigate();
+  const userId = getUserIdFromToken();
+
+  // RTK Query hooks
+  const { data: recipes = [], isLoading } = useGetMyRecipesQuery(userId);
+  const [deleteRecipe] = useDeleteRecipeMutation();
+
+  // Custom hooks
+  const { currentPage, currentItems, paginate } = usePagination(recipes);
+  const deleteModal = useDeleteModal();
+
+  const handleEdit = useCallback((recipeId) => {
+    navigate(`/edit-recipe/${recipeId}`);
+  }, [navigate]);
+
+  const handleDelete = useCallback(async () => {
+    if (deleteModal.selectedRecipe) {
       try {
-        await axios.delete(
-          `${import.meta.env.VITE_BACKEND_URL}/api/recipe/deleteRecipe/${selectedRecipe._id}`
-        );
-        setRecipes((prevRecipes) =>
-          prevRecipes.filter((recipe) => recipe._id !== selectedRecipe._id)
-        );
+        await deleteRecipe(deleteModal.selectedRecipe._id).unwrap();
         toast.success("Recipe deleted successfully!");
+        deleteModal.closeModal();
       } catch (error) {
         console.error("Error deleting recipe:", error);
         toast.error("Failed to delete recipe.");
       }
-      closeModal();
     }
-  };
-
-  const handleEdit = (recipeId) => {
-    navigate(`/editRecipe/${recipeId}`);
-  };
-
-  const openModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedRecipe(null);
-  };
-
-  const indexOfLastRecipe = currentPage * recipesPerPage;
-  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-  const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+  }, [deleteRecipe, deleteModal]);
 
   return (
     <div className="min-h-screen">
@@ -83,32 +92,30 @@ const MyRecipes = () => {
         My Recipes Collection
       </p>
       <div className="px-4 lg:px-16 grid lg:grid-cols-4 grid-cols-2 gap-y-10 gap-x-4 lg:gap-x-10 lg:mt-10 mt-6">
-        {loading
+        {isLoading
           ? Array.from({ length: 6 }).map((_, index) => (
-              <RecipeCardSkeleton />
+              <RecipeCardSkeleton key={index} />
             ))
-          : currentRecipes.map((recipe) => (
+          : currentItems.map((recipe) => (
               <MyCollectionCard
                 key={recipe._id}
                 recipe={recipe}
                 onEdit={handleEdit}
-                onDelete={openModal}
+                onDelete={deleteModal.openModal}
               />
             ))}
       </div>
       <Pagination
         totalRecipes={recipes.length}
-        recipesPerPage={recipesPerPage}
+        recipesPerPage={6}
         currentPage={currentPage}
-        paginate={setCurrentPage}
+        paginate={paginate}
       />
 
-      <ToastContainer />
-
-      {isModalOpen && (
+      {deleteModal.isOpen && (
         <DeleteModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
+          isOpen={deleteModal.isOpen}
+          onClose={deleteModal.closeModal}
           onDelete={handleDelete}
         />
       )}
