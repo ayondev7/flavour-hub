@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // Import useParams from react-router-dom
 import axios from "axios";
-import Card from "../components/cards/Card"; // Assuming you have a Card component to display bookmarks
-import RecipeCardSkeleton from "../../Skeleton/RecipeCardSkeleton"; // Skeleton component for loading state
+import Card from "@components/cards/Card"; // Assuming you have a Card component to display bookmarks
+import RecipeCardSkeleton from "@skeleton/RecipeCardSkeleton"; // Skeleton component for loading state
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);

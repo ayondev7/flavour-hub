@@ -1,7 +1,7 @@
 import React from "react";
 import { FaUserCheck, FaPlus } from "react-icons/fa";
 import { VscSearch } from "react-icons/vsc";
-import { useFollow } from "../hooks/useFollow";
+import { useFollow } from "@hooks/useFollow";
 
 const NewsfeedSidebar = ({ showSearchBar, title, followersSidebar, userId, chefs, onFollowChange }) => {
   const { loadingChefIds, handleFollowClick } = useFollow(userId, onFollowChange);

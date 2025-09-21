@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { getUserIdFromToken } from '../../assets/tokenUtils';
-import PostCard from '../../components/cards/PostCard';
-import NewsfeedSidebar from '../../components/ui/NewsfeedSidebar';
-import NewsfeedSidebarSkeleton from '../../Skeleton/NewsfeedSidebarSkeleton';
-import PostCardSkeleton from '../../Skeleton/PostCardSkeleton';
-import { useGetChefsQuery } from '../../redux/hooks/chefHook';
-import { useGetAllRecipesQuery } from '../../redux/hooks/recipeHook';
-import { useToggleFollowMutation } from '../../redux/hooks/chefHook';
-import { useToggleLikeMutation } from '../../redux/hooks/likesHook';
+import { getUserIdFromToken } from '@assets/tokenUtils';
+import PostCard from '@components/cards/PostCard';
+import NewsfeedSidebar from '@components/ui/NewsfeedSidebar';
+import NewsfeedSidebarSkeleton from '@skeleton/NewsfeedSidebarSkeleton';
+import PostCardSkeleton from '@skeleton/PostCardSkeleton';
+import { useGetChefsQuery } from '@redux/hooks/chefHook';
+import { useGetAllRecipesQuery } from '@redux/hooks/recipeHook';
+import { useToggleFollowMutation } from '@redux/hooks/chefHook';
+import { useToggleLikeMutation } from '@redux/hooks/likesHook';
 
 const Newsfeed = () => {
   const userId = getUserIdFromToken();

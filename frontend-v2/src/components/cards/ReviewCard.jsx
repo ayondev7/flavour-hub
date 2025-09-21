@@ -1,5 +1,5 @@
 import React from "react";
-import images from "../../assets/images.js";
+import images from "@assets/images.js";
 
 const ReviewCard = () => {
   return (

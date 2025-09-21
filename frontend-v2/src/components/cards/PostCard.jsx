@@ -2,8 +2,8 @@ import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCheck, FaPlus, FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useToggleLikeMutation } from "../../redux/hooks/likesHook";
-import { useFollow } from "../../hooks/useFollow";
+import { useToggleLikeMutation } from "@redux/hooks/likesHook";
+import { useFollow } from "@hooks/useFollow";
 
 const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
   const [loadingLikes, setLoadingLikes] = useState(false); 

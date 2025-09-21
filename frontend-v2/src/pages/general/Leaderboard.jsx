@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import LeaderboardTable from "../components/user/LeaderboardTable.jsx";
-import { getUserIdFromToken } from "../../assets/tokenUtils";
-import LeaderboardTableSkeleton from "../../Skeleton/LeaderboardTableSkeleton";
+import LeaderboardTable from "@components/user/LeaderboardTable.jsx";
+import { getUserIdFromToken } from "@assets/tokenUtils";
+import LeaderboardTableSkeleton from "@skeleton/LeaderboardTableSkeleton";
 
 const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);

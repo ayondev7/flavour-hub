@@ -1,6 +1,6 @@
 import React from 'react';
-import ChefCard from '../ChefCard';
-import ChefCardSkeleton from '../../Skeleton/ChefCardSkeleton';
+import ChefCard from '@components/cards/ChefCard';
+import ChefCardSkeleton from '@skeleton/ChefCardSkeleton';
 
 const ChefsSection = ({ chefs, isLoading, userId, onFollowChange }) => {
   return (

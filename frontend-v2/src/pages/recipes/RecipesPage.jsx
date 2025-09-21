@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { BsCalendar2Date } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
-import images from "../../assets/images";
+import images from "@assets/images";
 import { FaHashtag } from "react-icons/fa";
 import { BsFire } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import Rating from "../components/user/Rating";
-import CommentSection from "../components/recipe/CommentSection";
-import NutritionalValuesCard from "../components/recipe/NutritionalValuesCard";
-import SideRecipeCard from "../components/cards/SideRecipeCard";
-import SideRecipeCardSkeleton from "../../Skeleton/SideRecipeCardSkeleton";
+import Rating from "@components/user/Rating";
+import CommentSection from "@components/recipe/CommentSection";
+import NutritionalValuesCard from "@components/recipe/NutritionalValuesCard";
+import SideRecipeCard from "@components/cards/SideRecipeCard";
+import SideRecipeCardSkeleton from "@skeleton/SideRecipeCardSkeleton";
 
 const RecipesPage = () => {
   const { recipeId } = useParams();

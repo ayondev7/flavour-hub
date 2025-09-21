@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import '../stylesheet/slider.css';
-import { getUserIdFromToken, isTokenValid } from '../assets/tokenUtils';
+import '@stylesheet/slider.css';
+import { getUserIdFromToken} from '@assets/tokenUtils';
 import { useNavigate } from 'react-router-dom';
 
 const Rating = ({ recipeId }) => {

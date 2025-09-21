@@ -1,5 +1,5 @@
 import React from 'react';
-import RecipeCategoryCarousel from '../RecipeCategoryCarousel';
+import RecipeCategoryCarousel from '@components/recipe/RecipeCategoryCarousel';
 
 const LifestyleSection = () => {
   return (

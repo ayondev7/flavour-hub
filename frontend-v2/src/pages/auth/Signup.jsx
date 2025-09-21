@@ -1,11 +1,11 @@
 import React from 'react';
-import images from '../../assets/images';
+import images from '@assets/images';
 import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSignupForm } from '../../hooks/useSignupForm';
-import PasswordInput from '../../components/forms/PasswordInput';
-import FileInput from '../../components/forms/FileInput';
+import { useSignupForm } from '@hooks/useSignupForm';
+import PasswordInput from '@components/forms/PasswordInput';
+import FileInput from '@components/forms/FileInput';
 
 /**
  * Signup page component.

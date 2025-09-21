@@ -2,7 +2,7 @@ import React from "react";
 import { FaPlus } from "react-icons/fa6";
 import { FaUserCheck } from "react-icons/fa6";
 import { toast } from "react-toastify";
-import { useToggleFollowMutation } from "../redux/store/followSlice";
+import { useToggleFollowMutation } from "@redux/store/followSlice";
 
 const ChefCard = ({ chefData, userId, onFollowChange }) => {
   const [toggleFollow, { isLoading }] = useToggleFollowMutation();

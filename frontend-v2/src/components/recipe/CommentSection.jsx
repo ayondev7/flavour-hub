@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserIdFromToken } from "../assets/tokenUtils";
+import { getUserIdFromToken } from "@assets/tokenUtils";
 
 const CommentSection = ({ recipeId }) => {
   const [comment, setComment] = useState("");

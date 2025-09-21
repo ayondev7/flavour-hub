@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../Card';
-import RecipeCardSkeleton from '../../Skeleton/RecipeCardSkeleton';
+import Card from '@components/cards/Card';
+import RecipeCardSkeleton from '@skeleton/RecipeCardSkeleton';
 
 const TrendingRecipesSection = ({ recipes, isLoading, onBookmarkClick, userId, onBookmarkRemove, onCardClick }) => {
   if (isLoading || recipes.length === 0) {

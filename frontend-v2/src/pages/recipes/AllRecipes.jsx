@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Pagination from "../components/ui/Pagination";
-import CategoryTab from "../components/recipe/CategoryTab";
-import Card from "../components/cards/Card";
-import RecipeCardSkeleton from "../../Skeleton/RecipeCardSkeleton";
-import MarqueeComponent from "../components/ui/MarqueeComponent";
+import Pagination from "@components/ui/Pagination";
+import CategoryTab from "@components/recipe/CategoryTab";
+import Card from "@components/cards/Card";
+import RecipeCardSkeleton from "@skeleton/RecipeCardSkeleton";
+import MarqueeComponent from "@components/ui/MarqueeComponent";
 import Marquee from "react-fast-marquee";
-import mealType from "../../assets/data";
-import BookmarkDialog from "../components/modals/BookmarkDialogue";
-import {getUserIdFromToken } from "../../assets/tokenUtils";
+import mealType from "@assets/data";
+import BookmarkDialog from "@components/modals/BookmarkDialogue";
+import {getUserIdFromToken } from "@assets/tokenUtils";
 import { ToastContainer } from "react-toastify";
 
 const AllRecipes = () => {

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HiOutlineMenu } from "react-icons/hi";
-import { getUserIdFromToken } from "../../assets/tokenUtils";
-import Sidebar from "./Sidebar";
-import Searchbar from "./Searchbar";
+import { getUserIdFromToken } from "@assets/tokenUtils";
+import Sidebar from "@components/ui/Sidebar";
+import Searchbar from "@components/ui/Searchbar";
 
 const Navbar = () => {
   const baseURL = `${process.env.REACT_APP_BACKEND_URL}`;

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useCreateCollectionMutation } from "../redux/hooks/collectionHook";
+import { useCreateCollectionMutation } from "@redux/hooks/collectionHook";
 
 const CreateCollectionForm = ({
   onBack,

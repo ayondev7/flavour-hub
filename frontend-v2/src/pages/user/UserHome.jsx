@@ -1,15 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserIdFromToken } from '../../assets/tokenUtils';
-import { useGetAllRecipesQuery } from '../../redux/hooks/recipeHook';
-import { useGetChefsQuery } from '../../redux/hooks/chefHook';
-import { useGetCollectionsByUserQuery } from '../../redux/hooks/collectionHook';
-import BookmarkDialog from '../../components/modals/BookmarkDialogue';
+import { getUserIdFromToken } from '@assets/tokenUtils';
+import { useGetAllRecipesQuery } from '@redux/hooks/recipeHook';
+import { useGetChefsQuery } from '@redux/hooks/chefHook';
+import { useGetCollectionsByUserQuery } from '@redux/hooks/collectionHook';
+import BookmarkDialog from '@components/modals/BookmarkDialogue';
 import { ToastContainer } from 'react-toastify';
-import HeroSection from '../../components/sections/HeroSection';
-import TrendingRecipesSection from '../../components/sections/TrendingRecipesSection';
-import LifestyleSection from '../../components/sections/LifestyleSection';
-import ChefsSection from '../../components/sections/ChefsSection';
+import HeroSection from '@components/sections/HeroSection';
+import TrendingRecipesSection from '@components/sections/TrendingRecipesSection';
+import LifestyleSection from '@components/sections/LifestyleSection';
+import ChefsSection from '@components/sections/ChefsSection';
 
 const UserHome = () => {
   const userId = getUserIdFromToken();
