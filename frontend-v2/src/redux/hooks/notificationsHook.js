@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { NOTIFICATION_BASE_URL, NOTIFICATION_ENDPOINTS } from '../api/notifications';
 
 export const notificationsApi = createApi({
   reducerPath: 'notificationsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/comment`,
+    baseUrl: NOTIFICATION_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem('token');
       if (token) {
@@ -14,7 +15,7 @@ export const notificationsApi = createApi({
   }),
   endpoints: (builder) => ({
     getNotifications: builder.query({
-      query: (userId) => `get-notifications/${userId}`,
+      query: (userId) => `${NOTIFICATION_ENDPOINTS.GET_NOTIFICATIONS}/${userId}`,
     }),
   }),
 });

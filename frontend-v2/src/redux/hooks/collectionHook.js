@@ -1,10 +1,11 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { COLLECTION_BASE_URL, COLLECTION_ENDPOINTS } from "../api/collections";
 
 export const collectionsApi = createApi({
   reducerPath: "collectionsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/collections`,
+    baseUrl: COLLECTION_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {
@@ -17,18 +18,18 @@ export const collectionsApi = createApi({
   endpoints: (builder) => ({
     createCollection: builder.mutation({
       query: (title) => ({
-        url: "create",
+        url: COLLECTION_ENDPOINTS.CREATE,
         method: "POST",
         body: { title },
       }),
       invalidatesTags: ["Collections"],
     }),
     getCollections: builder.query({
-      query: () => "get-all", 
+      query: () => COLLECTION_ENDPOINTS.GET_ALL,
       providesTags: ["Collections"],
     }),
     getCollectionsByUser: builder.query({
-      query: (userId) => `get-collections/${userId}`,
+      query: (userId) => `${COLLECTION_ENDPOINTS.GET_BY_USER}/${userId}`,
       providesTags: ["Collections"],
     }),
   }),

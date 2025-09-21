@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BOOKMARK_BASE_URL, BOOKMARK_ENDPOINTS } from "../api/bookmarks";
 
 export const bookmarkApi = createApi({
   reducerPath: "bookmarkApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/`,
+    baseUrl: BOOKMARK_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {
@@ -16,7 +17,7 @@ export const bookmarkApi = createApi({
   endpoints: (builder) => ({
     toggleBookmark: builder.mutation({
       query: ({ collectionId, recipeId }) => ({
-        url: "bookmark/create",
+        url: BOOKMARK_ENDPOINTS.CREATE,
         method: "POST",
         body: { collectionId, recipeId },
       }),
@@ -30,7 +31,7 @@ export const bookmarkApi = createApi({
 
     deleteBookmark: builder.mutation({
       query: ({ recipeId }) => ({
-        url: `bookmark/remove/${recipeId}`,
+        url: `${BOOKMARK_ENDPOINTS.REMOVE}/${recipeId}`,
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +45,7 @@ export const bookmarkApi = createApi({
     }),
 
     getBookmarks: builder.query({
-      query: (collectionId) => `bookmark/get-bookmarks/${collectionId}`,
+      query: (collectionId) => `${BOOKMARK_ENDPOINTS.GET_BOOKMARKS}/${collectionId}`,
       providesTags: ["Bookmarks"],
     }),
   }),

@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { toast } from "react-toastify";
+import { LIKE_BASE_URL, LIKE_ENDPOINTS } from "../api/likes";
 
 export const likesApi = createApi({
   reducerPath: "likesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/like`,
+    baseUrl: LIKE_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {
@@ -16,12 +17,12 @@ export const likesApi = createApi({
   tagTypes: ["Likes"],
   endpoints: (builder) => ({
     getLikes: builder.query({
-      query: (recipeId) => `get-likes/${recipeId}`, 
+      query: (recipeId) => `${LIKE_ENDPOINTS.GET_LIKES}/${recipeId}`,
       providesTags: ["Likes"],
     }),
     toggleLike: builder.mutation({
       query: ({ recipeId }) => ({
-        url: "toggle-like",
+        url: LIKE_ENDPOINTS.TOGGLE_LIKE,
         method: "POST",
         body: { recipeId },
       }),

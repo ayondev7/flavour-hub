@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { toast } from "react-toastify";
+import { CHEF_BASE_URL, CHEF_ENDPOINTS } from "../api/chefs";
 
 export const chefsApi = createApi({
   reducerPath: "chefsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/user`,
+    baseUrl: CHEF_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {
@@ -16,16 +17,16 @@ export const chefsApi = createApi({
   tagTypes: ['Chefs'],
   endpoints: (builder) => ({
     getChefs: builder.query({
-      query: () => `get-all-users`, 
+      query: () => CHEF_ENDPOINTS.GET_ALL_USERS,
       providesTags: ['Chefs'],
     }),
     getLeaderboard: builder.query({
-      query: (userId) => `get-leaderboard-rankings`,
+      query: (userId) => CHEF_ENDPOINTS.GET_LEADERBOARD,
       providesTags: ['Leaderboard'],
     }),
     toggleFollow: builder.mutation({
       query: ({ followerId, followingId }) => ({
-        url: "toggle-follow",
+        url: CHEF_ENDPOINTS.TOGGLE_FOLLOW,
         method: "POST",
         body: { followerId, followingId },
       }),

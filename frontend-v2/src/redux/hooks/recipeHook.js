@@ -1,11 +1,12 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getUserIdFromToken } from '@assets/tokenUtils';
+import { RECIPE_BASE_URL, RECIPE_ENDPOINTS } from '../api/recipes';
 
 export const recipesApi = createApi({
   reducerPath: 'recipesApi',
-  baseQuery: fetchBaseQuery({ 
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/recipe/`,
+  baseQuery: fetchBaseQuery({
+    baseUrl: RECIPE_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {
@@ -18,32 +19,32 @@ export const recipesApi = createApi({
   endpoints: (builder) => ({
     getAllRecipes: builder.query({
       query: () => ({
-        url: `get-all-recipes?userId=${getUserIdFromToken()}`,
+        url: `${RECIPE_ENDPOINTS.GET_ALL_RECIPES}?userId=${getUserIdFromToken()}`,
         method: 'GET',
       }),
       providesTags: ['Recipes'],
     }),
     getRelatedRecipes: builder.query({
       query: ({ cuisineType, userId }) => ({
-        url: `getRelatedRecipes/${cuisineType}?userId=${userId}`,
+        url: `${RECIPE_ENDPOINTS.GET_RELATED_RECIPES}/${cuisineType}?userId=${userId}`,
         method: 'GET',
       }),
       providesTags: ['Recipes'],
     }),
     getMyRecipes: builder.query({
-      query: (userId) => `getMyRecipes/${userId}`,
+      query: (userId) => `${RECIPE_ENDPOINTS.GET_MY_RECIPES}/${userId}`,
       providesTags: ['Recipes'],
     }),
     deleteRecipe: builder.mutation({
       query: (recipeId) => ({
-        url: `deleteRecipe/${recipeId}`,
+        url: `${RECIPE_ENDPOINTS.DELETE_RECIPE}/${recipeId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Recipes'],
     }),
     createRecipe: builder.mutation({
       query: (formData) => ({
-        url: 'upload',
+        url: RECIPE_ENDPOINTS.UPLOAD,
         method: 'POST',
         body: formData,
       }),
