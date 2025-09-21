@@ -5,13 +5,13 @@ const commentController = require('../controllers/CommentController');
 const router = express.Router();
 const upload = multer();
 
-router.post('/postComment', upload.none(), commentController.postComment);
+router.post('/post-comment', upload.none(), commentController.postComment);
 
-router.get('/getComments/:recipeId', commentController.getComments);
+router.get('/get-comments/:recipeId', commentController.getComments);
 
-router.put('/updateComment',upload.none(), commentController.updateComment);
+router.put('/update-comments',upload.none(), commentController.updateComment);
 
-router.delete('/deleteComment',upload.none(), commentController.deleteComment);
+router.delete('/delete-comments',upload.none(), commentController.deleteComment);
 
 router.get('/get-notifications/:userId', commentController.getNotificationsById);
 
