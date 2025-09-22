@@ -3,7 +3,7 @@ import NutritionalValuesCard from "@components/recipe/NutritionalValuesCard";
 import RelatedRecipesSection from "@components/sections/RelatedRecipesSection";
 import Rating from "@components/user/Rating";
 import NewsletterSignup from "@components/ui/NewsletterSignup";
-import RecipeTrendingSection from "@components/recipe/RecipeTrendingSection";
+import RecipeTrendingSection from "@components/sections/RecipeTrendingSection";
 
 const RecipeSidebar = ({
   nutritionalValues,

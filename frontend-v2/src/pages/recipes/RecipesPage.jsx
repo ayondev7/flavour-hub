@@ -6,7 +6,7 @@ import RecipeMetadata from "@components/recipe/RecipeMetadata";
 import RecipeDescription from "@components/recipe/RecipeDescription";
 import RecipeIngredients from "@components/recipe/RecipeIngredients";
 import RecipeInstructions from "@components/recipe/RecipeInstructions";
-import CommentSection from "@components/recipe/CommentSection";
+import CommentSection from "@components/sections/CommentSection";
 import RecipeSidebar from "@components/recipe/RecipeSidebar";
 import { useGetRecipeQuery, useGetRelatedRecipesQuery, useGetAllRecipesQuery, useGetRecipeDetailsQuery } from '@redux/hooks/recipeHook';
 
