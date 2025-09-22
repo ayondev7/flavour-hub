@@ -13,7 +13,6 @@ import { useGetAllRecipesQuery, useGetRelatedRecipesQuery } from "@redux/hooks/r
 import { useGetCollectionsByUserQuery } from "@redux/hooks/collectionHook";
 import { toast } from "react-toastify";
 
-// Custom hook for pagination logic
 const usePagination = (items, itemsPerPage = 6) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -26,7 +25,6 @@ const usePagination = (items, itemsPerPage = 6) => {
     setCurrentPage(pageNumber);
   };
 
-  // Reset to first page when items change
   useEffect(() => {
     setCurrentPage(1);
   }, [items.length]);
@@ -39,7 +37,6 @@ const usePagination = (items, itemsPerPage = 6) => {
   };
 };
 
-// Custom hook for bookmark dialog logic
 const useBookmarkDialog = (userId) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -70,27 +67,22 @@ const AllRecipes = () => {
   const { cuisineType } = useParams();
   const userId = getUserIdFromToken();
 
-  // State for cuisine type
   const [cuisineTypeState, setCuisineTypeState] = useState(cuisineType);
 
-  // RTK Query hooks
   const { data: allRecipes = [], isLoading: isLoadingAll } = useGetAllRecipesQuery();
   const { data: relatedRecipes = [], isLoading: isLoadingRelated } = useGetRelatedRecipesQuery(
     { cuisineType: cuisineTypeState, userId },
     { skip: !cuisineTypeState }
   );
 
-  // Custom hooks
   const bookmarkDialog = useBookmarkDialog(userId);
 
-  // Determine which recipes to show
   const recipes = useMemo(() => {
     return cuisineTypeState ? relatedRecipes : allRecipes;
   }, [cuisineTypeState, allRecipes, relatedRecipes]);
 
   const isLoading = cuisineTypeState ? isLoadingRelated : isLoadingAll;
 
-  // Pagination
   const { currentPage, currentItems, paginate } = usePagination(recipes);
 
   const recipeCardClick = (recipeId) => {
@@ -105,13 +97,11 @@ const AllRecipes = () => {
     bookmarkDialog.openDialog(recipe);
   };
 
-  const onBookmarkRemove = (recipeId) => {
-    // This would need to be updated to work with RTK Query mutations
-    // For now, we'll keep it simple
+  const onBookmarkRemove = () => {
     toast.info("Bookmark removed");
   };
 
-  const handleBookmarkConfirm = (selectedCollection) => {
+  const handleBookmarkConfirm = () => {
     bookmarkDialog.closeDialog();
     toast.success("Recipe bookmarked successfully!");
   };
