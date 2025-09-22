@@ -24,8 +24,22 @@ export const recipesApi = createApi({
       providesTags: ['Recipes'],
     }),
     getRelatedRecipes: builder.query({
-      query: ({ cuisineType, userId }) => ({
-        url: `${RECIPE_ENDPOINTS.GET_RELATED_RECIPES}/${cuisineType}?userId=${userId}`,
+      query: (cuisineType) => ({
+        url: `${RECIPE_ENDPOINTS.GET_RELATED_RECIPES}/${cuisineType}`,
+        method: 'GET',
+      }),
+      providesTags: ['Recipes'],
+    }),
+    getRecipe: builder.query({
+      query: (recipeId) => ({
+        url: `${RECIPE_ENDPOINTS.GET_RECIPE}/${recipeId}`,
+        method: 'GET',
+      }),
+      providesTags: ['Recipes'],
+    }),
+    getRecipeDetails: builder.query({
+      query: (recipeId) => ({
+        url: `${RECIPE_ENDPOINTS.GET_RECIPE_DETAILS}/${recipeId}`,
         method: 'GET',
       }),
       providesTags: ['Recipes'],
@@ -53,4 +67,4 @@ export const recipesApi = createApi({
 });
 
 
-export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery, useGetMyRecipesQuery, useDeleteRecipeMutation, useCreateRecipeMutation } = recipesApi;
+export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery, useGetRecipeQuery, useGetRecipeDetailsQuery, useGetMyRecipesQuery, useDeleteRecipeMutation, useCreateRecipeMutation } = recipesApi;

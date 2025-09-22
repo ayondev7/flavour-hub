@@ -1,93 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BsCalendar2Date } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
-import images from "@assets/images";
 import { FaHashtag } from "react-icons/fa";
 import { BsFire } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import Rating from "@components/user/Rating";
 import CommentSection from "@components/recipe/CommentSection";
 import NutritionalValuesCard from "@components/recipe/NutritionalValuesCard";
 import SideRecipeCard from "@components/cards/SideRecipeCard";
 import SideRecipeCardSkeleton from "@skeleton/SideRecipeCardSkeleton";
+import { useGetRecipeQuery, useGetRelatedRecipesQuery, useGetAllRecipesQuery, useGetRecipeDetailsQuery } from '@redux/hooks/recipeHook';
 
 const RecipesPage = () => {
   const { recipeId } = useParams();
-  const [recipeDetails, setRecipeDetails] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingTrendingRecipes, setLoadingTrendingRecipes] = useState(false);
-  const [loadingRelatedRecipes, setLoadingRelatedRecipes] = useState(false);
-  const [recipe, setRecipe] = useState(null);
-  const [relatedRecipes, setRelatedRecipes] = useState();
-  const [trendingRecipes, setTrendingRecipes] = useState();
 
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      setIsLoading(true);
-      setLoadingRelatedRecipes(true);
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getRecipe/${recipeId}`
-        );
-        const recipe = response.data;
-        setRecipe(recipe);
-        setIsLoading(false);
-        try {
-          const cuisineType = recipe.cuisineType;
-          const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/recipe/getRelatedRecipes/${cuisineType}`
-          );
-          const relatedRecipe = response.data;
-          setRelatedRecipes(relatedRecipe);
-          setLoadingRelatedRecipes(false);
-        } catch (error) {
-          console.error("Error fetching related recipe:", error);
-          setLoadingRelatedRecipes(false);
-        }
-
-        // Do something with the recipe data
-      } catch (error) {
-        console.error("Error fetching recipe:", error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchRecipe();
-  }, [recipeId]); // Add recipeId as a dependency
-
-  useEffect(() => {
-    setLoadingTrendingRecipes(true);
-    // Fetch recipes from the server
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getAllRecipes`)
-      .then((response) => {
-        setTrendingRecipes(response.data);
-        setLoadingTrendingRecipes(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching recipes:", error);
-        setLoadingTrendingRecipes(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/recipe/getRecipeDetails/${recipeId}`)
-      .then((response) => {
-        setRecipeDetails(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching Recipe Details:", error);
-        setLoadingTrendingRecipes(false);
-      });
-  }, [recipeId]);
+  const { data: recipe, isLoading: isLoadingRecipe } = useGetRecipeQuery(recipeId);
+  const { data: recipeDetails, isLoading: isLoadingDetails } = useGetRecipeDetailsQuery(recipeId);
+  const { data: trendingRecipes, isLoading: isLoadingTrending } = useGetAllRecipesQuery();
+  const { data: relatedRecipes, isLoading: isLoadingRelated } = useGetRelatedRecipesQuery(
+    recipe?.cuisineType || null,
+    { skip: !recipe?.cuisineType }
+  );
 
   // Render loading indicator while data is being fetched
-  if (isLoading) {
+  if (isLoadingRecipe || isLoadingDetails) {
     return (
       <div className="flex justify-center items-center w-full h-screen">
         <span className="loading loading-spinner text-hotPink w-32 h-32"></span>
@@ -179,7 +115,7 @@ const RecipesPage = () => {
             </div>
             <div className="bg-hotPink h-20 w-[2px]"></div>
             <div className="flex flex-col font-semibold text-xs lg:text-sm">
-              <span>Cusine Type : </span>{" "}
+              <span>Cuisine Type : </span>{" "}
               <span className="text-black">{recipe.cuisineType}</span>
             </div>
           </div>
@@ -240,10 +176,10 @@ const RecipesPage = () => {
           <NutritionalValuesCard nutritionalValues={recipe?.nutritionalValues}/>
           <div className="flex flex-col items-start my-12">
             <p className="text-black text-2xl font-semibold">Related Recipes</p>
-            {loadingRelatedRecipes ? (
+            {isLoadingRelated ? (
               // Render skeleton loader
               <div className="flex flex-col gap-y-8 my-4">
-                {Array.from({ length: 3 }).map((_, index) => (
+                {Array.from({ length: 3 }).map(() => (
                  <SideRecipeCardSkeleton/>
                 ))}
               </div>
@@ -293,10 +229,10 @@ const RecipesPage = () => {
             <p className="text-black text-2xl font-semibold">
               Trending Recipes
             </p>
-            {loadingTrendingRecipes ? (
+            {isLoadingTrending ? (
               // Render skeleton loader
               <div className="flex flex-col gap-y-8 my-4">
-                {Array.from({ length: 3 }).map((_, index) => (
+                {Array.from({ length: 3 }).map(() => (
                  <SideRecipeCardSkeleton/>
                 ))}
               </div>
