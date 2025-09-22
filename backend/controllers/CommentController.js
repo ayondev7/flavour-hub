@@ -57,6 +57,9 @@ exports.getComments = async (req, res) => {
         $match: { recipeId: new mongoose.Types.ObjectId(req.params.recipeId) },
       },
       {
+        $sort: { createdAt: -1 },
+      },
+      {
         $lookup: {
           from: "users",
           localField: "userId",
@@ -143,7 +146,7 @@ exports.getNotificationsById = async (req, res) => {
 
   try {
     // Fetch notifications
-    const notifications = await Notification.find({ userId });
+    const notifications = await Notification.find({ userId }).sort({ createdAt: -1 });
 
     // Prepare response data by separating notifications based on type
     const notificationsData = await Promise.all(
