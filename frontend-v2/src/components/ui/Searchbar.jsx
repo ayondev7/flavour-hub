@@ -27,7 +27,7 @@ const Searchbar = ({ onSearchResults, showIcon = true }) => {
     <div className="form-control relative">
       <input
         type="text"
-        placeholder="Search recipe name"
+        placeholder="e.g - Panckakes, Pasta, Tacos..."
         className="input border-2 border-hotPink placeholder:text-gray-400 focus:outline-none focus:border-hotPink text-black text-xs h-[32px] lg:py-3 lg:text-base lg:h-full lg:w-[400px] w-[170px]"
         value={searchInput}
         onChange={handleSearchChange}
