@@ -45,7 +45,7 @@ export const recipesApi = createApi({
       providesTags: ['Recipes'],
     }),
     getMyRecipes: builder.query({
-      query: (userId) => `${RECIPE_ENDPOINTS.GET_MY_RECIPES}/${userId}`,
+      query: () => `${RECIPE_ENDPOINTS.GET_MY_RECIPES}`,
       providesTags: ['Recipes'],
     }),
     deleteRecipe: builder.mutation({

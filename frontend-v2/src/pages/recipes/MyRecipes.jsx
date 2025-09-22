@@ -62,7 +62,7 @@ const MyRecipes = () => {
   const userId = getUserIdFromToken();
 
   // RTK Query hooks
-  const { data: recipes = [], isLoading } = useGetMyRecipesQuery(userId);
+  const { data: recipes = [], isLoading } = useGetMyRecipesQuery();
   const [deleteRecipe] = useDeleteRecipeMutation();
 
   // Custom hooks
