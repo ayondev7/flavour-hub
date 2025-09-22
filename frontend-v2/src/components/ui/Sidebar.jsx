@@ -1,14 +1,11 @@
 import React, { useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Notifications from '@components/user/Notifications';
-import { useNotifications } from '@hooks/useNotifications';
 import {
   FaHome,
   FaNewspaper,
   FaUtensils,
   FaBook,
   FaPlus,
-  FaBell,
   FaSignOutAlt,
   FaTrophy,
   FaBookmark,
@@ -27,7 +24,6 @@ const menuItems = [
 const Sidebar = ({ userData, handleLogoutClick, userId }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { notificationsData, hasNewNotifications, isOpen, setIsOpen, toggleDropdown } = useNotifications(userId);
 
   const isActiveRoute = useCallback((path) => {
     if (path === '/all-recipes/null') {
@@ -35,11 +31,6 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
     }
     return location.pathname === path;
   }, [location.pathname]);
-
-  const notificationOnClick = useCallback((recipeId) => {
-    navigate(`/recipes-page/${recipeId}`);
-    closeSidebar();
-  }, [navigate]);
 
   const closeSidebar = useCallback(() => {
     const checkbox = document.getElementById('my-drawer-4');
@@ -86,13 +77,6 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
               </li>
             ))}
             <li className="border-white border-b-2 pb-2">
-              <button className="hover:bg-hotPink flex items-center gap-x-3 cursor-pointer" onClick={toggleDropdown}>
-                <FaBell />
-                Notifications
-                {hasNewNotifications && <span className="ml-2 text-red-500 font-bold">*</span>}
-              </button>
-            </li>
-            <li className="border-white border-b-2 pb-2">
               <button
                 className="hover:bg-hotPink w-full text-left flex items-center gap-x-3"
                 onClick={() => {
@@ -107,9 +91,6 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
           </ul>
         </ul>
       </div>
-      {isOpen && (
-        <Notifications notificationsData={notificationsData} onNotificationClick={notificationOnClick} onClose={() => setIsOpen(false)} />
-      )}
     </div>
   );
 };

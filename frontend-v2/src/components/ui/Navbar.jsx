@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HiOutlineMenu } from "react-icons/hi";
+import { FaBell } from "react-icons/fa";
 import { getUserIdFromToken } from "@assets/tokenUtils";
 import Sidebar from "@components/ui/Sidebar";
 import Searchbar from "@components/ui/Searchbar";
+import Notifications from "@components/user/Notifications";
+import { useNotifications } from "@hooks/useNotifications";
 
 const Navbar = () => {
   const baseURL = `${import.meta.env.VITE_BACKEND_URL}`;
@@ -16,6 +19,8 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const token = sessionStorage.getItem("token");
+
+  const { notificationsData, hasNewNotifications, isOpen, setIsOpen, toggleDropdown } = useNotifications(userId);
 
   useEffect(() => {
     if (userId) {
@@ -48,6 +53,10 @@ const Navbar = () => {
     setIsAuthenticated(false);
     navigate("/login");
   };
+
+  const notificationOnClick = useCallback((recipeId) => {
+    navigate(`/recipe-page/${recipeId}`);
+  }, [navigate]);
 
   const handleLoginClick = () => {
     navigate("/login");
@@ -104,6 +113,13 @@ const Navbar = () => {
                   )}
                 </div>
               )}
+              <button
+                className="text-hotPink hover:text-pink-700 relative flex items-center rounded-md"
+                onClick={toggleDropdown}
+              >
+                <FaBell className="lg:text-3xl text-2xl font-semibold" />
+                {hasNewNotifications && <span className="absolute -top-1 -right-1 text-red-500 font-bold text-sm">*</span>}
+              </button>
               <label
                 htmlFor="my-drawer-4"
                 className="text-hotPink hover:cursor-pointer flex items-center rounded-md"
@@ -122,6 +138,9 @@ const Navbar = () => {
           </div>
           <UnauthenticatedNav handleLoginClick={handleLoginClick} />
         </nav>
+      )}
+      {isOpen && (
+        <Notifications notificationsData={notificationsData} onNotificationClick={notificationOnClick} onClose={() => setIsOpen(false)} />
       )}
     </div>
   );
