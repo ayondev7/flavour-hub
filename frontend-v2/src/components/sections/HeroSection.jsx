@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import images from "@assets/images";
 import ReviewCard from "@components/cards/ReviewCard";
+import Searchbar from "@components/ui/Searchbar";
 
 const HeroSection = () => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <section className="bg-white overflow-hidden relative h-screen flex justify-between pt-12 lg:pt-20">
       <div className="relative z-10 px-4 sm:px-6 lg:pl-24">
@@ -28,21 +31,28 @@ const HeroSection = () => {
             </p>
 
             {/* Search bar */}
-            <form className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-4">
-              <div className="flex-1 relative">
-                <input
-                  aria-label="Search recipes"
-                  placeholder="Search recipes, e.g. 'chicken biryani'"
-                  className="w-full rounded-lg border border-gray-200 px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-hotPink"
-                />
-              </div>
-
-              <div className="flex-shrink-0">
-                <button className="bg-hotPink text-white px-5 py-3 rounded-lg font-medium shadow-md hover:opacity-95">
-                  Search
-                </button>
-              </div>
-            </form>
+            <div className="relative mt-4">
+              <Searchbar
+                onSearchResults={setSearchResults}
+                onSearchQueryChange={(query) => setSearchQuery(query)}
+                showIcon={false}
+              />
+              {(searchResults.length > 0 || searchQuery.trim() !== "") && (
+                <div className="absolute top-10 lg:top-12 left-0 lg:w-[400px] bg-white border border-gray-300 rounded-md shadow-md z-10">
+                  {searchResults.length > 0 ? (
+                    searchResults.map((result, index) => (
+                      <Link to={`/recipe-page/${result._id}`} key={index}>
+                        <div className="text-xs lg:text-base p-2 hover:bg-gray-100 cursor-pointer">
+                          {result.title}
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="p-2 text-gray-500">No recipes found</div>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* CTA row */}
             <div className="flex items-center space-x-4 mt-4">

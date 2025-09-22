@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { VscSearch } from "react-icons/vsc";
 
-const Searchbar = ({ onSearchResults }) => {
+const Searchbar = ({ onSearchResults, showIcon = true }) => {
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearchChange = async (e) => {
@@ -32,7 +32,9 @@ const Searchbar = ({ onSearchResults }) => {
         value={searchInput}
         onChange={handleSearchChange}
       />
-      <VscSearch className="absolute right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-lg pointer-events-none text-hotPink"/>
+      {showIcon && (
+        <VscSearch className="absolute right-2 lg:right-3 top-1/2 transform -translate-y-1/2 text-lg pointer-events-none text-hotPink"/>
+      )}
     </div>
   );
 };
