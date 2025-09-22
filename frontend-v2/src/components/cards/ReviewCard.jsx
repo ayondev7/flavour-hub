@@ -4,18 +4,18 @@ import images from "@assets/images.js";
 const ReviewCard = () => {
   return (
     <div>
-      <div className="card w-[350px] bg-white text-primary-content absolute z-10 top-[65%] right-[52%] shadow-lg">
-        <div className="card-body p-6">
-          <div className="avatar flex h-[50px] w-[100%]">
-            <div className="size-12 rounded-full ring ring-green-400 ring-offset-1">
+      <div className="w-[350px] rounded-[10px] bg-white text-primary-content absolute z-10 top-[65%] right-[52%] shadow-lg">
+        <div className="card-body px-6 py-4">
+          <div className="flex items-center h-[50px] w-[100%]">
+            <div className="size-9 rounded-full overflow-hidden ring ring-green-400 ring-offset-1">
               <img
                 className="object-cover w-full h-full"
                 src={images.personImage}
                 alt="avatar"
               />
             </div>
-            <div className="flex-col ml-4 flex-grow">
-              <h2 className="card-title text-black text-base">Sara Johnson</h2>
+            <div className="flex-col ml-4">
+              <h2 className="card-title text-black text-sm">Sara Johnson</h2>
               <div className="rating">
                 {Array.from({ length: 5 }, (_, index) => (
                   <input

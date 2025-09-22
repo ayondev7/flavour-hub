@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { Link } from "react-router-dom";
 import images from "@assets/images.js";
 import RecipeCard from "@components/cards/RecipeCard.jsx";
 import RecipeCardSkeleton from "@skeleton/RecipeCardSkeleton.jsx";
 import ReviewCard from "@components/cards/ReviewCard.jsx";
+import { useGetAllRecipesQuery } from "../../redux/hooks/recipeHook";
 
 const Home = () => {
-  const [recipes, setRecipes] = useState([]);
-  const baseURL = `${import.meta.env.VITE_BACKEND_URL}`;
-  console.log("baseURL", baseURL);
-  const [loading, setLoading] = useState(true);
+  const { data: recipes, isLoading: loading, error } = useGetAllRecipesQuery();
 
-  useEffect(() => {
-   
-    axios
-      .get(`${baseURL}/api/recipe/getAllRecipes`)
-      .then((response) => {
-        setRecipes(response.data);
-        setLoading(false); 
-      })
-      .catch((error) => {
-        console.error("Error fetching recipes:", error);
-        setLoading(false); 
-      });
-  }, []);
+  if (error) {
+    console.error("Error fetching recipes:", error);
+  }
 
   return (
     <div className="min-h-screen">
