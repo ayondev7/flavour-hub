@@ -117,14 +117,14 @@ const Navbar = () => {
                 className="text-hotPink hover:text-pink-700 relative flex items-center rounded-md"
                 onClick={toggleDropdown}
               >
-                <FaBell className="lg:text-3xl text-2xl font-semibold" />
+                <FaBell className="size-[24px]" />
                 {hasNewNotifications && <span className="absolute -top-1 -right-1 text-red-500 font-bold text-sm">*</span>}
               </button>
               <label
                 htmlFor="my-drawer-4"
                 className="text-hotPink hover:cursor-pointer flex items-center rounded-md"
               >
-                <HiOutlineMenu className="lg:text-3xl text-2xl font-semibold" />
+                <HiOutlineMenu className="size-[24px]" />
               </label>
             </div>
           </div>

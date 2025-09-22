@@ -1,8 +1,6 @@
 import React from "react";
-import { HiOutlineX } from "react-icons/hi";
 import { IoIosNotifications } from "react-icons/io";
 import { motion } from "framer-motion";
-import { RxCross2 } from "react-icons/rx";
 
 const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
  
@@ -25,6 +23,7 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
   
     if (notification.type === "comment" || notification.type === "like") {
       onNotificationClick(notification?.recipeId);
+      onClose();
     }
   };
 
@@ -35,6 +34,7 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
       initial="hidden"
       animate="visible"
       exit="hidden"
+      onClick={onClose}
     >
       <motion.div
         className="bg-white max-h-[600px] lg:max-h-[400px] w-[320px] lg:w-[700px] relative rounded-lg shadow-lg"
@@ -42,21 +42,15 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
         initial="hidden"
         animate="visible"
         exit="exit"
+        onClick={(e) => e.stopPropagation()}
       >
         
-        <motion.button
-          onClick={onClose}
-          className="absolute right-1 text-base font-medium top-1 text-black z-30"
-        >
-          <RxCross2 className="text-xl" />
-        </motion.button>
-      
         <h3 className="font-bold text-lg rounded-tr-lg rounded-tl-lg sticky text-hotPink top-0 w-full p-4 bg-white z-20 border-b flex gap-x-1 items-center">
           <IoIosNotifications />
           Notifications
         </h3>
-       
-        <div className="p-4 h-[500px] lg:h-[300px] overflow-y-auto">
+        <style dangerouslySetInnerHTML={{ __html: `.notifications-scroll::-webkit-scrollbar { display: none; }` }} />
+        <div className="p-4 h-[500px] lg:h-[300px] overflow-y-auto notifications-scroll" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <div className="flex flex-col gap-y-4">
             {notificationsData?.length === 0 ? (
               <p className="text-center text-lg text-gray-500">
