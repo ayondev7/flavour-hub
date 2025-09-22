@@ -1,9 +1,8 @@
 // Collection API endpoints
-export const COLLECTION_ENDPOINTS = {
-  CREATE: "create",
-  GET_ALL: "get-all",
-  GET_BY_USER: "get-collections",
-};
+import { BASE_URL } from './config';
 
-// Base URL for collection operations
-export const COLLECTION_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/collections`;
+export const COLLECTION_ENDPOINTS = {
+  CREATE: `${BASE_URL}/api/collections/create`,
+  GET_ALL: `${BASE_URL}/api/collections/get-all`,
+  GET_BY_USER: `${BASE_URL}/api/collections/get-collections`,
+};

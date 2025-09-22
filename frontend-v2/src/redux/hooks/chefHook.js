@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { toast } from "react-toastify";
-import { CHEF_BASE_URL, CHEF_ENDPOINTS } from "../api/chefs";
+import { CHEF_ENDPOINTS } from "../api/chefs";
 
 export const chefsApi = createApi({
   reducerPath: "chefsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: CHEF_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {

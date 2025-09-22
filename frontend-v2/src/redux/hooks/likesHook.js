@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { toast } from "react-toastify";
-import { LIKE_BASE_URL, LIKE_ENDPOINTS } from "../api/likes";
+import { LIKE_ENDPOINTS } from "../api/likes";
 
 export const likesApi = createApi({
   reducerPath: "likesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: LIKE_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {

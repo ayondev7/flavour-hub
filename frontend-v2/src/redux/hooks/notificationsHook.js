@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { NOTIFICATION_BASE_URL, NOTIFICATION_ENDPOINTS } from '../api/notifications';
+import { NOTIFICATION_ENDPOINTS } from '../api/notifications';
 
 export const notificationsApi = createApi({
   reducerPath: 'notificationsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: NOTIFICATION_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem('token');
       if (token) {

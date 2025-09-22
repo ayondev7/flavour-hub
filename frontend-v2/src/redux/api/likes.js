@@ -1,8 +1,7 @@
 // Like API endpoints
-export const LIKE_ENDPOINTS = {
-  GET_LIKES: "get-likes",
-  TOGGLE_LIKE: "toggle-like",
-};
+import { BASE_URL } from './config';
 
-// Base URL for like operations
-export const LIKE_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/like`;
+export const LIKE_ENDPOINTS = {
+  GET_LIKES: `${BASE_URL}/api/like/get-likes`,
+  TOGGLE_LIKE: `${BASE_URL}/api/like/toggle-like`,
+};

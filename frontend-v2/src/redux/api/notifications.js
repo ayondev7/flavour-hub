@@ -1,7 +1,6 @@
 // Notification API endpoints
-export const NOTIFICATION_ENDPOINTS = {
-  GET_NOTIFICATIONS: "get-notifications",
-};
+import { BASE_URL } from './config';
 
-// Base URL for notification operations
-export const NOTIFICATION_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/comment`;
+export const NOTIFICATION_ENDPOINTS = {
+  GET_NOTIFICATIONS: `${BASE_URL}/api/comment/get-notifications`,
+};

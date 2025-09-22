@@ -1,12 +1,11 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getUserIdFromToken } from '@assets/tokenUtils';
-import { RECIPE_BASE_URL, RECIPE_ENDPOINTS } from '../api/recipes';
+import { RECIPE_ENDPOINTS } from '../api/recipes';
 
 export const recipesApi = createApi({
   reducerPath: 'recipesApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: RECIPE_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {

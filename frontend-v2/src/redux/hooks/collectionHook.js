@@ -1,11 +1,10 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { COLLECTION_BASE_URL, COLLECTION_ENDPOINTS } from "../api/collections";
+import { COLLECTION_ENDPOINTS } from "../api/collections";
 
 export const collectionsApi = createApi({
   reducerPath: "collectionsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: COLLECTION_BASE_URL,
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem("token");
       if (token) {

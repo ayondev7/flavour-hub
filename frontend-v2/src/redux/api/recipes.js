@@ -1,11 +1,10 @@
 // Recipe API endpoints
-export const RECIPE_ENDPOINTS = {
-  GET_ALL_RECIPES: "get-all-recipes",
-  GET_RELATED_RECIPES: "get-related-recipes",
-  GET_MY_RECIPES: "get-my-recipes",
-  DELETE_RECIPE: "delete-recipe",
-  UPLOAD: "upload",
-};
+import { BASE_URL } from './config';
 
-// Base URL for recipe operations
-export const RECIPE_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/recipe/`;
+export const RECIPE_ENDPOINTS = {
+  GET_ALL_RECIPES: `${BASE_URL}/api/recipe/get-all-recipes`,
+  GET_RELATED_RECIPES: `${BASE_URL}/api/recipe/get-related-recipes`,
+  GET_MY_RECIPES: `${BASE_URL}/api/recipe/get-my-recipes`,
+  DELETE_RECIPE: `${BASE_URL}/api/recipe/delete-recipe`,
+  UPLOAD: `${BASE_URL}/api/recipe/upload`,
+};
