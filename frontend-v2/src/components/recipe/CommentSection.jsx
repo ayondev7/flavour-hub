@@ -1,90 +1,63 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { FiMessageSquare } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getUserIdFromToken } from "@assets/tokenUtils";
+import {
+  useGetCommentsQuery,
+  usePostCommentMutation,
+  useUpdateCommentMutation,
+  useDeleteCommentMutation
+} from "@redux/hooks/commentHook";
 
 const CommentSection = ({ recipeId }) => {
   const [comment, setComment] = useState("");
   const [fetchedComment, setFetchedComment] = useState("");
   const userId = getUserIdFromToken();
-  const [comments, setComments] = useState([]);
   const [reply, setReply] = useState("");
   const [parentCommentId, setParentCommentId] = useState();
   const modalRef = useRef(null);
   const [commentId, setCommentId] = useState();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
 
- 
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/comment/getComments/${recipeId}`
-      );
-      setComments(response.data);
-    } catch (error) {
-      console.error("Error fetching comments", error);
-    }
-  };
+  const { data: comments = [] } = useGetCommentsQuery(recipeId);
+  const [postComment, { isLoading: isPostingComment }] = usePostCommentMutation();
+  const [updateComment, { isLoading: isUpdatingComment }] = useUpdateCommentMutation();
+  const [deleteComment, { isLoading: isDeletingComment }] = useDeleteCommentMutation();
 
-  useEffect(() => {
-    if (userId && recipeId) {
-      fetchComments();
-    }
-  }, [userId, recipeId]);
-
-  const postComment = async (e) => {
+  const handlePostComment = async (e) => {
     e.preventDefault();
-    setIsProcessing(true);
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/comment/postComment`,
-        {
-          userId: userId,
-          content: comment,
-          recipeId: recipeId,
-        }
-      );
+      await postComment({
+        userId,
+        content: comment,
+        recipeId,
+      }).unwrap();
       toast.success("Your comment has been posted.");
       setComment("");
-      fetchComments();
-      setIsProcessing(false);
     } catch (error) {
       console.error("Error posting comment", error);
       toast.error("Error posting comment");
-      setIsProcessing(false);
     }
   };
 
-  const postReply = async (e) => {
+  const handlePostReply = async (e) => {
     e.preventDefault();
-    setIsProcessing(true);
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/comment/postComment`,
-        {
-          userId: userId,
-          content: reply,
-          recipeId: recipeId,
-          parentCommentId: parentCommentId,
-        }
-      );
+      await postComment({
+        userId,
+        content: reply,
+        recipeId,
+        parentCommentId,
+      }).unwrap();
       toast.success("Your reply has been posted.");
       setReply("");
       modalRef.current.close();
-      fetchComments();
     } catch (error) {
       console.error("Error posting reply", error);
       toast.error("Error posting reply");
-    } finally {
-      setIsProcessing(false);
     }
   };
 
@@ -100,51 +73,35 @@ const CommentSection = ({ recipeId }) => {
   };
 
   const handleDelete = async () => {
-    setIsProcessing(true);
     try {
-      await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/comment/deleteComment`,
-        { data: { commentId: commentId } }
-      );
+      await deleteComment(commentId).unwrap();
       document.getElementById("deleteCommentModal").close();
       toast.success("Comment deleted successfully");
-      fetchComments();
     } catch (error) {
       toast.error("Failed to delete comment");
       console.error(error);
-    } finally {
-      setIsProcessing(false);
     }
   };
 
   const handleEdit = async () => {
-    setIsProcessing(true);
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/comment/updateComment`,
-        { commentId: commentId, content: fetchedComment }
-      );
-      if (response.status === 200) {
-        setIsProcessing(false);
-        document.getElementById("editCommentModal").close();
-        toast.success("Comment updated successfully");
-        setFetchedComment("");
-        setCommentId(null);
-        fetchComments();
-      } else {
-        toast.error("Failed to update comment");
-      }
+      await updateComment({
+        commentId,
+        content: fetchedComment
+      }).unwrap();
+      document.getElementById("editCommentModal").close();
+      toast.success("Comment updated successfully");
+      setFetchedComment("");
+      setCommentId(null);
     } catch (error) {
       toast.error("Failed to update comment");
       console.error(error);
-    } finally {
-      setIsProcessing(false);
     }
   };
 
   return (
     <div>
-      <form onSubmit={postComment}>
+      <form onSubmit={handlePostComment}>
         <textarea
           className="textarea w-full bg-white h-[150px] border-2 text-base text-black placeholder:text-customGray border-hotPink focus:outline-none focus:border-hotPink"
           placeholder="Leave your comment here..."
@@ -155,9 +112,9 @@ const CommentSection = ({ recipeId }) => {
         <div className="flex justify-end mt-4">
           <button
             className="bg-hotPink p-2 rounded-lg text-white font-semibold text-base flex items-center justify-center gap-x-3 px-5"
-            disabled={isProcessing}
+            disabled={isPostingComment}
           >
-            {isProcessing ? (
+            {isPostingComment ? (
               <span className="flex items-center">
                 <span className="loading loading-spinner mr-2"></span>
                 Posting...
@@ -177,7 +134,7 @@ const CommentSection = ({ recipeId }) => {
           All Comments ({comments.length})
         </p>
 
-        {comments && users && comments
+        {comments
           .filter((comment) => comment?.parentCommentId === null)
           .map((comment) => {
             return (
@@ -308,7 +265,7 @@ const CommentSection = ({ recipeId }) => {
             onChange={(e) => setReply(e.target.value)}
           ></textarea>
           <div className="modal-action">
-            <button className="btn btn-primary" onClick={postReply}>
+            <button className="btn btn-primary" onClick={handlePostReply}>
               Reply
             </button>
             <button className="btn">Cancel</button>

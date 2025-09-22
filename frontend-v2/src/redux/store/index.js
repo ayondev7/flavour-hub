@@ -6,6 +6,7 @@ import { recipesApi } from "../hooks/recipeHook";
 import { bookmarkApi } from "../hooks/bookmarkHook";
 import { likesApi } from "../hooks/likesHook";
 import { notificationsApi } from "../hooks/notificationsHook";
+import { commentsApi } from "../hooks/commentHook";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     [followApi.reducerPath]: followApi.reducer,
     [recipesApi.reducerPath]: recipesApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
+    [commentsApi.reducerPath]: commentsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -25,7 +27,8 @@ const store = configureStore({
       bookmarkApi.middleware,
       likesApi.middleware,
       collectionsApi.middleware,
-      notificationsApi.middleware
+      notificationsApi.middleware,
+      commentsApi.middleware
     ),
 });
 
