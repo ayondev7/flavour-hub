@@ -93,7 +93,7 @@ const Navbar = () => {
                 <div className="absolute top-10 lg:top-12 right-4 lg:right-auto lg:left-0 lg:w-[400px] bg-white border border-gray-300 rounded-md shadow-md z-10">
                   {searchResults.length > 0 ? (
                     searchResults.map((result, index) => (
-                      <Link to={`/recipesPage/${result._id}`} key={index}>
+                      <Link to={`/recipe-page/${result._id}`} key={index}>
                         <div className="text-xs lg:text-base p-2 hover:bg-gray-100 cursor-pointer">
                           {result.title}
                         </div>

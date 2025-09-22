@@ -70,7 +70,7 @@ const App = () => {
               <Route path="create-new-recipe" element={ProtectedPage(CreateNewRecipe)} />
               <Route path="edit-recipe/:recipeId" element={ProtectedPage(EditRecipe)} />
               <Route path="my-recipes" element={ProtectedPage(MyRecipes)} />
-              <Route path="recipes-page/:recipeId" element={ProtectedPage(RecipesPage)} />
+              <Route path="recipe-page/:recipeId" element={ProtectedPage(RecipesPage)} />
               <Route path="all-recipes/:genre" element={ProtectedPage(AllRecipes)} />
             </Route>
           </Routes>

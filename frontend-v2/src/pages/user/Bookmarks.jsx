@@ -13,7 +13,7 @@ const Bookmarks = () => {
   });
 
   const recipeCardClick = (recipeId) => {
-    navigate(`/recipesPage/${recipeId}`);
+    navigate(`/recipe-page/${recipeId}`);
   };
 
   if (error) {

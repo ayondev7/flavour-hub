@@ -19,7 +19,7 @@ const TrendingRecipesSection = ({ recipes, isLoading, onBookmarkClick, userId, o
       <div className="flex justify-between px-4 lg:px-16 py-4">
         <h2 className="text-black text-lg lg:text-2xl font-semibold">Trending Recipes</h2>
         <div className="text-sm lg:text-base text-hotPink font-bold">
-          <Link to="/recipesPage">View More</Link>
+          <Link to="/recipe-page">View More</Link>
         </div>
       </div>
       <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-16 pb-24">

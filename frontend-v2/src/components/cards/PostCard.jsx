@@ -80,7 +80,7 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
 
    
       <div className="overflow-hidden rounded-lg">
-        <Link to={`/recipesPage/${data?._id}`}>
+        <Link to={`/recipe-page/${data?._id}`}>
           <img
             src={`data:image/jpeg;base64,${data?.image}`}
             alt="Recipe post image"

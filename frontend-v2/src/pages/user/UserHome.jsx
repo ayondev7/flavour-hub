@@ -38,7 +38,7 @@ const UserHome = () => {
   }, []);
 
   const handleCardClick = useCallback((recipeId) => {
-    navigate(`/recipes-page/${recipeId}`);
+    navigate(`/recipe-page/${recipeId}`);
   }, [navigate]);
 
   return (

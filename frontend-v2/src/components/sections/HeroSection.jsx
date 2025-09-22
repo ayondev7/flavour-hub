@@ -18,7 +18,7 @@ const HeroSection = () => {
           <p className="lg:py-6 py-2 text-sm lg:text-base text-black font-semibold block">
             Dive into a world of mouth-watering recipes, each crafted with passion and creativity. Explore new flavors, refine your skills, and let your taste buds embark on an unforgettable journey.
           </p>
-          <Link to="/allRecipes/null">
+          <Link to="/all-recipes/null">
             <button className="border-none lg:px-3 lg:py-3 px-3 py-2 mt-3 lg:mt-0 rounded-lg text-sm lg:text-base font-medium lg:w-[200px] bg-brightPink text-white">
               Explore Recipes
             </button>

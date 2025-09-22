@@ -90,7 +90,7 @@ const Home = () => {
           </p>
 
           <div className="flex justify-center mt-6">
-            <Link to={'/createNewRecipe'}>
+            <Link to={'/create-new-recipe'}>
             <button className="px-3 py-3 font-medium text-base rounded-lg bg-hotPink text-white border-none">
               Create New Recipe
             </button></Link>
@@ -101,7 +101,7 @@ const Home = () => {
       <div className="pl-16 flex-col pr-16 h-auto pb-16">
         <p className="text-4xl font-semibold text-black">Explore Recipes</p>
         <p className="flex w-[100%] justify-end mt-2 text-base mb-10 text-hotPink font-bold">
-          <Link to={"/allRecipes"}>View more</Link>
+          <Link to={"/all-recipes"}>View more</Link>
         </p>
         <div className="grid grid-cols-2 lg:gap-x-10 lg:grid-cols-4 gap-x-4 gap-y-16 mx-4 lg:mx-0 pb-24">
           {loading

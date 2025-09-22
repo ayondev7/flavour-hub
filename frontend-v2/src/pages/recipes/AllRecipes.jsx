@@ -94,7 +94,7 @@ const AllRecipes = () => {
   const { currentPage, currentItems, paginate } = usePagination(recipes);
 
   const recipeCardClick = (recipeId) => {
-    navigate(`/recipesPage/${recipeId}`);
+    navigate(`/recipe-page/${recipeId}`);
   };
 
   const handleCuisineSelect = (cuisine) => {
