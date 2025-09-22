@@ -255,7 +255,7 @@ exports.getMyRecipes = async (req, res) => {
 exports.getRelatedRecipes = async (req, res) => {
   const { cuisineType } = req.params;
   const { user } = req;
-  const userId = user._id;
+  const userId = user ? user._id : null;
 
   try {
     const getChefRank = (points) => {
@@ -268,7 +268,7 @@ exports.getRelatedRecipes = async (req, res) => {
 
     const relatedRecipes = await Recipe.find({ cuisineType });
 
-    const userCollections = await Collection.find({ userId: userId });
+    const userCollections = userId ? await Collection.find({ userId: userId }) : [];
     const collectionIds = userCollections.map((collection) => collection._id);
 
     const recipesWithDetails = await Promise.all(

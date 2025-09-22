@@ -5,7 +5,7 @@ const recipeController = require("../controllers/recipeController");
 const router = express.Router();
 const upload = multer({
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 3 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -39,6 +39,7 @@ router.get(
 );
 router.get(
   "/get-related-recipes/:cuisineType",
+  authMiddleware.auth,
   recipeController.getRelatedRecipes
 );
 router.get("/search", recipeController.searchRecipes);
@@ -57,28 +58,29 @@ router.delete(
   authMiddleware.auth,
   recipeController.deleteRecipe
 );
-router.post(
+router.post(  
   "/post-rating",
   authMiddleware.auth,
   upload.none(),
   recipeController.postRating
 );
-router.put("/update-ingredient/:recipeId", recipeController.updateIngredient);
+router.put("/update-ingredient/:recipeId",authMiddleware.auth, recipeController.updateIngredient);
 router.delete(
   "/delete-ingredient/:recipeId/:ingredientId",
   recipeController.deleteIngredient
 );
-router.put("/update-instruction/:recipeId", recipeController.updateInstruction);
+router.put("/update-instruction/:recipeId",authMiddleware.auth, recipeController.updateInstruction);
 router.delete(
-  "/delete-instruction/:recipeId/:instructionId",
+  "/delete-instruction/:recipeId/:instructionId",authMiddleware.auth,
   recipeController.deleteInstruction
 );
 router.put(
   "/update-nutritional-values/:recipeId",
+  authMiddleware.auth,
   recipeController.updateNutritionalValues
 );
-router.put("/update-prep-time/:recipeId", recipeController.updatePrepTime);
-router.put("/update-cook-time/:recipeId", recipeController.updateCookTime);
+router.put("/update-prep-time/:recipeId", authMiddleware.auth, recipeController.updatePrepTime);
+router.put("/update-cook-time/:recipeId", authMiddleware.auth, recipeController.updateCookTime);
 router.get(
   "/get-recipe-details/:recipeId",
   authMiddleware.auth,
