@@ -63,8 +63,95 @@ export const recipesApi = createApi({
       }),
       invalidatesTags: ['Recipes'],
     }),
+    updateRecipe: builder.mutation({
+      query: ({ recipeId, body }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_RECIPE}/${recipeId}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    updateRecipeImage: builder.mutation({
+      query: ({ recipeId, formData }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_RECIPE_IMAGE}/${recipeId}`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    updatePrepTime: builder.mutation({
+      query: ({ recipeId, prepTime }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_PREP_TIME}/${recipeId}`,
+        method: 'PUT',
+        body: { prepTime },
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    updateCookTime: builder.mutation({
+      query: ({ recipeId, cookTime }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_COOK_TIME}/${recipeId}`,
+        method: 'PUT',
+        body: { cookTime },
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    updateNutritionalValues: builder.mutation({
+      query: ({ recipeId, nutritionalValues }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_NUTRITIONAL_VALUES}/${recipeId}`,
+        method: 'PUT',
+        body: { nutritionalValues },
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    updateIngredient: builder.mutation({
+      query: ({ recipeId, value, ingredientId }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_INGREDIENT}/${recipeId}`,
+        method: 'PUT',
+        body: { value, ingredientId },
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    deleteIngredient: builder.mutation({
+      query: ({ recipeId, ingredientId }) => ({
+        url: `${RECIPE_ENDPOINTS.DELETE_INGREDIENT}/${recipeId}/${ingredientId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    updateInstruction: builder.mutation({
+      query: ({ recipeId, value, instructionId }) => ({
+        url: `${RECIPE_ENDPOINTS.UPDATE_INSTRUCTION}/${recipeId}`,
+        method: 'PUT',
+        body: { value, instructionId },
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
+    deleteInstruction: builder.mutation({
+      query: ({ recipeId, instructionId }) => ({
+        url: `${RECIPE_ENDPOINTS.DELETE_INSTRUCTION}/${recipeId}/${instructionId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Recipes'],
+    }),
   }),
 });
 
 
-export const { useGetAllRecipesQuery, useGetRelatedRecipesQuery, useGetRecipeQuery, useGetRecipeDetailsQuery, useGetMyRecipesQuery, useDeleteRecipeMutation, useCreateRecipeMutation } = recipesApi;
+export const {
+  useGetAllRecipesQuery,
+  useGetRelatedRecipesQuery,
+  useGetRecipeQuery,
+  useGetRecipeDetailsQuery,
+  useGetMyRecipesQuery,
+  useDeleteRecipeMutation,
+  useCreateRecipeMutation,
+  useUpdateRecipeMutation,
+  useUpdateRecipeImageMutation,
+  useUpdatePrepTimeMutation,
+  useUpdateCookTimeMutation,
+  useUpdateNutritionalValuesMutation,
+  useUpdateIngredientMutation,
+  useDeleteIngredientMutation,
+  useUpdateInstructionMutation,
+  useDeleteInstructionMutation,
+} = recipesApi;
