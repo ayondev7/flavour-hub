@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -13,8 +14,6 @@ const collectionRoutes = require("./routes/collectionRoutes");
 const bookmarkRoutes = require("./routes/bookmarkRoutes");
 const followRoutes = require("./routes/followRoutes");
 const likeRoutes = require("./routes/likeRoutes");
-require("dotenv").config();
-
 if (!process.env.PORT)
   throw new Error("PORT environment variable is not defined.");
 if (!process.env.MONGO_URI)

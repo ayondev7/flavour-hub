@@ -87,15 +87,15 @@ exports.getComments = async (req, res) => {
       },
     ]);
 
-    const commentsWithBase64Images = comments.map((comment) => {
+    const commentsWithImages = comments.map((comment) => {
       return {
         ...comment,
-        image: comment.image ? comment.image.toString("base64") : null,
+        image: comment.image,
         formattedDate: comment.createdAt ? format(new Date(comment.createdAt), "d MMMM yyyy, h:mm a") : null,
       };
     });
 
-    res.status(200).json(commentsWithBase64Images);
+    res.status(200).json(commentsWithImages);
   } catch (error) {
     console.error("Error fetching comments:", error);
     res.status(500).json({ message: "Server error", error });
@@ -198,25 +198,14 @@ exports.getNotificationsById = async (req, res) => {
 
         const { name, image } = userDetails;
 
-        // Convert binary image to base64 if the image exists
-        let imageBase64 = '';
-        if (image) {
-          try {
-            imageBase64 = image.toString('base64');
-          } catch (error) {
-            console.error('Error converting image to base64:', error);
-          }
-        }
-
-        // Format createdAt to "dd MMMM yyyy, hh:mm a" format
         const formattedCreatedAt = format(new Date(createdAt), 'dd MMMM yyyy, hh:mm a');
 
         return {
           type: notificationType,
-          recipeId: recipeIdData, // Only include recipeId for comment and like notifications
+          recipeId: recipeIdData,
           userId: userDetails._id,
           name,
-          image: imageBase64,
+          image: image,
           createdAt: formattedCreatedAt
         };
       })

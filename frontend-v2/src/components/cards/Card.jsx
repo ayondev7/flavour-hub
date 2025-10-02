@@ -44,7 +44,7 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
       <figure className="h-[100px] lg:h-[200px]">
         {recipe?.image && (
           <img
-            src={`data:image/jpeg;base64,${recipe?.image}`}
+            src={recipe?.image}
             alt="Recipe"
             className="h-full w-full object-cover rounded-tr-xl rounded-tl-xl"
           />
@@ -73,7 +73,7 @@ const Card = ({ recipe, onCardClick, onBookmarkClick, userId, onBookmarkRemove }
               <div className="lg:w-8 w-3 rounded-full">
                 <img
                   className="object-contain"
-                  src={`data:image/jpeg;base64,${recipe?.chefImage}`}
+                  src={recipe?.chefImage}
                   alt="Chef Avatar"
                 />
               </div>

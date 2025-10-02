@@ -19,7 +19,7 @@ const RecipeCard = ({ recipe }) => {
         {recipe?.image && (
           <img
             className="h-full w-full object-cover rounded-tr-xl rounded-tl-xl"
-            src={`data:image/jpeg;base64,${recipe?.image}`}
+            src={recipe?.image}
             alt=""
           />
         )}
@@ -47,7 +47,7 @@ const RecipeCard = ({ recipe }) => {
               <div className="lg:w-8 w-4 rounded-full">
                 <img
                   className="object-cover"
-                  src={`data:image/jpeg;base64,${recipe?.chefImage}`}
+                  src={recipe?.chefImage}
                   alt="Avatar"
                 />
               </div>

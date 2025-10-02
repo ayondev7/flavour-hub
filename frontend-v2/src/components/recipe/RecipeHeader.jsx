@@ -12,7 +12,7 @@ const RecipeHeader = ({ recipe, recipeDetails }) => {
             <div className="avatar">
               <div className="lg:size-8 rounded-full size-6">
                 <img
-                  src={`data:image/jpeg;base64,${recipeDetails?.chef.image}`}
+                  src={recipeDetails?.chef.image}
                   alt={recipe.title}
                 />
               </div>

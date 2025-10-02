@@ -11,7 +11,7 @@ const CommentItem = ({ comment, userId, onEdit, onDelete, onReply, replies = [] 
           <div className="avatar">
             <div className="w-10 rounded-full">
               <img
-                src={`data:image/jpeg;base64,${comment?.image}`}
+                src={comment?.image}
                 alt="User Avatar"
               />
             </div>
@@ -60,7 +60,7 @@ const CommentItem = ({ comment, userId, onEdit, onDelete, onReply, replies = [] 
             <div className="avatar">
               <div className="w-10 rounded-full">
                 <img
-                  src={`data:image/jpeg;base64,${reply?.image}`}
+                  src={reply?.image}
                   alt="User Avatar"
                 />
               </div>

@@ -46,7 +46,7 @@ const LeaderboardTable = ({ data, userId }) => {
                 <motion.td className="px-4 py-2 text-sm">
                   <div className="flex items-center space-x-3">
                     <img
-                      src={`data:image/jpeg;base64,${row?.image}`}
+                      src={row?.image}
                       alt={row.name}
                       className="size-12 rounded-full object-cover border-2 border-brightPink"
                     />

@@ -36,7 +36,7 @@ const ImageField = ({ image, onSave }) => {
           />
         ) : image ? (
           <img
-            src={`data:image/jpeg;base64,${image}`}
+            src={image}
             alt="Recipe"
             className="h-[200px] w-[300px] object-cover rounded-lg"
           />

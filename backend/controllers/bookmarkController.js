@@ -148,13 +148,10 @@ const getBookmarks = async (req, res) => {
       },
     ]);
 
-    // Convert image buffers to base64 strings
     const formattedBookmarks = bookmarks.map((bookmark) => ({
       ...bookmark,
-      image: bookmark.image ? bookmark.image.toString("base64") : null,
-      chefImage: bookmark.chefImage
-        ? bookmark.chefImage.toString("base64")
-        : null,
+      image: bookmark.image,
+      chefImage: bookmark.chefImage,
     }));
 
     res.status(200).json(formattedBookmarks);

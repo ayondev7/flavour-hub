@@ -8,6 +8,7 @@ const Follow = require("../models/Follow");
 const mongoose = require("mongoose");
 const Like = require("../models/Like");
 const { format } = require("date-fns");
+const { uploadImage } = require("../utils/imageUpload");
 
 exports.createRecipe = async (req, res) => {
   const {
@@ -72,6 +73,8 @@ exports.createRecipe = async (req, res) => {
     });
   }
 
+  const imageUrl = await uploadImage(req.file.buffer, `recipe_${Date.now()}_${req.file.originalname}`);
+
   const newRecipe = new Recipe({
     title,
     description,
@@ -85,7 +88,7 @@ exports.createRecipe = async (req, res) => {
     nutritionalValues: nutritionalValuesParsed,
     dietaryInformation,
     chefId: id,
-    image: req.file ? req.file.buffer : null,
+    image: imageUrl,
   });
 
   try {
@@ -169,11 +172,6 @@ exports.getAllRecipes = async (req, res) => {
           recipeId: recipe._id,
         });
 
-        const recipeImage = recipe.image
-          ? recipe.image.toString("base64")
-          : null;
-        const chefImage = chef.image ? chef.image.toString("base64") : null;
-
         const formattedDate = format(
           new Date(recipe.createdAt),
           "d MMMM yyyy 'at' h:mma"
@@ -200,8 +198,8 @@ exports.getAllRecipes = async (req, res) => {
           totalLikes: totalLikes,
           totalComments: totalComments,
           likedByUser: likedByUser,
-          image: recipeImage,
-          chefImage: chefImage,
+          image: recipe.image,
+          chefImage: chef.image,
           createdAt: formattedDate,
         };
       })
@@ -228,7 +226,6 @@ exports.getMyRecipes = async (req, res) => {
     }
 
     const recipesWithImages = recipes.map((recipe) => {
-      const base64Image = recipe.image ? recipe.image.toString("base64") : null;
       return {
         _id: recipe._id,
         title: recipe.title,
@@ -241,7 +238,7 @@ exports.getMyRecipes = async (req, res) => {
         cuisineType: recipe.cuisineType,
         nutritionalValues: recipe.nutritionalValues,
         dietaryInformation: recipe.dietaryInformation,
-        image: base64Image,
+        image: recipe.image,
         chefId: recipe.chefId,
       };
     });
@@ -315,11 +312,6 @@ exports.getRelatedRecipes = async (req, res) => {
           recipeId: recipe._id,
         });
 
-        const recipeImage = recipe.image
-          ? recipe.image.toString("base64")
-          : null;
-        const chefImage = chef.image ? chef.image.toString("base64") : null;
-
         const formattedDate = format(
           new Date(recipe.createdAt),
           "d MMMM yyyy 'at' h:mma"
@@ -346,8 +338,8 @@ exports.getRelatedRecipes = async (req, res) => {
           totalLikes: totalLikes,
           totalComments: totalComments,
           likedByUser: likedByUser,
-          image: recipeImage,
-          chefImage: chefImage,
+          image: recipe.image,
+          chefImage: chef.image,
           createdAt: formattedDate,
         };
       })
@@ -376,8 +368,6 @@ exports.getRecipe = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    const base64Image = recipe.image ? recipe.image.toString("base64") : null;
-
     const recipeWithImage = {
       _id: recipe._id,
       title: recipe.title,
@@ -390,7 +380,7 @@ exports.getRecipe = async (req, res) => {
       cuisineType: recipe.cuisineType,
       nutritionalValues: recipe.nutritionalValues,
       dietaryInformation: recipe.dietaryInformation,
-      image: base64Image,
+      image: recipe.image,
       chefId: recipe.chefId,
     };
 
@@ -823,7 +813,8 @@ exports.updateImage = async (req, res) => {
     }
 
     if (req.file) {
-      recipe.image = req.file.buffer;
+      const imageUrl = await uploadImage(req.file.buffer, `recipe_${Date.now()}_${req.file.originalname}`);
+      recipe.image = imageUrl;
     } else {
       return res.status(400).json({ message: "No image file provided." });
     }

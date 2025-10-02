@@ -28,7 +28,7 @@ const NewsfeedSidebar = ({ showSearchBar, title, followersSidebar, userId, chefs
               <div className="flex items-center space-x-3">
                 <div className="size-8 rounded-full overflow-hidden">
                   <img
-                    src={`data:image/jpeg;base64,${user?.image}`}
+                    src={user?.image}
                     alt="Profile Image"
                     className="object-cover w-full h-full"
                   />

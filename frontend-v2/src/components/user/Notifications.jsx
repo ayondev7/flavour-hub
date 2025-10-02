@@ -68,7 +68,7 @@ const Notifications = ({ notificationsData, onNotificationClick, onClose }) => {
                   <div className="avatar mt-1">
                     <div className="lg:w-10 w-8 rounded-full">
                       <img
-                        src={`data:image/jpeg;base64,${notification?.image}`}
+                        src={notification?.image}
                         alt="avatar"
                       />
                     </div>

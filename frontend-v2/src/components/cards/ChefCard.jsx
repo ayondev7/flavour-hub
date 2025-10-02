@@ -56,7 +56,7 @@ const ChefCard = ({ chefData, userId, onFollowChange }) => {
         <div className="avatar">
           <div className="ring-green-500 ring-offset-base-100 w-12 lg:w-16 rounded-full ring ring-offset-2 overflow-hidden">
             <img
-              src={`data:image/jpeg;base64,${chefData?.image}`}
+              src={chefData?.image}
               alt={`${chefData.name}'s Avatar`}
               className="object-cover"
             />

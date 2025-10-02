@@ -11,7 +11,7 @@ const MyCollectionCard = ({ recipe, onEdit, onDelete }) => {
       <figure className="h-[100px] lg:h-[200px]">
         {recipe.image && (
           <img
-            src={`data:image/jpeg;base64,${recipe.image}`}
+            src={recipe.image}
             alt={recipe.title}
             className="object-cover"
           />

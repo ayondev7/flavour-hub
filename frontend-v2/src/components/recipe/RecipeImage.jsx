@@ -6,7 +6,7 @@ const RecipeImage = ({ recipe }) => {
       {recipe?.image && (
         <img
           className="h-[300px] w-[500px] object-cover mt-6 rounded-lg"
-          src={`data:image/jpeg;base64,${recipe?.image}`}
+          src={recipe?.image}
           alt=""
         />
       )}

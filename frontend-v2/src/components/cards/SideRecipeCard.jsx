@@ -24,7 +24,7 @@ const SideRecipeCard = ({ recipe }) => {
       <figure className="w-[200px] h-[100%] overflow-hidden">
         <img
           className="w-[100%] h-full object-cover rounded-tl-lg rounded-bl-lg"
-          src={`data:image/jpeg;base64,${image}`}
+          src={image}
           alt={title}
         />
       </figure>

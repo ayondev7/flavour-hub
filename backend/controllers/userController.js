@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const Follow = require("../models/Follow");
 const jwt = require("jsonwebtoken");
+const { uploadImage } = require("../utils/imageUpload");
 require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY;
 const GUEST_USER_EMAIL = process.env.GUEST_USER_EMAIL;
@@ -20,11 +21,13 @@ const createUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const imageUrl = await uploadImage(req.file.buffer, `user_${Date.now()}_${req.file.originalname}`);
+
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
-      image: req.file?.buffer,
+      image: imageUrl,
       points: 0,
       averageRating: 0,
       numberOfRecipes: 0,
@@ -69,7 +72,6 @@ const getLeaderboardRankings = async (req, res) => {
 
     const usersWithImagesAndRanks = await Promise.all(
       users.map(async (user) => {
-        const base64Image = user.image ? user.image.toString("base64") : null;
         const rank = getRank(user.points);
 
         let following = false;
@@ -88,7 +90,7 @@ const getLeaderboardRankings = async (req, res) => {
           points: user.points,
           averageRating: user.averageRating,
           numberOfRecipes: user.numberOfRecipes,
-          image: base64Image,
+          image: user.image,
           rank: rank,
           following: following,
         };
@@ -127,7 +129,6 @@ const getAllUsers = async (req, res) => {
 
     const usersWithImagesAndRanks = await Promise.all(
       users.map(async (user) => {
-        const base64Image = user.image ? user.image.toString("base64") : null;
         const rank = getRank(user.points);
 
         let following = false;
@@ -146,7 +147,7 @@ const getAllUsers = async (req, res) => {
           points: user.points,
           averageRating: user.averageRating,
           numberOfRecipes: user.numberOfRecipes,
-          image: base64Image,
+          image: user.image,
           rank: rank,
           following: following,
         };
@@ -178,12 +179,10 @@ const getUserById = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const base64Image = foundUser.image ? foundUser.image.toString("base64") : null;
-
     const userWithImage = {
       _id: foundUser._id,
       name: foundUser.name,
-      image: base64Image,
+      image: foundUser.image,
     };
 
     return res.status(200).json(userWithImage);

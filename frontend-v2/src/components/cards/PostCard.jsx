@@ -34,7 +34,7 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
         <div className="avatar">
           <div className="w-12 rounded-full">
             <img
-              src={`data:image/jpeg;base64,${data?.chefImage}`}
+              src={data?.chefImage}
               alt="Profile"
             />
           </div>
@@ -82,7 +82,7 @@ const PostCard = ({ data, onFollowChange, userId,onLikeChange }) => {
       <div className="overflow-hidden rounded-lg">
         <Link to={`/recipe-page/${data?._id}`}>
           <img
-            src={`data:image/jpeg;base64,${data?.image}`}
+            src={data?.image}
             alt="Recipe post image"
             className="w-full h-[300px] object-cover"
           />

@@ -52,7 +52,7 @@ const Sidebar = ({ userData, handleLogoutClick, userId }) => {
           <div className="flex items-center mb-6 ml-1">
             <div className="avatar">
               <div className="lg:w-12 w-10 rounded-full">
-                <img className="object-contain" src={`data:image/jpeg;base64,${userData.image}`} alt="Avatar" />
+                <img className="object-contain" src={userData.image} alt="Avatar" />
               </div>
             </div>
             <div className="ml-4">
