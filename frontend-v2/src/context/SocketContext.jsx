@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     
     if (!token) {
       return;
@@ -33,7 +33,7 @@ export const SocketProvider = ({ children }) => {
     });
 
     socketInstance.on('connect', () => {
-      console.log('Socket connected:', socketInstance.id);
+      // console.log('Socket connected:', socketInstance.id);
       setIsConnected(true);
     });
 

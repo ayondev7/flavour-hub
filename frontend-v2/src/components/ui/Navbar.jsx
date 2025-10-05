@@ -118,7 +118,7 @@ const Navbar = () => {
                 onClick={toggleDropdown}
               >
                 <FaBell className="size-[24px]" />
-                {hasNewNotifications && <span className="absolute -top-1 -right-1 text-red-500 font-bold text-sm">*</span>}
+                {hasNewNotifications && <span className="absolute top-1 -right-1 bg-hotPink w-2 h-2 rounded-full"></span>}
               </button>
               <label
                 htmlFor="my-drawer-4"
