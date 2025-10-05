@@ -15,13 +15,13 @@ import AllRecipes from "@pages/recipes/AllRecipes";
 import Signup from "@pages/auth/Signup";
 import Newsfeed from "@pages/user/Newsfeed";
 import { AuthProvider } from "@context/AuthContext";
+import { SocketProvider } from "@context/SocketContext";
 import ProtectedRoute from "@components/user/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import Leaderboard from "@pages/general/Leaderboard";
 import Collections from "@pages/user/Collections";
 import Bookmarks from "@pages/user/Bookmarks";
 
-// Reusable wrapper for transitions
 const PageTransition = ({ children }) => {
   const location = useLocation();
 
@@ -38,7 +38,6 @@ const PageTransition = ({ children }) => {
   );
 };
 
-// Helper to wrap a component in ProtectedRoute + PageTransition
 const ProtectedPage = (Component) => (
   <ProtectedRoute>
     <PageTransition>
@@ -52,31 +51,31 @@ const App = () => {
     <BrowserRouter>
       <Provider store={store}>
         <AuthProvider>
-        <ToastContainer autoClose={3000} />
-        <div className="bg-white">
-          <Routes>
-            {/* Public routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+          <SocketProvider>
+            <ToastContainer autoClose={3000} />
+            <div className="bg-white">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
 
-            {/* Protected routes inside layout */}
-            <Route path="/" element={<Layout />}>
-              <Route index element={<PageTransition><Home /></PageTransition>} />
-              <Route path="user-home" element={ProtectedPage(UserHome)} />
-              <Route path="newsfeed" element={ProtectedPage(Newsfeed)} />
-              <Route path="leaderboard" element={ProtectedPage(Leaderboard)} />
-              <Route path="collections" element={ProtectedPage(Collections)} />
-              <Route path="bookmarks/:collectionId" element={ProtectedPage(Bookmarks)} />
-              <Route path="create-new-recipe" element={ProtectedPage(CreateNewRecipe)} />
-              <Route path="edit-recipe/:recipeId" element={ProtectedPage(EditRecipe)} />
-              <Route path="my-recipes" element={ProtectedPage(MyRecipes)} />
-              <Route path="recipe-page/:recipeId" element={ProtectedPage(RecipesPage)} />
-              <Route path="all-recipes/:genre" element={ProtectedPage(AllRecipes)} />
-            </Route>
-          </Routes>
-        </div>
-      </AuthProvider>
-    </Provider>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<PageTransition><Home /></PageTransition>} />
+                  <Route path="user-home" element={ProtectedPage(UserHome)} />
+                  <Route path="newsfeed" element={ProtectedPage(Newsfeed)} />
+                  <Route path="leaderboard" element={ProtectedPage(Leaderboard)} />
+                  <Route path="collections" element={ProtectedPage(Collections)} />
+                  <Route path="bookmarks/:collectionId" element={ProtectedPage(Bookmarks)} />
+                  <Route path="create-new-recipe" element={ProtectedPage(CreateNewRecipe)} />
+                  <Route path="edit-recipe/:recipeId" element={ProtectedPage(EditRecipe)} />
+                  <Route path="my-recipes" element={ProtectedPage(MyRecipes)} />
+                  <Route path="recipe-page/:recipeId" element={ProtectedPage(RecipesPage)} />
+                  <Route path="all-recipes/:genre" element={ProtectedPage(AllRecipes)} />
+                </Route>
+              </Routes>
+            </div>
+          </SocketProvider>
+        </AuthProvider>
+      </Provider>
     </BrowserRouter>
   );
 };

@@ -1,25 +1,34 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useGetNotificationsQuery } from '../redux/hooks/notificationsHook';
-import { io } from 'socket.io-client';
+import { useSocket } from '../context/SocketContext';
 
 export const useNotifications = (userId) => {
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
   const { data: notificationsData = [], refetch } = useGetNotificationsQuery(userId, { skip: !userId });
-  const socket = io(`${import.meta.env.VITE_BACKEND_URL}`);
+  const { socket, isConnected } = useSocket();
 
   useEffect(() => {
-    if (userId) {
-      socket.on('new_notification', () => {
-        refetch();
-        setHasNewNotifications(true);
-      });
+    if (notificationsData) {
+      setNotifications(notificationsData);
     }
+  }, [notificationsData]);
+
+  useEffect(() => {
+    if (!socket || !isConnected || !userId) return;
+
+    const handleNewNotification = (notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+      setHasNewNotifications(true);
+    };
+
+    socket.on('notification', handleNewNotification);
 
     return () => {
-      socket.off('new_notification');
+      socket.off('notification', handleNewNotification);
     };
-  }, [userId, refetch]);
+  }, [socket, isConnected, userId]);
 
   const toggleDropdown = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -29,10 +38,11 @@ export const useNotifications = (userId) => {
   }, [isOpen]);
 
   return {
-    notificationsData,
+    notificationsData: notifications,
     hasNewNotifications,
     isOpen,
     setIsOpen,
     toggleDropdown,
+    refetch,
   };
 };
