@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
-const Notification = require("./models/Notification");
 const cors = require("cors");
+const socketManager = require("./socket/socketManager");
 const recipeRoutes = require("./routes/recipeRoutes");
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
@@ -66,12 +66,7 @@ const io = socketIo(server, {
   },
 });
 
-const changeStream = Notification.watch();
-changeStream.on("change", (change) => {
-  if (change.operationType === "insert") {
-    io.emit("new_notification");
-  }
-});
+socketManager.initialize(io);
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);

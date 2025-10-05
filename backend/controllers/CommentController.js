@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Recipe = require("../models/Recipe");
 const User = require("../models/User");
 const { format } = require("date-fns");
+const socketManager = require("../socket/socketManager");
 
 exports.postComment = async (req, res) => {
   const { userId, recipeId, content, parentCommentId } = req.body;
@@ -13,30 +14,34 @@ exports.postComment = async (req, res) => {
   }
 
   try {
-    // Find the recipe to get the chefId
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
-    const chefId = recipe.chefId; // Assuming the Recipe model has a field chefId for the chef
+    const chefId = recipe.chefId;
 
-    // Create and save the new comment
     const newComment = new Comment({
       userId,
       recipeId,
       content,
-      parentCommentId: parentCommentId || null, // Default to null if not provided
+      parentCommentId: parentCommentId || null,
     });
     await newComment.save();
 
-    // Create and save the notification with the chefId as the userId
     const newNotification = new Notification({
       commentorId: userId,
       recipeId,
-      userId: chefId, // Set the chefId as the userId in the notification
+      userId: chefId,
       type: 'comment',
     });
     await newNotification.save();
+
+    const populatedNotification = await Notification.findById(newNotification._id)
+      .populate('commentorId', 'name image')
+      .populate('recipeId', 'title')
+      .lean();
+
+    socketManager.emitToUser(chefId, 'notification', populatedNotification);
 
     res
       .status(201)
