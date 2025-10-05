@@ -2,6 +2,7 @@ const Follow = require('../models/Follow');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const socketManager = require('../socket/socketManager');
+const { formatNotificationForEmit } = require('../utils/notificationFormatter');
 
 const followUser = async (req, res) => {
   const { followerId, followingId } = req.body;
@@ -39,7 +40,11 @@ const followUser = async (req, res) => {
         .populate('followerId', 'name image')
         .lean();
 
-      socketManager.emitToUser(followingId, 'notification', populatedNotification);
+      const formattedNotification = await formatNotificationForEmit(populatedNotification, 'follow');
+
+      if (formattedNotification) {
+        socketManager.emitToUser(followingId.toString(), 'notification', formattedNotification);
+      }
 
       return res.status(201).json({ message: 'You have followed this user' });
     }

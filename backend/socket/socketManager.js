@@ -16,8 +16,8 @@ class SocketManager {
       }
 
       try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        socket.userId = decoded.userId;
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        socket.userId = decoded.id;
         next();
       } catch (err) {
         next(new Error('Authentication error'));
@@ -34,7 +34,7 @@ class SocketManager {
   }
 
   handleConnection(socket) {
-    const userId = socket.userId;
+    const userId = socket.userId.toString();
     
     if (!this.userSocketMap.has(userId)) {
       this.userSocketMap.set(userId, new Set());
@@ -47,7 +47,7 @@ class SocketManager {
   }
 
   handleDisconnection(socket) {
-    const userId = socket.userId;
+    const userId = socket.userId.toString();
     
     if (this.userSocketMap.has(userId)) {
       this.userSocketMap.get(userId).delete(socket.id);

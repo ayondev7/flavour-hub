@@ -5,6 +5,7 @@ const Recipe = require("../models/Recipe");
 const User = require("../models/User");
 const { format } = require("date-fns");
 const socketManager = require("../socket/socketManager");
+const { formatNotificationForEmit } = require("../utils/notificationFormatter");
 
 exports.postComment = async (req, res) => {
   const { userId, recipeId, content, parentCommentId } = req.body;
@@ -36,12 +37,18 @@ exports.postComment = async (req, res) => {
     });
     await newNotification.save();
 
+    // populate actor (commentor) and recipe title
     const populatedNotification = await Notification.findById(newNotification._id)
       .populate('commentorId', 'name image')
       .populate('recipeId', 'title')
       .lean();
 
-    socketManager.emitToUser(chefId, 'notification', populatedNotification);
+    // format notification payload (includes formatted createdAt)
+    const formattedNotification = await formatNotificationForEmit(populatedNotification, 'comment');
+
+    if (formattedNotification) {
+      socketManager.emitToUser(chefId.toString(), 'notification', formattedNotification);
+    }
 
     res
       .status(201)

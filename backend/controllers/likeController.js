@@ -3,10 +3,12 @@ const Notification = require('../models/Notification');
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 const socketManager = require('../socket/socketManager');
+const { formatNotificationForEmit } = require('../utils/notificationFormatter');
 
 const toggleLike = async (req, res) => {
+  const userId = req.user.id;
   try {
-      const { userId, recipeId } = req.body;
+      const {recipeId } = req.body;
 
       const existingLike = await Like.findOne({ userId, recipeId });
 
@@ -37,7 +39,11 @@ const toggleLike = async (req, res) => {
             .populate('recipeId', 'title')
             .lean();
 
-          socketManager.emitToUser(chefId, 'notification', populatedNotification);
+          const formattedNotification = await formatNotificationForEmit(populatedNotification, 'like');
+
+          if (formattedNotification) {
+            socketManager.emitToUser(chefId.toString(), 'notification', formattedNotification);
+          }
 
           return res.status(201).json({ message: 'You have liked this post.', like: newLike });
       }
