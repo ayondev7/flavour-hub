@@ -1,19 +1,13 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
 const socketManager = require("./socket/socketManager");
-const recipeRoutes = require("./routes/recipeRoutes");
-const userRoutes = require("./routes/userRoutes");
-const commentRoutes = require("./routes/commentRoutes");
-const authRoutes = require("./routes/authRoutes");
-const collectionRoutes = require("./routes/collectionRoutes");
-const bookmarkRoutes = require("./routes/bookmarkRoutes");
-const followRoutes = require("./routes/followRoutes");
-const likeRoutes = require("./routes/likeRoutes");
+const { connectToDatabase } = require('./database/db');
+const apiRoutes = require('./routes/index');
+
 if (!process.env.PORT)
   throw new Error("PORT environment variable is not defined.");
 if (!process.env.MONGO_URI)
@@ -27,7 +21,7 @@ const server = http.createServer(app);
 
 const corsOptions = {
   origin: process.env.CORS_ORIGIN,
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
@@ -36,26 +30,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const connectToDatabase = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to MongoDB successfully!");
-  } catch (err) {
-    console.error("Error connecting to MongoDB:", err);
-    process.exit(1);
-  }
-};
+connectToDatabase(process.env.MONGO_URI);
 
-connectToDatabase();
-
-app.use("/api/recipe", recipeRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/comment", commentRoutes);
-app.use("/api/collections", collectionRoutes);
-app.use("/api/bookmark", bookmarkRoutes);
-app.use("/api/followers", followRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/like", likeRoutes);
+app.use('/api', apiRoutes);
 
 const io = socketIo(server, {
   cors: {
