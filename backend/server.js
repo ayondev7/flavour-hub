@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
+const rateLimit = require('express-rate-limit');
 const socketManager = require("./socket/socketManager");
 const { connectToDatabase } = require('./database/db');
 const apiRoutes = require('./routes/index');
@@ -27,6 +28,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+app.use(limiter);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
