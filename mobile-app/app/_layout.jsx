@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import '../global.css';
 
 const queryClient = new QueryClient();
 
